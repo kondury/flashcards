@@ -31,9 +31,7 @@ class CardSerializationTest {
             )
         }
 
-
         // card requests data
-
         private val cardCreateRequest = CardCreateRequest(
             requestId = "mockedRequestId",
             debug = debug,

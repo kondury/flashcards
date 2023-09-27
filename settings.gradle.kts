@@ -17,12 +17,7 @@ pluginManagement {
 
 //include("m1-init")
 include("flashcards-acceptance")
-
-// todo uncomment required includes
 include("flashcards-api-v1-jackson")
-//include("flashcards-api-v2-kmp")
-
-//include("flashcards-common")
+include("flashcards-common")
 //include("flashcards-mappers-v1")
-//include("flashcards-mappers-v2")
 
