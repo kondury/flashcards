@@ -1,6 +1,6 @@
 package com.github.kondury.flashcards.common.models
 
-enum class PlacedCardCommand {
+enum class PlacedCardCommand : FcCommand {
     NONE,
     CREATE_PLACED_CARD,
     MOVE_PLACED_CARD,

@@ -2,15 +2,15 @@ package com.github.kondury.flashcards.common
 
 import kotlinx.datetime.Instant
 import com.github.kondury.flashcards.common.models.*
-import com.github.kondury.flashcards.common.stubs.FcStubs
+import com.github.kondury.flashcards.common.stubs.FcStub
 
 data class PlacedCardContext(
     var command: PlacedCardCommand = PlacedCardCommand.NONE,
     var state: FcState = FcState.NONE,
     var errors: MutableList<FcError> = mutableListOf(),
 
-    var workMode: FcRunMode = FcRunMode.PROD,
-    var stubCase: FcStubs = FcStubs.NONE,
+    var workMode: FcWorkMode = FcWorkMode.PROD,
+    var stubCase: FcStub = FcStub.NONE,
 
     var requestId: FcRequestId = FcRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
@@ -22,10 +22,10 @@ data class PlacedCardContext(
     // init/select commands
     var ownerId: UserId = UserId.NONE,
     // init/select commands
-    var workBox: Box = Box.NONE,
+    var workBox: FcBox = FcBox.NONE,
     // box after for move command
-    var boxAfter: Box = Box.NONE,
+    var boxAfter: FcBox = FcBox.NONE,
     // sorting order for select command
-    var searchStrategy: SearchStrategy = SearchStrategy.NONE,
+    var searchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
 )
 

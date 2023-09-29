@@ -19,5 +19,5 @@ pluginManagement {
 include("flashcards-acceptance")
 include("flashcards-api-v1-jackson")
 include("flashcards-common")
-//include("flashcards-mappers-v1")
+include("flashcards-mappers-v1")
 

@@ -14,22 +14,18 @@ class CardSerializationTest {
     companion object {
 
         @JvmStatic
-        fun requestSerializationData(): List<Arguments> {
-            return listOf(
-                Arguments.of("createCard", cardCreateRequest, cardCreateRequestJsonChecks),
-                Arguments.of("deleteCard", cardDeleteRequest, cardDeleteRequestJsonChecks),
-                Arguments.of("readCard", cardReadRequest, cardReadRequestJsonChecks),
-            )
-        }
+        fun requestSerializationData(): List<Arguments> = listOf(
+            Arguments.of("createCard", cardCreateRequest, cardCreateRequestJsonChecks),
+            Arguments.of("deleteCard", cardDeleteRequest, cardDeleteRequestJsonChecks),
+            Arguments.of("readCard", cardReadRequest, cardReadRequestJsonChecks),
+        )
 
         @JvmStatic
-        fun responseSerializationData(): List<Arguments> {
-            return listOf(
-                Arguments.of("createCard", cardCreateResponse, cardCreateResponseJsonChecks),
-                Arguments.of("deleteCard", cardDeleteResponse, cardDeleteResponseJsonChecks),
-                Arguments.of("readCard", cardReadResponse, cardReadResponseJsonChecks),
-            )
-        }
+        fun responseSerializationData(): List<Arguments> = listOf(
+            Arguments.of("createCard", cardCreateResponse, cardCreateResponseJsonChecks),
+            Arguments.of("deleteCard", cardDeleteResponse, cardDeleteResponseJsonChecks),
+            Arguments.of("readCard", cardReadResponse, cardReadResponseJsonChecks),
+        )
 
         // card requests data
         private val cardCreateRequest = CardCreateRequest(

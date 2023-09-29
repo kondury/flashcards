@@ -1,6 +1,6 @@
 package com.github.kondury.flashcards.common.stubs
 
-enum class FcStubs {
+enum class FcStub {
     NONE,
     SUCCESS,
     NOT_FOUND,

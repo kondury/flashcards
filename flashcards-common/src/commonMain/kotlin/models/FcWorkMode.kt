@@ -1,6 +1,6 @@
 package com.github.kondury.flashcards.common.models
 
-enum class FcRunMode {
+enum class FcWorkMode {
     PROD,
     TEST,
     STUB,
