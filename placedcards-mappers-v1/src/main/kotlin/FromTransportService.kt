@@ -26,6 +26,6 @@ internal fun DebugResource?.transportToStubCase(): FcStub = when (this?.stub) {
     DebugStub.WRONG_BOX -> FcStub.WRONG_BOX
     DebugStub.WRONG_SEARCH_STRATEGY -> FcStub.WRONG_SEARCH_STRATEGY
     DebugStub.CANNOT_DELETE -> FcStub.CANNOT_DELETE
-    DebugStub.UNKNOWN_ERROR -> FcStub.UNKNOWN_ERROR;
+    DebugStub.UNKNOWN_ERROR -> FcStub.UNKNOWN_ERROR
     null -> FcStub.NONE
 }
