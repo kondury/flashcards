@@ -1,0 +1,566 @@
+openapi: 3.0.4
+
+info:
+  title: "Flashcards ${VERSION_APP}"
+  description: An application uses flashcards combined with spaced repetition system as a way to speed up memorization
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: card
+    description: доступ к содержимому карточек
+  - name: placedCard
+    description: состояние изучаемых пользователями карточек
+paths:
+  /card/create:
+    post:
+      tags:
+        - card
+      summary: Create card
+      operationId: createCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreateResponse'
+  /card/read:
+    post:
+      tags:
+        - card
+      summary: Read card
+      operationId: readCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardReadResponse'
+  /card/delete:
+    post:
+      tags:
+        - card
+      summary: Delete card
+      operationId: deleteCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardDeleteResponse'
+  /placed-card/create:
+    post:
+      tags:
+        - placedCard
+      summary: Create placed card
+      operationId: createPlacedCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacedCardCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacedCardCreateResponse'
+  /placed-card/move:
+    post:
+      tags:
+        - placedCard
+      summary: Move placed card into another box
+      operationId: movePlacedCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacedCardMoveRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacedCardMoveResponse'
+  /placed-card/delete:
+    post:
+      tags:
+        - placedCard
+      summary: Delete placed card
+      operationId: deletePlacedCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacedCardDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacedCardDeleteResponse'
+  /placed-card/select:
+    post:
+      tags:
+        - placedCard
+      summary: Select placed card according to learning strategy
+      operationId: selectPlacedCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacedCardSelectRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacedCardSelectResponse'
+  /placed-card/init:
+    post:
+      tags:
+        - placedCard
+      summary: Init user placed card set
+      operationId: initPlacedCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacedCardInitRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacedCardInitResponse'
+                
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description:  Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          createCard: '#/components/schemas/CardCreateRequest'
+          readCard:   '#/components/schemas/CardReadRequest'
+          deleteCard: '#/components/schemas/CardDeleteRequest'
+          createPlacedCard: '#/components/schemas/PlacedCardCreateRequest'
+          movePlacedCard: '#/components/schemas/PlacedCardMoveRequest'
+          deletePlacedCard: '#/components/schemas/PlacedCardDeleteRequest'
+          selectPlacedCard: '#/components/schemas/PlacedCardSelectRequest'
+          initPlacedCard: '#/components/schemas/PlacedCardInitRequest'
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          createCard: '#/components/schemas/CardCreateResponse'
+          readCard:   '#/components/schemas/CardReadResponse'
+          deleteCard: '#/components/schemas/CardDeleteResponse'
+          createPlacedCard: '#/components/schemas/PlacedCardCreateResponse'
+          movePlacedCard: '#/components/schemas/PlacedCardMoveResponse'
+          deletePlacedCard: '#/components/schemas/PlacedCardDeleteResponse'
+          selectPlacedCard: '#/components/schemas/PlacedCardSelectResponse'
+          initPlacedCard: '#/components/schemas/PlacedCardInitResponse'
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    # Card create
+    CardCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardCreateResource'
+
+    CardCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResponseResource'
+
+    CardCreateResource:
+      allOf:
+        - $ref: '#/components/schemas/CardResource'
+
+    # Card read
+    CardReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardReadResource'
+
+    CardReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResponseResource'
+
+    CardReadResource:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CardId'
+
+    # Card delete
+    CardDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardDeleteResource'
+
+    CardDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    CardDeleteResource:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CardId'
+            lock:
+              $ref: '#/components/schemas/LockType'
+
+    # Card details
+    CardResource:
+      type: object
+      description: Единица информации для изучения
+      properties:
+        front:
+          type: string
+          description: Лицевая сторона
+        back:
+          type: string
+          description: Обратная сторона
+
+    CardResponseResource:
+      allOf:
+        - $ref: '#/components/schemas/CardResource'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CardId'
+
+
+    # Placed card create
+    PlacedCardCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            placedCard:
+              $ref: '#/components/schemas/PlacedCardCreateResource'
+
+    PlacedCardCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            placedCard:
+              $ref: '#/components/schemas/PlacedCardResponseResource'
+
+    PlacedCardCreateResource:
+      allOf:
+        - $ref: '#/components/schemas/PlacedCardResource'
+
+    # Placed card move
+    PlacedCardMoveRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            move:
+              $ref: '#/components/schemas/PlacedCardMoveResource'
+
+    PlacedCardMoveResource:
+      allOf:
+        - $ref: '#/components/schemas/Box'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlacedCardId'
+            box:
+              $ref: '#/components/schemas/Box'
+            lock:
+              $ref: '#/components/schemas/LockType'
+
+    PlacedCardMoveResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            placedCard:
+              $ref: '#/components/schemas/PlacedCardResponseResource'
+
+
+    # Placed Card delete
+    PlacedCardDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            placedCard:
+              $ref: '#/components/schemas/PlacedCardDeleteResource'
+
+    PlacedCardDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    PlacedCardDeleteResource:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlacedCardId'
+            lock:
+              $ref: '#/components/schemas/LockType'
+
+    # Placed card select
+    PlacedCardSelectRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            select:
+              $ref: '#/components/schemas/PlacedCardSelectResource'
+
+    PlacedCardSelectResource:
+      type: object
+      properties:
+        ownerId:
+          $ref: '#/components/schemas/UserId'
+        box:
+          $ref: '#/components/schemas/Box'
+        searchStrategy:
+          $ref: '#/components/schemas/SearchStrategy'
+
+    PlacedCardSelectResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            placedCard:
+              $ref: '#/components/schemas/PlacedCardResponseResource'
+
+    # Placed card init
+    PlacedCardInitRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            init:
+              $ref: '#/components/schemas/PlacedCardInitResource'
+
+    PlacedCardInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    PlacedCardInitResource:
+      type: object
+      properties:
+        ownerId:
+          $ref: '#/components/schemas/UserId'
+        box:
+          $ref: '#/components/schemas/Box'
+
+
+    # Placed card details
+    PlacedCardResource:
+      type: object
+      description: Изучаемая пользователем карточка, хранится в коробке
+      properties:
+        box:
+          $ref: '#/components/schemas/Box'
+        ownerId:
+          $ref: '#/components/schemas/UserId'
+        cardId:
+          $ref: '#/components/schemas/CardId'
+
+    PlacedCardResponseResource:
+      allOf:
+        - $ref: '#/components/schemas/PlacedCardResource'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlacedCardId'
+            createdOn:
+              type: string
+              format: date-time
+              description: время добавления карточки в пользовательские коробки
+            updatedOn:
+              type: string
+              format: date-time
+              description: время обновления информации о изучаемой карточке
+
+    Box:
+      type: string
+      enum:
+        - new
+        - repeat
+        - finished
+
+    SearchStrategy:
+      type: string
+      enum:
+        - EarliestCreated
+        - EarliestReviewed
+
+    # Common details
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+
+    CardId:
+      type: string
+      description: Идентификатор карточки
+
+    PlacedCardId:
+      type: string
+      description: Идентификатор изучаемой карточки
+
+    LockType:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    # STUBS ======================
+    RunMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    DebugRequest:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/DebugResource'
+
+    DebugResource:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RunMode'
+        stub:
+          $ref: '#/components/schemas/DebugStub'
+
+    DebugStub:
+      type: string
+      description: Виды стабов
+      enum:
+        - success
+        - notFound
+        - wrongCardId
+        - wrongPlacedCardId
+        - wrongOwnerId
+        - wrongBox
+        - wrongFrontSide
+        - wrongBackSide
+        - wrongSearchStrategy
+        - cannotDelete
+        - unknownError
+
+
