@@ -17,7 +17,14 @@ pluginManagement {
 
 //include("m1-init")
 include("flashcards-acceptance")
-include("flashcards-api-v1-jackson")
-include("flashcards-common")
-include("flashcards-mappers-v1")
+//include("flashcards-api-v1-jackson")
+//include("flashcards-common")
+//include("flashcards-mappers-v1")
+
+include("cards-api-v1-jackson")
+include("cards-common")
+include("cards-mappers-v1")
+include("placedcards-api-v1-jackson")
+include("placedcards-common")
+include("placedcards-mappers-v1")
 
