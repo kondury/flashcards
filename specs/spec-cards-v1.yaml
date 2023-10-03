@@ -1,0 +1,278 @@
+openapi: 3.0.4
+
+info:
+  title: "Flashcards ${VERSION_APP}"
+  description: An application uses flashcards combined with spaced repetition system as a way to speed up memorization
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: card
+    description: доступ к содержимому карточек
+
+paths:
+  /card/create:
+    post:
+      tags:
+        - card
+      summary: Create card
+      operationId: createCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreateResponse'
+  /card/read:
+    post:
+      tags:
+        - card
+      summary: Read card
+      operationId: readCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardReadResponse'
+  /card/delete:
+    post:
+      tags:
+        - card
+      summary: Delete card
+      operationId: deleteCard
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardDeleteResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description:  Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          createCard: '#/components/schemas/CardCreateRequest'
+          readCard:   '#/components/schemas/CardReadRequest'
+          deleteCard: '#/components/schemas/CardDeleteRequest'
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          createCard: '#/components/schemas/CardCreateResponse'
+          readCard:   '#/components/schemas/CardReadResponse'
+          deleteCard: '#/components/schemas/CardDeleteResponse'
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    # Card create
+    CardCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardCreateResource'
+
+    CardCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResponseResource'
+
+    CardCreateResource:
+      allOf:
+        - $ref: '#/components/schemas/CardResource'
+
+    # Card read
+    CardReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardReadResource'
+
+    CardReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResponseResource'
+
+    CardReadResource:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CardId'
+
+    # Card delete
+    CardDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardDeleteResource'
+
+    CardDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    CardDeleteResource:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CardId'
+            lock:
+              $ref: '#/components/schemas/LockType'
+
+    # Card details
+    CardResource:
+      type: object
+      description: Единица информации для изучения
+      properties:
+        front:
+          type: string
+          description: Лицевая сторона
+        back:
+          type: string
+          description: Обратная сторона
+
+    CardResponseResource:
+      allOf:
+        - $ref: '#/components/schemas/CardResource'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CardId'
+
+    # Common details
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+
+    CardId:
+      type: string
+      description: Идентификатор карточки
+
+    LockType:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    # STUBS ======================
+    RunMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    DebugRequest:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/DebugResource'
+
+    DebugResource:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RunMode'
+        stub:
+          $ref: '#/components/schemas/DebugStub'
+
+    DebugStub:
+      type: string
+      description: Виды стабов
+      enum:
+        - success
+        - notFound
+        - wrongCardId
+        - wrongFrontSide
+        - wrongBackSide
+        - cannotDelete
+        - unknownError
+
+
