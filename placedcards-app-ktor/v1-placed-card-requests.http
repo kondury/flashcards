@@ -1,0 +1,100 @@
+###
+GET http://localhost:8081/
+
+<> 2023-10-04T165331.200.txt
+
+###
+POST http://localhost:8081/v1/placed-card/create
+Accept: */*
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "requestType": "createPlacedCard",
+  "requestId": "create-req",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "placedCard": {
+    "box": "new",
+    "cardId": "CardId",
+    "ownerId": "OwnerId"
+  }
+}
+
+###
+POST http://localhost:8081/v1/placed-card/delete
+Accept: */*
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "requestType": "deletePlacedCard",
+  "requestId": "delete-req",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "placedCard": {
+    "id": "12345"
+  }
+}
+
+###
+POST http://localhost:8081/v1/placed-card/move
+Accept: */*
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "requestType": "movePlacedCard",
+  "requestId": "move-req",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "move": {
+    "id":  "PlacedCardId",
+    "box": "repeat"
+  }
+}
+
+###
+POST http://localhost:8081/v1/placed-card/select
+Accept: */*
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "requestType": "selectPlacedCard",
+  "requestId": "select-req",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "select": {
+    "ownerId": "OwnerId",
+    "box": "repeat",
+    "searchStrategy": "EarliestCreated"
+  }
+}
+
+###
+POST http://localhost:8081/v1/placed-card/init
+Accept: */*
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "requestType": "initPlacedCard",
+  "requestId": "init-req",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "select": {
+    "ownerId": "OwnerId",
+    "box": "new"
+  }
+}

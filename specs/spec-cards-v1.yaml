@@ -85,7 +85,7 @@ components:
         requestType:
           type: string
           description:  Поле-дескриминатор для вычисления типа запроса
-          example: create
+          example: createCard
         requestId:
           type: string
           description: Идентификатор запроса для отладки
@@ -97,13 +97,14 @@ components:
           deleteCard: '#/components/schemas/CardDeleteRequest'
 
     IResponse:
+
       type: object
       description: Базовый интерфейс для всех ответов
       properties:
         responseType:
           type: string
           description: Поле-дескриминатор для вычисления типа запроса
-          example: create
+          example: createCard
         requestId:
           type: string
           description: Идентификатор запроса для отладки
