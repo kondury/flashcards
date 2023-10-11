@@ -3,7 +3,6 @@ package com.github.kondury.flashcards.cards.mappers.v1
 import com.github.kondury.flashcards.cards.api.v1.models.*
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

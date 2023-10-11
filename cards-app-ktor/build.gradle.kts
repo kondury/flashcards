@@ -41,13 +41,10 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation(ktor("call-logging-jvm"))
 
-    implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
-    implementation(ktor("content-negotiation", prefix = "client-"))
-
+    testImplementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+    testImplementation(ktor("content-negotiation", prefix = "client-"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
-//    testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")
-
 }
 
 ktor {
@@ -61,6 +58,10 @@ ktor {
 jib {
 //    container.mainClass = "io.ktor.server.cio.EngineMain"
     container.mainClass = "io.ktor.server.netty.EngineMain"
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<Copy> {
