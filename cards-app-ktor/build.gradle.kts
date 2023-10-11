@@ -60,7 +60,7 @@ jib {
     container.mainClass = "io.ktor.server.netty.EngineMain"
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 

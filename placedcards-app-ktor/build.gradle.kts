@@ -42,8 +42,8 @@ dependencies {
     implementation(ktor("call-logging-jvm"))
 
 
-    implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
-    implementation(ktor("content-negotiation", prefix = "client-"))
+    testImplementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+    testImplementation(ktor("content-negotiation", prefix = "client-"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
 //    testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitJupiterVersion")
@@ -63,6 +63,11 @@ jib {
 //    container.mainClass = "io.ktor.server.cio.EngineMain"
     container.mainClass = "io.ktor.server.netty.EngineMain"
 }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

@@ -66,7 +66,6 @@ internal class ToPlacedCardTransportTest {
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardCreateResponse::class,
-                "createPlacedCard",
                 ResponseResult.SUCCESS,
                 null,
                 REQUEST_ID,
@@ -79,7 +78,6 @@ internal class ToPlacedCardTransportTest {
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardMoveResponse::class,
-                "movePlacedCard",
                 ResponseResult.SUCCESS,
                 null,
                 REQUEST_ID,
@@ -94,7 +92,6 @@ internal class ToPlacedCardTransportTest {
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardDeleteResponse::class,
-                "deletePlacedCard",
                 ResponseResult.ERROR,
                 mutableListOf(
                     Error("ErrCode", "ErrGroup", "ErrField", "ErrMessage")
@@ -109,7 +106,6 @@ internal class ToPlacedCardTransportTest {
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardInitResponse::class,
-                "initPlacedCard",
                 ResponseResult.SUCCESS,
                 null,
                 REQUEST_ID,
@@ -122,7 +118,6 @@ internal class ToPlacedCardTransportTest {
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardSelectResponse::class,
-                "selectPlacedCard",
                 ResponseResult.SUCCESS,
                 null,
                 REQUEST_ID,
@@ -166,7 +161,6 @@ internal class ToPlacedCardTransportTest {
     fun `test common context attributes mapping`(
         context: PlacedCardContext,
         expectedResponseClass: KClass<IResponse>,
-        expectedResponseType: String,
         expectedResult: ResponseResult,
         expectedErrors: List<Error>?,
         expectedRequestId: String,
@@ -176,7 +170,6 @@ internal class ToPlacedCardTransportTest {
 
         assertInstanceOf(expectedResponseClass.java, response)
         with(response) {
-            assertEquals(expectedResponseType, responseType)
             assertEquals(expectedRequestId, requestId)
             assertEquals(expectedResult, result)
             assertIterableEquals(expectedErrors, errors)

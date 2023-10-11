@@ -11,7 +11,7 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class V1PlacedCardStubApiTest {
 
