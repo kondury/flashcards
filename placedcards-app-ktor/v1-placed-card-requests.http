@@ -92,9 +92,5 @@ Cache-Control: no-cache
   "debug": {
     "mode": "stub",
     "stub": "success"
-  },
-  "select": {
-    "ownerId": "OwnerId",
-    "box": "new"
   }
 }

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
-val serializationVersion: String by project
+//val serializationVersion: String by project
 val logbackVersion: String by project
 val jUnitJupiterVersion: String by project
 
@@ -60,7 +60,7 @@ jib {
     container.mainClass = "io.ktor.server.netty.EngineMain"
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 
