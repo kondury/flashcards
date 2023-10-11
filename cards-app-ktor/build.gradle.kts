@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
-val serializationVersion: String by project
+//val serializationVersion: String by project
 val logbackVersion: String by project
 val jUnitJupiterVersion: String by project
 
