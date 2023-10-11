@@ -15,7 +15,6 @@ fun PlacedCardContext.toTransportPlacedCard(): IResponse = when (val cmd = comma
 }
 
 fun PlacedCardContext.toPlacedCardCreateResponse() = PlacedCardCreateResponse(
-    responseType = "createPlacedCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
@@ -23,7 +22,6 @@ fun PlacedCardContext.toPlacedCardCreateResponse() = PlacedCardCreateResponse(
 )
 
 fun PlacedCardContext.toPlacedCardMoveResponse() = PlacedCardMoveResponse(
-    responseType = "movePlacedCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
@@ -31,14 +29,12 @@ fun PlacedCardContext.toPlacedCardMoveResponse() = PlacedCardMoveResponse(
 )
 
 fun PlacedCardContext.toPlacedCardDeleteResponse() = PlacedCardDeleteResponse(
-    responseType = "deletePlacedCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
 )
 
 fun PlacedCardContext.toPlacedCardSelectResponse() = PlacedCardSelectResponse(
-    responseType = "selectPlacedCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
@@ -46,7 +42,6 @@ fun PlacedCardContext.toPlacedCardSelectResponse() = PlacedCardSelectResponse(
 )
 
 fun PlacedCardContext.toPlacedCardInitResponse() = PlacedCardInitResponse(
-    responseType = "initPlacedCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),

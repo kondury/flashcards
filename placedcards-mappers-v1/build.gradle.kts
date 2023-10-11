@@ -12,7 +12,6 @@ dependencies {
     implementation(project(":placedcards-api-v1-jackson"))
     implementation(project(":placedcards-common"))
 
-//    testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")

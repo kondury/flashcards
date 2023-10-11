@@ -3,9 +3,7 @@ package com.github.kondury.flashcards.cards.mappers.v1
 import com.github.kondury.flashcards.cards.api.v1.models.*
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertIterableEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -52,11 +50,10 @@ internal class ToCardTransportTest {
                 CardContext(
                     command = CardCommand.CREATE_CARD,
                     state = FcState.RUNNING,
-                    errors = mutableListOf<FcError>(),
+                    errors = mutableListOf(),
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 CardCreateResponse::class,
-                "createCard",
                 ResponseResult.SUCCESS,
                 null,
                 REQUEST_ID,
@@ -65,11 +62,10 @@ internal class ToCardTransportTest {
                 CardContext(
                     command = CardCommand.READ_CARD,
                     state = FcState.RUNNING,
-                    errors = mutableListOf<FcError>(),
+                    errors = mutableListOf(),
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 CardReadResponse::class,
-                "readCard",
                 ResponseResult.SUCCESS,
                 null,
                 REQUEST_ID,
@@ -84,7 +80,6 @@ internal class ToCardTransportTest {
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 CardDeleteResponse::class,
-                "deleteCard",
                 ResponseResult.SUCCESS,
                 mutableListOf(
                     Error("ErrCode", "ErrGroup", "ErrField", "ErrMessage")
@@ -106,7 +101,7 @@ internal class ToCardTransportTest {
             when (val response = context.toTransportCard()) {
                 is CardCreateResponse -> response.card
                 is CardReadResponse -> response.card
-                else -> Assertions.fail("Unforeseen response type ${response.javaClass}")
+                else -> fail("Unforeseen response type ${response.javaClass}")
             }
 
         if (actualCardResource != null)
@@ -115,15 +110,14 @@ internal class ToCardTransportTest {
                 assertEquals(expectedFront, front)
                 assertEquals(expectedBack, back)
             }
-        else Assertions.fail("Actual card resource mustn't be null")
+        else fail("Actual card resource mustn't be null")
     }
 
     @ParameterizedTest
     @MethodSource("commonAttributesData")
-    fun `test common context attributes mapping`(
+    fun <T: IResponse> `test common context attributes mapping`(
         context: CardContext,
-        expectedResponseClass: KClass<IResponse>,
-        expectedResponseType: String,
+        expectedResponseClass: KClass<T>,
         expectedResult: ResponseResult,
         expectedErrors: List<Error>?,
         expectedRequestId: String,
@@ -131,13 +125,11 @@ internal class ToCardTransportTest {
 
         val response = context.toTransportCard()
 
-        Assertions.assertInstanceOf(expectedResponseClass.java, response)
+        assertInstanceOf(expectedResponseClass.java, response)
         with(response) {
-            assertEquals(expectedResponseType, responseType)
             assertEquals(expectedRequestId, requestId)
             assertEquals(expectedResult, result)
             assertIterableEquals(expectedErrors, errors)
         }
     }
-
 }

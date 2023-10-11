@@ -13,7 +13,6 @@ fun CardContext.toTransportCard(): IResponse = when (val cmd = command) {
 }
 
 fun CardContext.toCardCreateResponse() = CardCreateResponse(
-    responseType = "createCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
@@ -21,7 +20,6 @@ fun CardContext.toCardCreateResponse() = CardCreateResponse(
 )
 
 fun CardContext.toCardReadResponse() = CardReadResponse(
-    responseType = "readCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
@@ -29,7 +27,6 @@ fun CardContext.toCardReadResponse() = CardReadResponse(
 )
 
 fun CardContext.toCardDeleteResponse() = CardDeleteResponse(
-    responseType = "deleteCard",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
