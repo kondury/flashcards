@@ -1,0 +1,42 @@
+plugins {
+    kotlin("jvm")
+}
+
+group = rootProject.group
+version = rootProject.version
+
+dependencies {
+    val rabbitVersion: String by project
+    val jacksonVersion: String by project
+    val logbackVersion: String by project
+    val coroutinesVersion: String by project
+    val testContainersVersion: String by project
+    val jUnitJupiterVersion: String by project
+    val kotlinLoggingJvmVersion: String by project
+
+    implementation(kotlin("stdlib"))
+    implementation("com.rabbitmq:amqp-client:$rabbitVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
+
+    implementation(project(":placedcards-api-v1-jackson"))
+    implementation(project(":placedcards-mappers-v1"))
+
+    implementation(project(":placedcards-common"))
+
+    implementation(project(":placedcards-stubs"))
+    implementation(project(":placedcards-biz"))
+
+    testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")
+//    testImplementation(kotlin("test"))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}

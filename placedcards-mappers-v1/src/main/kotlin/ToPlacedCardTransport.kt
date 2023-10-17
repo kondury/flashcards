@@ -56,7 +56,7 @@ fun PlacedCard.toPlacedCardResponseResource() = PlacedCardResponseResource(
     updatedOn = updatedOn.toString(),
 )
 
-private fun FcBox.toTransportPlacedCard(): Box? = when (this) {
+fun FcBox.toTransportPlacedCard(): Box? = when (this) {
     FcBox.NEW -> Box.NEW
     FcBox.REPEAT -> Box.REPEAT
     FcBox.FINISHED -> Box.FINISHED

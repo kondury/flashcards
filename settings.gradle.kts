@@ -39,5 +39,6 @@ include("placedcards-stubs")
 include("placedcards-biz")
 include("placedcards-app-ktor")
 include("placedcards-app-kafka")
+include("placedcards-app-rabbit")
 
 
