@@ -14,7 +14,7 @@ dependencies {
     testImplementation(kotlin("stdlib"))
 
     testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
-    testImplementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
+    testImplementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
