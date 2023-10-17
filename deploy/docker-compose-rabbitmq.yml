@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.12.6-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq:z
+      - ./data/rabbitmq/log/:/var/log/rabbitmq:z
+volumes:
+  rabbit_data:
