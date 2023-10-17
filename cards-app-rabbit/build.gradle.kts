@@ -10,23 +10,23 @@ dependencies {
     val jacksonVersion: String by project
     val logbackVersion: String by project
     val coroutinesVersion: String by project
-    val testContainersVersion: String by project
-    val jUnitJupiterVersion: String by project
+    val atomicfuVersion: String by project
     val kotlinLoggingJvmVersion: String by project
+    val jUnitJupiterVersion: String by project
+    val testContainersVersion: String by project
 
     implementation(kotlin("stdlib"))
     implementation("com.rabbitmq:amqp-client:$rabbitVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:atomicfu:$atomicfuVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
 
     implementation(project(":cards-api-v1-jackson"))
     implementation(project(":cards-mappers-v1"))
-
     implementation(project(":cards-common"))
-
     implementation(project(":cards-stubs"))
     implementation(project(":cards-biz"))
 

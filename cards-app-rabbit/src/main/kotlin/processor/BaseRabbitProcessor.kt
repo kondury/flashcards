@@ -10,7 +10,7 @@ import com.github.kondury.flashcards.cards.app.rabbit.config.ConnectionConfig
 import com.github.kondury.flashcards.cards.app.rabbit.config.ProcessorConfig
 import com.github.kondury.flashcards.cards.app.rabbit.config.configure
 import io.github.oshai.kotlinlogging.KotlinLogging
-import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.atomicfu.atomic
 import kotlin.coroutines.CoroutineContext
 
 private val logger = KotlinLogging.logger {}
@@ -26,19 +26,15 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
     private val dispatcher: CoroutineContext = Dispatchers.IO.limitedParallelism(1) + Job(),
 ) : AutoCloseable {
 
-    private val run = AtomicBoolean(false)
-//    var conn: Connection? = null
-//    var chan: Channel? = null
+    private val keepOn = atomic(true)
 
     suspend fun process() = withContext(dispatcher) {
         ConnectionFactory()
             .configure(connectionConfig)
             .newConnection().use { connection ->
                 logger.info { "Creating new connection" }
-//                conn = connection
                 connection.createChannel().use { channel ->
                     logger.info { "Creating new channel" }
-//                    chan = channel
                     val deliveryCallback = channel.getDeliveryCallback()
                     val cancelCallback = getCancelCallback()
                     channel.describeAndListen(deliveryCallback, cancelCallback)
@@ -46,19 +42,10 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
             }
     }
 
-    /**
-     * Обработка поступившего сообщения в deliverCallback
-     */
     protected abstract suspend fun Channel.processMessage(message: Delivery)
 
-    /**
-     * Обработка ошибок
-     */
     protected abstract fun Channel.onError(e: Throwable)
 
-    /**
-     * Callback, который вызывается при доставке сообщения консьюмеру
-     */
     private fun Channel.getDeliveryCallback(): DeliverCallback = DeliverCallback { _, message ->
         runBlocking {
             kotlin.runCatching {
@@ -69,9 +56,6 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
         }
     }
 
-    /**
-     * Callback, вызываемый при отмене консьюмера
-     */
     private fun getCancelCallback() = CancelCallback { consumerTag ->
         logger.info { "[$consumerTag] was cancelled" }
     }
@@ -79,18 +63,13 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
     private suspend fun Channel.describeAndListen(
         deliverCallback: DeliverCallback, cancelCallback: CancelCallback
     ) {
-        run.set(true)
         withContext(Dispatchers.IO) {
             exchangeDeclare(processorConfig.exchange, processorConfig.exchangeType)
-            // Объявляем очередь (не сохраняется при перезагрузке сервера; неэксклюзивна - доступна другим соединениям;
-            // не удаляется, если не используется)
             queueDeclare(processorConfig.queue, false, false, false, null)
-            // связываем обменник с очередью по ключу (сообщения будут поступать в данную очередь с данного обменника при совпадении ключа)
             queueBind(processorConfig.queue, processorConfig.exchange, processorConfig.keyIn)
-            // запуск консьюмера с автоотправкой подтверждение при получении сообщения
             basicConsume(processorConfig.queue, true, processorConfig.consumerTag, deliverCallback, cancelCallback)
 
-            while (run.get() && isOpen) {
+            while (keepOn.value && isOpen) {
                 kotlin.runCatching {
                     delay(100)
                 }.onFailure(Throwable::printStackTrace)
@@ -102,6 +81,6 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
 
     override fun close() {
         logger.info { "Close ${this::class.java.simpleName}" }
-        run.set(false)
+        keepOn.value = false
     }
 }
