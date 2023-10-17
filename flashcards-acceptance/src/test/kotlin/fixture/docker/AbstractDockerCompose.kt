@@ -1,11 +1,11 @@
 package com.github.kondury.flashcards.blackbox.fixture.docker
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.*
-import mu.KotlinLogging
 import org.testcontainers.containers.DockerComposeContainer
 import java.io.File
 
-private val log = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /**
  * apps - список приложений в docker-compose. Первое приложение - "главное", его url возвращается как inputUrl
@@ -41,19 +41,19 @@ abstract class AbstractDockerCompose(
     override fun start() {
         compose.start()
 
-        log.warn("\n=========== $dockerComposeName started =========== \n")
+        logger.warn { "\n=========== $dockerComposeName started =========== \n" }
         apps.forEachIndexed { index, _ ->
-            log.info { "Started docker-compose with App at: ${getUrl(index)}" }
+            logger.info { "Started docker-compose with App at: ${getUrl(index)}" }
         }
     }
 
     override fun stop() {
         compose.close()
-        log.warn("\n=========== $dockerComposeName complete =========== \n")
+        logger.warn { "\n=========== $dockerComposeName closed =========== \n" }
     }
 
     override fun clearDb() {
-        log.warn("===== clearDb =====")
+        logger.warn { "===== clearDb =====" }
         // TODO сделать очистку БД, когда до этого дойдет
     }
 
