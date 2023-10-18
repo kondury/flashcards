@@ -16,14 +16,18 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.containers.RabbitMQContainer
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
 
 private val logger = KotlinLogging.logger {}
 
-internal class V1PlacedCardStubRabbitMqTest {
+internal class PlacedCardRabbitMqTest {
 
     companion object {
         private const val RABBIT_IMAGE = "rabbitmq:3.12.6"
@@ -76,10 +80,10 @@ internal class V1PlacedCardStubRabbitMqTest {
         )
     }
 
-    @BeforeEach
+    @BeforeTest
     fun tearUp(): Unit = with(appSettings) { controller.start() }
 
-    @AfterEach
+    @AfterTest
     fun tearDown(): Unit = with(appSettings) { controller.close() }
 
     @Test
