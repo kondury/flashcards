@@ -14,8 +14,13 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.containers.RabbitMQContainer
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
 
 private val logger = KotlinLogging.logger {}
@@ -73,10 +78,10 @@ internal class RabbitMqTest {
         )
     }
 
-    @BeforeEach
+    @BeforeTest
     fun tearUp(): Unit = with(appSettings) { controller.start() }
 
-    @AfterEach
+    @AfterTest
     fun tearDown(): Unit = with(appSettings) { controller.close() }
 
     @Test
@@ -95,9 +100,9 @@ internal class RabbitMqTest {
         ),
         responseType = CardCreateResponse::class.java
     ) { response ->
-        Assertions.assertEquals("create-req", response.requestId)
-        Assertions.assertEquals(cardStub.front, response.card?.front)
-        Assertions.assertEquals(cardStub.back, response.card?.back)
+        assertEquals("create-req", response.requestId)
+        assertEquals(cardStub.front, response.card?.front)
+        assertEquals(cardStub.back, response.card?.back)
     }
 
     @Test
@@ -115,7 +120,7 @@ internal class RabbitMqTest {
         ),
         responseType = CardDeleteResponse::class.java
     ) { response ->
-        Assertions.assertEquals("delete-req", response.requestId)
+        assertEquals("delete-req", response.requestId)
     }
 
     private inline fun <reified T : IRequest, reified U : IResponse> testCardCommand(

@@ -30,11 +30,12 @@ dependencies {
     implementation(project(":cards-stubs"))
     implementation(project(":cards-biz"))
 
+    testImplementation(kotlin("test-junit5"))
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")
-//    testImplementation(kotlin("test"))
+
 }
 
 tasks.withType<Test> {
