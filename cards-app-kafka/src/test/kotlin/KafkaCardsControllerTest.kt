@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.test.Test
 
 
-class KafkaControllerTest {
+class KafkaCardsControllerTest {
 
     companion object {
         const val PARTITION = 0
