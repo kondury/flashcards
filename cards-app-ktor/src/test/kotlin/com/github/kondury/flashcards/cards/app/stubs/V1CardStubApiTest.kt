@@ -23,14 +23,8 @@ class V1CardStubApiTest {
         )
 
         private fun assertCommon(status: HttpStatusCode, requestId: String?) {
-            assertEquals(
-                HttpStatusCode.OK, status,
-                "Http code expected: ${HttpStatusCode.OK}, actual: $status"
-            )
-            assertEquals(
-                REQUEST_ID, requestId,
-                "Request id expected: '$REQUEST_ID', actual: $requestId"
-            )
+            assertEquals(HttpStatusCode.OK, status, "Http code expected: ${HttpStatusCode.OK}, actual: $status")
+            assertEquals(REQUEST_ID, requestId, "Request id expected: '$REQUEST_ID', actual: $requestId")
         }
     }
 

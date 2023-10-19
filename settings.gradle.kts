@@ -29,6 +29,8 @@ include("cards-stubs")
 include("cards-biz")
 include("cards-app-ktor")
 include("cards-app-kafka")
+include("cards-app-common")
+
 include("placedcards-api-v1-jackson")
 include("placedcards-common")
 include("placedcards-mappers-v1")

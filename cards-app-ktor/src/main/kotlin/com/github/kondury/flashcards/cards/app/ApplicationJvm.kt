@@ -24,11 +24,6 @@ fun Application.moduleJvm() {
 
     install(ContentNegotiation) {
         jackson {
-//            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-//            enable(SerializationFeature.INDENT_OUTPUT)
-//            writerWithDefaultPrettyPrinter()
-//            setSerializationInclusion(JsonInclude.Include.NON_NULL)
-//            registerModule(JavaTimeModule())
             setConfig(apiV1Mapper.serializationConfig)
             setConfig(apiV1Mapper.deserializationConfig)
         }
