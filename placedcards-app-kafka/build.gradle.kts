@@ -29,6 +29,8 @@ dependencies {
     implementation(project(":placedcards-biz"))
 
     testImplementation(kotlin("test-junit5"))
-//    testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

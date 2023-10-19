@@ -1,6 +1,7 @@
 package com.github.kondury.flashcards.placedcards.app.kafka
 
-import com.github.kondury.flashcards.placedcards.api.v1.apiV1Mapper
+import com.github.kondury.flashcards.placedcards.api.v1.apiV1RequestSerialize
+import com.github.kondury.flashcards.placedcards.api.v1.apiV1ResponseDeserialize
 import com.github.kondury.flashcards.placedcards.api.v1.models.*
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.MockConsumer
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 
-class KafkaControllerTest {
+class KafkaPlacedCardsControllerTest {
 
     companion object {
         const val PARTITION = 0
@@ -26,26 +27,26 @@ class KafkaControllerTest {
     }
 
     @Test
-    fun runKafka() {
+    fun `given running kafka when published request then expected response returns`() {
         val consumer = MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)
         val producer = MockProducer<String, String>(true, StringSerializer(), StringSerializer())
         val config = AppKafkaConfig()
         val inputTopic = config.kafkaTopicInV1
         val outputTopic = config.kafkaTopicOutV1
 
+        val serializedRequest = apiV1RequestSerialize(
+            PlacedCardCreateRequest(
+                requestId = REQUEST_ID,
+                debug = debugResource,
+                placedCard = PlacedCardCreateResource(),
+            )
+        )
+
         val app = AppKafkaConsumer(config, listOf(ConsumerStrategyV1()), consumer = consumer, producer = producer)
         consumer.schedulePollTask {
             consumer.rebalance(Collections.singletonList(TopicPartition(inputTopic, 0)))
             consumer.addRecord(
-                ConsumerRecord(
-                    inputTopic, PARTITION, 0L, "test-1", apiV1Mapper.writeValueAsString(
-                        PlacedCardCreateRequest(
-                            requestId = REQUEST_ID,
-                            debug = debugResource,
-                            placedCard = PlacedCardCreateResource(),
-                        )
-                    )
-                )
+                ConsumerRecord(inputTopic, PARTITION, 0L, "test-1", serializedRequest)
             )
             app.stop()
         }
@@ -58,7 +59,8 @@ class KafkaControllerTest {
         app.run()
 
         val message = producer.history().first()
-        val result = apiV1Mapper.readValue(message.value(), PlacedCardCreateResponse::class.java) as PlacedCardCreateResponse
+        val result =
+            apiV1ResponseDeserialize(message.value()) as PlacedCardCreateResponse
         assertEquals(outputTopic, message.topic())
         assertEquals(REQUEST_ID, result.requestId)
     }
