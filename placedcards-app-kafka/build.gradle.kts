@@ -27,6 +27,7 @@ dependencies {
     implementation(project(":placedcards-api-v1-jackson"))
     implementation(project(":placedcards-mappers-v1"))
     implementation(project(":placedcards-biz"))
+    implementation(project(":placedcards-app-common"))
 
     testImplementation(kotlin("test-junit5"))
 }

@@ -10,19 +10,27 @@ import org.apache.kafka.clients.producer.MockProducer
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.serialization.StringSerializer
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import java.util.*
+import kotlin.test.Test
 
 
-class KafkaPlacedCardsControllerTest {
+class PlacedCardsKafkaControllerTest {
 
     companion object {
         const val PARTITION = 0
-
+        const val INPUT_TOPIC = "input-topic"
+        const val OUTPUT_TOPIC = "output-topic"
         const val REQUEST_ID = "12345"
-        private val debugResource = DebugResource(
-            mode = RunMode.STUB,
-            stub = DebugStub.SUCCESS,
+
+        val serializedRequest = apiV1RequestSerialize(
+            PlacedCardCreateRequest(
+                requestId = REQUEST_ID,
+                debug = DebugResource(
+                    mode = RunMode.STUB,
+                    stub = DebugStub.SUCCESS
+                ),
+                placedCard = PlacedCardCreateResource(box = Box.NEW, ownerId = "OwnerId", cardId = "CardId"),
+            )
         )
     }
 
@@ -30,38 +38,36 @@ class KafkaPlacedCardsControllerTest {
     fun `given running kafka when published request then expected response returns`() {
         val consumer = MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)
         val producer = MockProducer<String, String>(true, StringSerializer(), StringSerializer())
-        val config = AppKafkaConfig()
-        val inputTopic = config.kafkaTopicInV1
-        val outputTopic = config.kafkaTopicOutV1
 
-        val serializedRequest = apiV1RequestSerialize(
-            PlacedCardCreateRequest(
-                requestId = REQUEST_ID,
-                debug = debugResource,
-                placedCard = PlacedCardCreateResource(),
-            )
+        val config = PlacedCardsKafkaConfig(
+            settings = PlacedCardsKafkaSettings(
+                inTopicV1 = INPUT_TOPIC,
+                outTopicV1 = OUTPUT_TOPIC,
+            ),
+            consumer = consumer,
+            producer = producer,
         )
 
-        val app = AppKafkaConsumer(config, listOf(ConsumerStrategyV1()), consumer = consumer, producer = producer)
+        val controller = config.controller
+
         consumer.schedulePollTask {
-            consumer.rebalance(Collections.singletonList(TopicPartition(inputTopic, 0)))
+            consumer.rebalance(Collections.singletonList(TopicPartition(INPUT_TOPIC, 0)))
             consumer.addRecord(
-                ConsumerRecord(inputTopic, PARTITION, 0L, "test-1", serializedRequest)
+                ConsumerRecord(INPUT_TOPIC, PARTITION, 0L, "test-1", serializedRequest)
             )
-            app.stop()
+            controller.stop()
         }
 
         val startOffsets: MutableMap<TopicPartition, Long> = mutableMapOf()
-        val tp = TopicPartition(inputTopic, PARTITION)
+        val tp = TopicPartition(INPUT_TOPIC, PARTITION)
         startOffsets[tp] = 0L
         consumer.updateBeginningOffsets(startOffsets)
 
-        app.run()
+        controller.run()
 
         val message = producer.history().first()
-        val result =
-            apiV1ResponseDeserialize(message.value()) as PlacedCardCreateResponse
-        assertEquals(outputTopic, message.topic())
+        val result = apiV1ResponseDeserialize(message.value()) as PlacedCardCreateResponse
+        assertEquals(OUTPUT_TOPIC, message.topic())
         assertEquals(REQUEST_ID, result.requestId)
     }
 
