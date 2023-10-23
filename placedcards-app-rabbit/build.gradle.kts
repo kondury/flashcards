@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":placedcards-common"))
     implementation(project(":placedcards-stubs"))
     implementation(project(":placedcards-biz"))
+    implementation(project(":placedcards-app-common"))
 
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")

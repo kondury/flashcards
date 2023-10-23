@@ -1,6 +1,7 @@
 package com.github.kondury.flashcards.placedcards.app.rabbit
 
-import com.github.kondury.flashcards.placedcards.api.v1.apiV1Mapper
+import com.github.kondury.flashcards.placedcards.api.v1.apiV1RequestSerialize
+import com.github.kondury.flashcards.placedcards.api.v1.apiV1ResponseDeserialize
 import com.github.kondury.flashcards.placedcards.api.v1.models.*
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.AppSettings
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.ConnectionConfig
@@ -19,15 +20,13 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.containers.RabbitMQContainer
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
 
 private val logger = KotlinLogging.logger {}
 
-internal class PlacedCardRabbitMqTest {
+internal class RabbitMqPlacedCardControllerTest {
 
     companion object {
         private const val RABBIT_IMAGE = "rabbitmq:3.12.6"
@@ -40,7 +39,7 @@ internal class PlacedCardRabbitMqTest {
         private const val EXCHANGE = "placedcards-exchange-test"
         private const val EXCHANGE_TYPE = "direct"
         private const val QUEUE = "v1-placedcards-test-queue"
-        private const val CONSUMER_TAG = "v1-placedcards-consumer"
+        private const val CONSUMER_TAG = "v1-placedcards-test-consumer"
 
         private val placedCardStub = PlacedCardStub.get()
 
@@ -52,42 +51,42 @@ internal class PlacedCardRabbitMqTest {
             start()
             execInContainer("rabbitmqctl", "add_user", USER_NAME, USER_PASSWORD)
             execInContainer("rabbitmqctl", "set_permissions", "-p", "/", USER_NAME, ".*", ".*", ".*")
+            with(appSettings) {
+                controller.start()
+            }
         }
 
         @AfterAll
         @JvmStatic
         fun afterAll() {
+            with(appSettings) {
+                controller.close()
+            }
             container.stop()
+        }
+
+        private val appSettings by lazy {
+            AppSettings(
+                connectionConfig = ConnectionConfig(
+                    host = "localhost",
+                    port = container.getMappedPort(5672),
+                    user = USER_NAME,
+                    password = USER_PASSWORD
+                ),
+                v1ProcessorConfig = ProcessorConfig(
+                    keyIn = KEY_IN,
+                    keyOut = KEY_OUT,
+                    exchange = EXCHANGE,
+                    queue = QUEUE,
+                    consumerTag = CONSUMER_TAG,
+                    exchangeType = EXCHANGE_TYPE,
+                ),
+            )
         }
     }
 
-    private val appSettings by lazy {
-        AppSettings(
-            connectionConfig = ConnectionConfig(
-                host = "localhost",
-                port = container.getMappedPort(5672),
-                user = USER_NAME,
-                password = USER_PASSWORD
-            ),
-            v1ProcessorConfig = ProcessorConfig(
-                keyIn = KEY_IN,
-                keyOut = KEY_OUT,
-                exchange = EXCHANGE,
-                queue = QUEUE,
-                consumerTag = CONSUMER_TAG,
-                exchangeType = EXCHANGE_TYPE,
-            ),
-        )
-    }
-
-    @BeforeTest
-    fun tearUp(): Unit = with(appSettings) { controller.start() }
-
-    @AfterTest
-    fun tearDown(): Unit = with(appSettings) { controller.close() }
-
     @Test
-    fun `rabbitMq create placed card test`() = testCardCommand(
+    fun `rabbitMq create placed card test`() = testPlacedCardCommand(
         requestObj = PlacedCardCreateRequest(
             requestType = "createPlacedCard",
             requestId = "create-req",
@@ -98,16 +97,16 @@ internal class PlacedCardRabbitMqTest {
             placedCard = PlacedCardCreateResource(
                 box = placedCardStub.box.toTransportPlacedCard(),
                 ownerId = placedCardStub.ownerId.asString(),
-                cardId = placedCardStub.cardId.asString()),
+                cardId = placedCardStub.cardId.asString()
+            ),
         ),
-        responseType = PlacedCardCreateResponse::class.java
-    ) { response ->
+    ) { response: PlacedCardCreateResponse ->
         assertEquals("create-req", response.requestId)
         assertEquals(placedCardStub.toPlacedCardResponseResource(), response.placedCard)
     }
 
     @Test
-    fun `rabbitMq move placed card test`() = testCardCommand(
+    fun `rabbitMq move placed card test`() = testPlacedCardCommand(
         requestObj = PlacedCardMoveRequest(
             requestType = "movePlacedCard",
             requestId = "move-req",
@@ -120,14 +119,13 @@ internal class PlacedCardRabbitMqTest {
                 box = placedCardStub.box.toTransportPlacedCard(),
             ),
         ),
-        responseType = PlacedCardMoveResponse::class.java
-    ) { response ->
+    ) { response: PlacedCardMoveResponse ->
         assertEquals("move-req", response.requestId)
         assertEquals(placedCardStub.toPlacedCardResponseResource(), response.placedCard)
     }
 
     @Test
-    fun `rabbitMq select placed card test`() = testCardCommand(
+    fun `rabbitMq select placed card test`() = testPlacedCardCommand(
         requestObj = PlacedCardSelectRequest(
             requestType = "selectPlacedCard",
             requestId = "select-req",
@@ -141,14 +139,13 @@ internal class PlacedCardRabbitMqTest {
                 searchStrategy = null
             ),
         ),
-        responseType = PlacedCardSelectResponse::class.java
-    ) { response ->
+    ) { response: PlacedCardSelectResponse ->
         assertEquals("select-req", response.requestId)
         assertEquals(placedCardStub.toPlacedCardResponseResource(), response.placedCard)
     }
 
     @Test
-    fun `rabbitMq delete placed card test`() = testCardCommand(
+    fun `rabbitMq delete placed card test`() = testPlacedCardCommand(
         requestObj = PlacedCardDeleteRequest(
             requestType = "deletePlacedCard",
             requestId = "delete-req",
@@ -160,13 +157,12 @@ internal class PlacedCardRabbitMqTest {
                 id = placedCardStub.id.asString()
             ),
         ),
-        responseType = PlacedCardDeleteResponse::class.java
-    ) { response ->
+    ) { response: PlacedCardDeleteResponse ->
         assertEquals("delete-req", response.requestId)
     }
 
     @Test
-    fun `rabbitMq init placed card test`() = testCardCommand(
+    fun `rabbitMq init placed card test`() = testPlacedCardCommand(
         requestObj = PlacedCardInitRequest(
             requestType = "initPlacedCard",
             requestId = "init-req",
@@ -179,15 +175,13 @@ internal class PlacedCardRabbitMqTest {
                 box = placedCardStub.box.toTransportPlacedCard(),
             ),
         ),
-        responseType = PlacedCardInitResponse::class.java
-    ) { response ->
+    ) { response: PlacedCardInitResponse ->
         assertEquals("init-req", response.requestId)
     }
 
-    private inline fun <reified T : IRequest, reified U : IResponse> testCardCommand(
-        requestObj: T, responseType: Class<U>, doAssert: (U) -> Unit
+    private inline fun <reified T : IRequest, U : IResponse> testPlacedCardCommand(
+        requestObj: T, doAssert: (U) -> Unit
     ) {
-        val (keyOut, keyIn) = with(appSettings.v1RabbitProcessor.processorConfig) { Pair(keyOut, keyIn) }
         ConnectionFactory().configure(appSettings.connectionConfig).newConnection().use { connection ->
             connection.createChannel().use { channel ->
                 var responseJson = ""
@@ -195,7 +189,7 @@ internal class PlacedCardRabbitMqTest {
 
                 val queueOut = channel.queueDeclare().queue
 
-                channel.queueBind(queueOut, EXCHANGE, keyOut)
+                channel.queueBind(queueOut, EXCHANGE, KEY_OUT)
                 val deliverCallback = DeliverCallback { consumerTag, delivery ->
                     responseJson = String(delivery.body, Charsets.UTF_8)
                     logger.info { " [x] Received by $consumerTag: '$responseJson'" }
@@ -204,8 +198,8 @@ internal class PlacedCardRabbitMqTest {
 
                 // when
                 logger.info { "Publishing $requestObj" }
-                apiV1Mapper.writeValueAsBytes(requestObj).let {
-                    channel.basicPublish(EXCHANGE, keyIn, null, it)
+                apiV1RequestSerialize(requestObj).let {
+                    channel.basicPublish(EXCHANGE, KEY_IN, null, it.toByteArray())
                 }
 
                 runBlocking {
@@ -217,7 +211,7 @@ internal class PlacedCardRabbitMqTest {
                 }
 
                 // then
-                apiV1Mapper.readValue(responseJson, responseType).run {
+                apiV1ResponseDeserialize<U>(responseJson).run {
                     doAssert(this)
                 }
             }

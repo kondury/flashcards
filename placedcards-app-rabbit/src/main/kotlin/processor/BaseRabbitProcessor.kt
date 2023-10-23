@@ -1,16 +1,12 @@
 package com.github.kondury.flashcards.placedcards.app.rabbit.processor
 
-import com.rabbitmq.client.CancelCallback
-import com.rabbitmq.client.Channel
-import com.rabbitmq.client.ConnectionFactory
-import com.rabbitmq.client.DeliverCallback
-import com.rabbitmq.client.Delivery
-import kotlinx.coroutines.*
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.ConnectionConfig
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.ProcessorConfig
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.configure
+import com.rabbitmq.client.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 private val logger = KotlinLogging.logger {}
@@ -24,7 +20,7 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
     private val connectionConfig: ConnectionConfig,
     val processorConfig: ProcessorConfig,
     private val dispatcher: CoroutineContext = Dispatchers.IO.limitedParallelism(1) + Job(),
-) : AutoCloseable {
+) {
 
     private val keepOn = atomic(true)
 
@@ -78,7 +74,7 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
         }
     }
 
-    override fun close() {
+    fun close() {
         logger.info { "Close ${this::class.java.simpleName}" }
         keepOn.value = false
     }

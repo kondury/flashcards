@@ -8,11 +8,9 @@ import java.util.concurrent.Executors
 
 private val logger = KotlinLogging.logger {}
 
-class RabbitController(
-    private val processors: Set<BaseRabbitProcessor>
-) : AutoCloseable {
-    private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+class RabbitController(private val processors: Set<BaseRabbitProcessor>) {
 
+    private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val scope = CoroutineScope(
         context = dispatcher + CoroutineName("thread-rabbitmq-controller")
     )
@@ -32,8 +30,7 @@ class RabbitController(
         }
     }
 
-    override fun close() {
+    fun close() {
         processors.forEach { it.close() }
-        logger.info { "PlacedCards RabbitMQ controller closed" }
     }
 }

@@ -1,7 +1,10 @@
 package com.github.kondury.flashcards.placedcards.app.rabbit.processor
 
-import com.github.kondury.flashcards.placedcards.api.v1.apiV1Mapper
+//import com.github.kondury.flashcards.placedcards.api.v1.apiV1Mapper
+import com.github.kondury.flashcards.placedcards.api.v1.apiV1RequestDeserialize
+import com.github.kondury.flashcards.placedcards.api.v1.apiV1ResponseSerialize
 import com.github.kondury.flashcards.placedcards.api.v1.models.IRequest
+import com.github.kondury.flashcards.placedcards.app.common.process
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.ConnectionConfig
 import com.github.kondury.flashcards.placedcards.app.rabbit.config.ProcessorConfig
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
@@ -14,7 +17,6 @@ import com.github.kondury.flashcards.placedcards.mappers.v1.toTransportPlacedCar
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Delivery
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.datetime.Clock
 
 private val logger = KotlinLogging.logger {}
 
@@ -25,21 +27,21 @@ class V1DirectRabbitProcessor(
 ) : BaseRabbitProcessor(connectionConfig, processorConfig) {
 
     override suspend fun Channel.processMessage(message: Delivery) {
-        val context = PlacedCardContext().apply { timeStart = Clock.System.now() }
-
-        apiV1Mapper.readValue(message.body, IRequest::class.java).run {
-            context.fromTransport(this)
-            logger.info { "Request class: ${this::class.simpleName}" }
-        }
-
-        processor.exec(context)
-        val response = context.toTransportPlacedCard()
-
-        apiV1Mapper.writeValueAsBytes(response).run {
-            logger.info { "Publishing $response to ${processorConfig.exchange} exchange for keyOut ${processorConfig.keyOut}" }
-            basicPublish(processorConfig.exchange, processorConfig.keyOut, null, this)
-            logger.info { "published" }
-        }
+        processor.process(
+            { placedCardContext ->
+                apiV1RequestDeserialize<IRequest>(String(message.body)).let {
+                    placedCardContext.fromTransport(it)
+                    logger.info { "Request class: ${it::class.simpleName}" }
+                }
+            },
+            { placedCardContext ->
+                val response = placedCardContext.toTransportPlacedCard()
+                apiV1ResponseSerialize(response).let {
+                    logger.info { "Publishing $response to ${processorConfig.exchange} exchange for keyOut ${processorConfig.keyOut}" }
+                    basicPublish(processorConfig.exchange, processorConfig.keyOut, null, it.toByteArray())
+                }
+            }
+        )
     }
 
     override fun Channel.onError(e: Throwable) {
@@ -49,8 +51,8 @@ class V1DirectRabbitProcessor(
             addError(error = arrayOf(e.asFcError()))
         }
         val response = context.toTransportPlacedCard()
-        apiV1Mapper.writeValueAsBytes(response).also {
-            basicPublish(processorConfig.exchange, processorConfig.keyOut, null, it)
+        apiV1ResponseSerialize(response).run {
+            basicPublish(processorConfig.exchange, processorConfig.keyOut, null, this.toByteArray())
         }
     }
 }
