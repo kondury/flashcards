@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.app.kafka
+package com.github.kondury.flashcards.cards.app.kafka
 
 import com.github.kondury.flashcards.cards.api.v1.apiV1RequestDeserialize
 import com.github.kondury.flashcards.cards.api.v1.apiV1ResponseSerialize

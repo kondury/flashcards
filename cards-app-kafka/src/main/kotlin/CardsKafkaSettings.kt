@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.app.kafka
+package com.github.kondury.flashcards.cards.app.kafka
 
 data class CardsKafkaSettings(
     val hosts: List<String> = KAFKA_HOSTS,

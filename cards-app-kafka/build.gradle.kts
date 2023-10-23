@@ -4,7 +4,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.github.kondury.flashcards.app.kafka.ApplicationKt")
+    mainClass.set("com.github.kondury.flashcards.cards.app.kafka.ApplicationKt")
 }
 
 dependencies {

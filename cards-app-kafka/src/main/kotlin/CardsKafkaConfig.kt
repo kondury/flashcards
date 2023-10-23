@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.app.kafka
+package com.github.kondury.flashcards.cards.app.kafka
 
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import org.apache.kafka.clients.consumer.Consumer
@@ -12,13 +12,13 @@ import org.apache.kafka.common.serialization.StringSerializer
 import java.util.*
 
 data class CardsKafkaConfig(
-    val settings: CardsKafkaSettings = CardsKafkaSettings().also { println(this) },
+    val settings: CardsKafkaSettings = CardsKafkaSettings(),
     val strategies: List<TransformationStrategy> = listOf(TransformationStrategyV1(settings.inTopicV1, settings.outTopicV1)),
     val processor: FcCardProcessor = FcCardProcessor(),
-    val producer: Producer<String, String> = createKafkaProducer(settings).also { println("PRODUCER CREATED") },
-    val consumer: Consumer<String, String> = createKafkaConsumer(settings).also { println("CONSUMER CREATED") },
+    val producer: Producer<String, String> = createKafkaProducer(settings),
+    val consumer: Consumer<String, String> = createKafkaConsumer(settings),
     val controller: CardsKafkaController = CardsKafkaController(
-        strategies = strategies.also { println(this) },
+        strategies = strategies,
         processor = processor,
         consumer = consumer,
         producer = producer,
@@ -26,8 +26,6 @@ data class CardsKafkaConfig(
 ) {
     companion object {
         private fun createKafkaConsumer(settings: CardsKafkaSettings): KafkaConsumer<String, String> {
-            println("CREATE KAFKA CONSUMER")
-            println(settings)
             val props = Properties().apply {
                 put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, settings.hosts)
                 put(ConsumerConfig.GROUP_ID_CONFIG, settings.groupId)
@@ -38,8 +36,6 @@ data class CardsKafkaConfig(
         }
 
         private fun createKafkaProducer(settings: CardsKafkaSettings): KafkaProducer<String, String> {
-            println("CREATE KAFKA PRODUCER")
-            println(settings)
             val props = Properties().apply {
                 put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, settings.hosts)
                 put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java)

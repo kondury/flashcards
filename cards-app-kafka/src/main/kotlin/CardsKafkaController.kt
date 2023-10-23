@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.app.kafka
+package com.github.kondury.flashcards.cards.app.kafka
 
 import com.github.kondury.flashcards.cards.app.common.process
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
@@ -36,7 +36,6 @@ class CardsKafkaController(
                 val records: ConsumerRecords<String, String> = withContext(Dispatchers.IO) {
                     consumer.poll(Duration.ofSeconds(1))
                 }
-//                println("I am HERE")
                 if (!records.isEmpty)
                     logger.info { "Receive ${records.count()} messages" }
 
