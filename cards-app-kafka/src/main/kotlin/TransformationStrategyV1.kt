@@ -7,10 +7,10 @@ import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.mappers.v1.fromTransport
 import com.github.kondury.flashcards.cards.mappers.v1.toTransportCard
 
-class ConsumerStrategyV1 : ConsumerStrategy {
-
-    override fun topics(config: AppKafkaConfig) =
-        InputOutputTopics(config.kafkaTopicInV1, config.kafkaTopicOutV1)
+data class TransformationStrategyV1(
+    override val inputTopic: String,
+    override val outputTopic: String
+) : TransformationStrategy {
 
     override fun serialize(source: CardContext): String {
         val response = source.toTransportCard()

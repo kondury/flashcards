@@ -27,6 +27,7 @@ dependencies {
     implementation(project(":cards-api-v1-jackson"))
     implementation(project(":cards-mappers-v1"))
     implementation(project(":cards-biz"))
+    implementation(project(":cards-app-common"))
 
     testImplementation(kotlin("test-junit5"))
 }

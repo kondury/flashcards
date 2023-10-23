@@ -1,7 +1,5 @@
 package com.github.kondury.flashcards.app.kafka
 
-fun main() {
-    val config = AppKafkaConfig()
-    val consumer = AppKafkaConsumer(config, listOf(ConsumerStrategyV1()))
-    consumer.run()
+fun main() = with(CardsKafkaConfig()) {
+    controller.run()
 }

@@ -10,4 +10,6 @@
     </root>
 
     <logger name="org.apache.kafka" level="INFO"/>
+    <logger name="com.github.kondury" level="DEBUG"/>
+
 </configuration>
