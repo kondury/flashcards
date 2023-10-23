@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.cards.app
+package com.github.kondury.flashcards.placedcards.app
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
