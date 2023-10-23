@@ -28,16 +28,16 @@ class V1DirectRabbitProcessor(
     override suspend fun Channel.processMessage(message: Delivery) {
         processor.process(
             { cardContext ->
-                apiV1RequestDeserialize<IRequest>(String(message.body)).run {
-                    cardContext.fromTransport(this)
-                    logger.info { "Request class: ${this::class.simpleName}" }
+                apiV1RequestDeserialize<IRequest>(String(message.body)).let {
+                    cardContext.fromTransport(it)
+                    logger.info { "Request class: ${it::class.simpleName}" }
                 }
             },
             { cardContext ->
                 val response = cardContext.toTransportCard()
-                apiV1ResponseSerialize(response).run {
+                apiV1ResponseSerialize(response).let {
                     logger.info { "Publishing $response to ${processorConfig.exchange} exchange for keyOut ${processorConfig.keyOut}" }
-                    basicPublish(processorConfig.exchange, processorConfig.keyOut, null, this.toByteArray())
+                    basicPublish(processorConfig.exchange, processorConfig.keyOut, null, it.toByteArray())
                 }
             }
         )
