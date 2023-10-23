@@ -1,10 +1,10 @@
 package com.github.kondury.flashcards.cards.app.rabbit.processor
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import com.github.kondury.flashcards.cards.app.rabbit.config.ConnectionConfig
 import com.github.kondury.flashcards.cards.app.rabbit.config.ProcessorConfig
 import com.github.kondury.flashcards.cards.app.rabbit.config.configure
 import com.rabbitmq.client.*
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -70,7 +70,6 @@ abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) cons
                     delay(100)
                 }.onFailure(Throwable::printStackTrace)
             }
-
             logger.info { "Channel for [${processorConfig.consumerTag}] was closed." }
         }
     }

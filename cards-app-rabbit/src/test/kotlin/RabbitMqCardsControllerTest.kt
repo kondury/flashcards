@@ -18,7 +18,6 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.containers.RabbitMQContainer
-import kotlin.reflect.KClass
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -126,7 +125,6 @@ internal class RabbitMqCardsControllerTest {
     private fun <T : IRequest, U : IResponse> testCardCommand(
         requestObj: T, doAssert: (U) -> Unit
     ) {
-        val (keyOut, keyIn) = with(appSettings.v1RabbitProcessor.processorConfig) { Pair(keyOut, keyIn) }
         ConnectionFactory().configure(appSettings.connectionConfig).newConnection().use { connection ->
             connection.createChannel().use { channel ->
                 var responseJson = ""
@@ -134,7 +132,7 @@ internal class RabbitMqCardsControllerTest {
 
                 val queueOut = channel.queueDeclare().queue
 
-                channel.queueBind(queueOut, EXCHANGE, keyOut)
+                channel.queueBind(queueOut, EXCHANGE, KEY_OUT)
                 val deliverCallback = DeliverCallback { consumerTag, delivery ->
                     responseJson = String(delivery.body, Charsets.UTF_8)
                     logger.info { " [x] Received by $consumerTag: '$responseJson'" }
@@ -144,7 +142,7 @@ internal class RabbitMqCardsControllerTest {
                 // when
                 logger.info { "Publishing $requestObj" }
                 apiV1RequestSerialize(requestObj).let {
-                    channel.basicPublish(EXCHANGE, keyIn, null, it.toByteArray())
+                    channel.basicPublish(EXCHANGE, KEY_IN, null, it.toByteArray())
                 }
 
                 runBlocking {
