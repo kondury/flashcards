@@ -62,7 +62,7 @@ internal class ToPlacedCardTransportTest {
                 PlacedCardContext(
                     command = PlacedCardCommand.CREATE_PLACED_CARD,
                     state = FcState.RUNNING,
-                    errors = mutableListOf<FcError>(),
+                    errors = mutableListOf(),
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardCreateResponse::class,
@@ -74,7 +74,7 @@ internal class ToPlacedCardTransportTest {
                 PlacedCardContext(
                     command = PlacedCardCommand.MOVE_PLACED_CARD,
                     state = FcState.RUNNING,
-                    errors = mutableListOf<FcError>(),
+                    errors = mutableListOf(),
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardMoveResponse::class,
@@ -102,7 +102,7 @@ internal class ToPlacedCardTransportTest {
                 PlacedCardContext(
                     command = PlacedCardCommand.INIT_PLACED_CARD,
                     state = FcState.RUNNING,
-                    errors = mutableListOf<FcError>(),
+                    errors = mutableListOf(),
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardInitResponse::class,
@@ -114,7 +114,7 @@ internal class ToPlacedCardTransportTest {
                 PlacedCardContext(
                     command = PlacedCardCommand.SELECT_PLACED_CARD,
                     state = FcState.RUNNING,
-                    errors = mutableListOf<FcError>(),
+                    errors = mutableListOf(),
                     requestId = FcRequestId(REQUEST_ID)
                 ),
                 PlacedCardSelectResponse::class,
