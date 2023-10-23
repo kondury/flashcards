@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":cards-common"))
     implementation(project(":cards-stubs"))
     implementation(project(":cards-biz"))
+    implementation(project(":cards-app-common"))
 
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
