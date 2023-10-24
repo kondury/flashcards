@@ -1,11 +1,11 @@
 package com.github.kondury.flashcards.cards.app.kafka
 
 data class CardsKafkaSettings(
-    val hosts: List<String> = KAFKA_HOSTS,
-    val groupId: String = KAFKA_GROUP_ID,
+    override val hosts: List<String> = KAFKA_HOSTS,
+    override val groupId: String = KAFKA_GROUP_ID,
     val inTopicV1: String = KAFKA_TOPIC_IN_V1,
     val outTopicV1: String = KAFKA_TOPIC_OUT_V1,
-) {
+) : KafkaConsumerSettings, KafkaProducerSettings {
     companion object {
         const val KAFKA_HOSTS_ENV = "KAFKA_HOSTS"
         const val KAFKA_TOPIC_IN_V1_ENV = "KAFKA_TOPIC_IN_V1"

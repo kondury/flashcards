@@ -16,8 +16,8 @@ suspend fun ApplicationCall.deleteCard(processor: FcCardProcessor) = processV1(p
 
 internal suspend inline fun ApplicationCall.processV1(processor: FcCardProcessor) {
     processor.process(
-        { it.fromTransport(receive<IRequest>()) },
-        { respond(it.toTransportCard()) }
+        { cardContext -> cardContext.fromTransport(receive<IRequest>()) },
+        { cardContext -> respond(cardContext.toTransportCard()) }
     )
 }
 

@@ -72,14 +72,11 @@ class CardsKafkaController(
         }
     }
 
-    private fun send(outputTopic: String, json: String) {
-        val resRecord = ProducerRecord(
-            outputTopic,
-            UUID.randomUUID().toString(),
-            json
-        )
-        logger.info { "sending ${resRecord.key()} to ${outputTopic}:\n$json" }
-        producer.send(resRecord)
+    private fun send(topic: String, value: String) {
+        val key = UUID.randomUUID().toString()
+        val record = ProducerRecord(topic, key, value)
+        logger.info { "sending $key to $topic:\n$value" }
+        producer.send(record)
     }
 
     fun stop() {
