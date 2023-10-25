@@ -21,7 +21,7 @@ data class PlacedCardsRabbitConfig(
         consumerTag = "v1-placedcards-consumer",
         exchangeType = "direct"
     ),
-    val v1RabbitProcessor: V1DirectRabbitProcessor = V1DirectRabbitProcessor(
+    val v1RabbitProcessor: PlacedCardsV1RabbitProcessor = PlacedCardsV1RabbitProcessor(
         processor = fcCardProcessor,
         connectionConfig = connectionConfig,
         processorConfig = v1ProcessorConfig,
