@@ -21,6 +21,7 @@ pluginManagement {
 
 //include("m1-init")
 include("flashcards-acceptance")
+include("flashcards-app-kafka")
 
 include("cards-api-v1-jackson")
 include("cards-common")

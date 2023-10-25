@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.cards.app.kafka
+package com.github.kondury.flashcards.app.kafka
 
 interface KafkaSettings {
     val hosts: List<String>
