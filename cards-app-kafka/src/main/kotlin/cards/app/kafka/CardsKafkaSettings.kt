@@ -1,5 +1,8 @@
 package com.github.kondury.flashcards.cards.app.kafka
 
+import com.github.kondury.flashcards.app.kafka.KafkaConsumerSettings
+import com.github.kondury.flashcards.app.kafka.KafkaProducerSettings
+
 data class CardsKafkaSettings(
     override val hosts: List<String> = KAFKA_HOSTS,
     override val groupId: String = KAFKA_GROUP_ID,
