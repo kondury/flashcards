@@ -1,12 +1,11 @@
 package com.github.kondury.flashcards.placedcards.app.rabbit
 
+import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
+import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
+import com.github.kondury.flashcards.app.rabbit.configure
 import com.github.kondury.flashcards.placedcards.api.v1.apiV1RequestSerialize
 import com.github.kondury.flashcards.placedcards.api.v1.apiV1ResponseDeserialize
 import com.github.kondury.flashcards.placedcards.api.v1.models.*
-import com.github.kondury.flashcards.placedcards.app.rabbit.config.AppSettings
-import com.github.kondury.flashcards.placedcards.app.rabbit.config.ConnectionConfig
-import com.github.kondury.flashcards.placedcards.app.rabbit.config.ProcessorConfig
-import com.github.kondury.flashcards.placedcards.app.rabbit.config.configure
 import com.github.kondury.flashcards.placedcards.mappers.v1.toPlacedCardResponseResource
 import com.github.kondury.flashcards.placedcards.mappers.v1.toTransportPlacedCard
 import com.github.kondury.flashcards.placedcards.stubs.PlacedCardStub
@@ -51,7 +50,7 @@ internal class RabbitMqPlacedCardControllerTest {
             start()
             execInContainer("rabbitmqctl", "add_user", USER_NAME, USER_PASSWORD)
             execInContainer("rabbitmqctl", "set_permissions", "-p", "/", USER_NAME, ".*", ".*", ".*")
-            with(appSettings) {
+            with(placedCardsRabbitConfig) {
                 controller.start()
             }
         }
@@ -59,14 +58,14 @@ internal class RabbitMqPlacedCardControllerTest {
         @AfterAll
         @JvmStatic
         fun afterAll() {
-            with(appSettings) {
-                controller.close()
+            with(placedCardsRabbitConfig) {
+                controller.stop()
             }
             container.stop()
         }
 
-        private val appSettings by lazy {
-            AppSettings(
+        private val placedCardsRabbitConfig by lazy {
+            PlacedCardsRabbitConfig(
                 connectionConfig = ConnectionConfig(
                     host = "localhost",
                     port = container.getMappedPort(5672),
@@ -182,7 +181,7 @@ internal class RabbitMqPlacedCardControllerTest {
     private inline fun <reified T : IRequest, U : IResponse> testPlacedCardCommand(
         requestObj: T, doAssert: (U) -> Unit
     ) {
-        ConnectionFactory().configure(appSettings.connectionConfig).newConnection().use { connection ->
+        ConnectionFactory().configure(placedCardsRabbitConfig.connectionConfig).newConnection().use { connection ->
             connection.createChannel().use { channel ->
                 var responseJson = ""
                 channel.exchangeDeclare(EXCHANGE, EXCHANGE_TYPE)
