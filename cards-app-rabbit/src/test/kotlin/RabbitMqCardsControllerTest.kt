@@ -3,10 +3,9 @@ package com.github.kondury.flashcards.cards.app.rabbit
 import com.github.kondury.flashcards.cards.api.v1.apiV1RequestSerialize
 import com.github.kondury.flashcards.cards.api.v1.apiV1ResponseDeserialize
 import com.github.kondury.flashcards.cards.api.v1.models.*
-import com.github.kondury.flashcards.cards.app.rabbit.config.AppSettings
-import com.github.kondury.flashcards.cards.app.rabbit.config.ConnectionConfig
-import com.github.kondury.flashcards.cards.app.rabbit.config.ProcessorConfig
-import com.github.kondury.flashcards.cards.app.rabbit.config.configure
+import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
+import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
+import com.github.kondury.flashcards.app.rabbit.configure
 import com.github.kondury.flashcards.cards.stubs.CardStub
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.ConnectionFactory
@@ -51,16 +50,22 @@ internal class RabbitMqCardsControllerTest {
             start()
             execInContainer("rabbitmqctl", "add_user", USER_NAME, USER_PASSWORD)
             execInContainer("rabbitmqctl", "set_permissions", "-p", "/", USER_NAME, ".*", ".*", ".*")
+            with(cardsRabbitConfig) {
+                controller.start()
+            }
         }
 
         @AfterAll
         @JvmStatic
         fun afterAll() {
+            with(cardsRabbitConfig) {
+                controller.stop()
+            }
             container.stop()
         }
 
-        private val appSettings by lazy {
-            AppSettings(
+        private val cardsRabbitConfig by lazy {
+            CardsRabbitConfig(
                 connectionConfig = ConnectionConfig(
                     host = "localhost",
                     port = container.getMappedPort(5672),
@@ -79,11 +84,11 @@ internal class RabbitMqCardsControllerTest {
         }
     }
 
-    @BeforeTest
-    fun tearUp(): Unit = with(appSettings) { controller.start() }
-
-    @AfterTest
-    fun tearDown(): Unit = with(appSettings) { controller.stop() }
+//    @BeforeTest
+//    fun tearUp(): Unit = with(cardsRabbitConfig) { controller.start() }
+//
+//    @AfterTest
+//    fun tearDown(): Unit = with(cardsRabbitConfig) { controller.stop() }
 
     @Test
     fun `rabbitMq create card test`() = testCardCommand(
@@ -125,7 +130,7 @@ internal class RabbitMqCardsControllerTest {
     private fun <T : IRequest, U : IResponse> testCardCommand(
         requestObj: T, doAssert: (U) -> Unit
     ) {
-        ConnectionFactory().configure(appSettings.connectionConfig).newConnection().use { connection ->
+        ConnectionFactory().configure(cardsRabbitConfig.connectionConfig).newConnection().use { connection ->
             connection.createChannel().use { channel ->
                 var responseJson = ""
                 channel.exchangeDeclare(EXCHANGE, EXCHANGE_TYPE)
