@@ -17,8 +17,6 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.testcontainers.containers.RabbitMQContainer
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
@@ -84,12 +82,6 @@ internal class RabbitMqCardsControllerTest {
         }
     }
 
-//    @BeforeTest
-//    fun tearUp(): Unit = with(cardsRabbitConfig) { controller.start() }
-//
-//    @AfterTest
-//    fun tearDown(): Unit = with(cardsRabbitConfig) { controller.stop() }
-
     @Test
     fun `rabbitMq create card test`() = testCardCommand(
         requestObj = CardCreateRequest(
@@ -130,7 +122,8 @@ internal class RabbitMqCardsControllerTest {
     private fun <T : IRequest, U : IResponse> testCardCommand(
         requestObj: T, doAssert: (U) -> Unit
     ) {
-        ConnectionFactory().configure(cardsRabbitConfig.connectionConfig).newConnection().use { connection ->
+        ConnectionFactory().configure(cardsRabbitConfig.connectionConfig)
+            .newConnection().use { connection ->
             connection.createChannel().use { channel ->
                 var responseJson = ""
                 channel.exchangeDeclare(EXCHANGE, EXCHANGE_TYPE)
