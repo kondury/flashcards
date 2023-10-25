@@ -1,8 +1,5 @@
-package com.github.kondury.flashcards.cards.app.rabbit.processor
+package com.github.kondury.flashcards.app.rabbit
 
-import com.github.kondury.flashcards.cards.app.rabbit.config.ConnectionConfig
-import com.github.kondury.flashcards.cards.app.rabbit.config.ProcessorConfig
-import com.github.kondury.flashcards.cards.app.rabbit.config.configure
 import com.rabbitmq.client.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.atomicfu.atomic
@@ -16,7 +13,7 @@ private val logger = KotlinLogging.logger {}
  * @property connectionConfig - настройки подключения
  * @property processorConfig - настройки Rabbit exchange
  */
-abstract class BaseRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) constructor(
+abstract class AbstractRabbitProcessor @OptIn(ExperimentalCoroutinesApi::class) constructor(
     private val connectionConfig: ConnectionConfig,
     val processorConfig: ProcessorConfig,
     private val dispatcher: CoroutineContext = Dispatchers.IO.limitedParallelism(1) + Job(),

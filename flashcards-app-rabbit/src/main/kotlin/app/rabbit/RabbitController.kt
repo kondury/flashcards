@@ -1,14 +1,15 @@
-package com.github.kondury.flashcards.cards.app.rabbit.controller
+package com.github.kondury.flashcards.app.rabbit
 
-import kotlinx.coroutines.*
-import com.github.kondury.flashcards.cards.app.rabbit.processor.BaseRabbitProcessor
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
-
 
 private val logger = KotlinLogging.logger {}
 
-class RabbitController(private val processors: Set<BaseRabbitProcessor>) {
+class RabbitController(private val processors: Set<AbstractRabbitProcessor>) {
 
     private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     private val scope = CoroutineScope(

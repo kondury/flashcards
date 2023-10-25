@@ -1,11 +1,17 @@
-package com.github.kondury.flashcards.cards.app.rabbit.config
+package com.github.kondury.flashcards.cards.app.rabbit
 
-import com.github.kondury.flashcards.cards.app.rabbit.controller.RabbitController
-import com.github.kondury.flashcards.cards.app.rabbit.processor.V1DirectRabbitProcessor
+import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
+import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
+import com.github.kondury.flashcards.app.rabbit.RabbitController
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 
-data class AppSettings(
-    val connectionConfig: ConnectionConfig = ConnectionConfig(),
+data class CardsRabbitConfig(
+    val connectionConfig: ConnectionConfig = ConnectionConfig(
+        host = "localhost",
+        port = 5672,
+        user = "guest",
+        password = "guest",
+    ),
     val fcCardProcessor: FcCardProcessor = FcCardProcessor(),
     val v1ProcessorConfig: ProcessorConfig = ProcessorConfig(
         keyIn = "in-v1",
@@ -13,9 +19,9 @@ data class AppSettings(
         exchange = "cards-exchange",
         queue = "v1-cards-queue",
         consumerTag = "v1-cards-consumer",
-        exchangeType = "direct"
+        exchangeType = "direct",
     ),
-    val v1RabbitProcessor: V1DirectRabbitProcessor = V1DirectRabbitProcessor(
+    val v1RabbitProcessor: CardsV1RabbitProcessor = CardsV1RabbitProcessor(
         processor = fcCardProcessor,
         connectionConfig = connectionConfig,
         processorConfig = v1ProcessorConfig,

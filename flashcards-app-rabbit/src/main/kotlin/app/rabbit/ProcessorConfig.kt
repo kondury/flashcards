@@ -1,4 +1,4 @@
-package com.github.kondury.flashcards.cards.app.rabbit.config
+package com.github.kondury.flashcards.app.rabbit
 
 data class ProcessorConfig(
     val keyIn: String,

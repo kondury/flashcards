@@ -1,11 +1,12 @@
-package com.github.kondury.flashcards.cards.app.rabbit.processor
+package com.github.kondury.flashcards.cards.app.rabbit
 
+import com.github.kondury.flashcards.app.rabbit.AbstractRabbitProcessor
+import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
+import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
 import com.github.kondury.flashcards.cards.api.v1.apiV1RequestDeserialize
 import com.github.kondury.flashcards.cards.api.v1.apiV1ResponseSerialize
 import com.github.kondury.flashcards.cards.api.v1.models.IRequest
 import com.github.kondury.flashcards.cards.app.common.process
-import com.github.kondury.flashcards.cards.app.rabbit.config.ConnectionConfig
-import com.github.kondury.flashcards.cards.app.rabbit.config.ProcessorConfig
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.helpers.addError
@@ -19,11 +20,11 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-class V1DirectRabbitProcessor(
+class CardsV1RabbitProcessor(
     private val processor: FcCardProcessor = FcCardProcessor(),
     connectionConfig: ConnectionConfig,
     processorConfig: ProcessorConfig,
-) : BaseRabbitProcessor(connectionConfig, processorConfig) {
+) : AbstractRabbitProcessor(connectionConfig, processorConfig) {
 
     override suspend fun Channel.processMessage(message: Delivery) {
         processor.process(
