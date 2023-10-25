@@ -1,11 +1,14 @@
 package com.github.kondury.flashcards.placedcards.app.kafka
 
+import com.github.kondury.flashcards.app.kafka.KafkaConsumerSettings
+import com.github.kondury.flashcards.app.kafka.KafkaProducerSettings
+
 class PlacedCardsKafkaSettings(
-    val hosts: List<String> = KAFKA_HOSTS,
-    val groupId: String = KAFKA_GROUP_ID,
+    override val hosts: List<String> = KAFKA_HOSTS,
+    override val groupId: String = KAFKA_GROUP_ID,
     val inTopicV1: String = KAFKA_TOPIC_IN_V1,
     val outTopicV1: String = KAFKA_TOPIC_OUT_V1,
-) {
+) : KafkaProducerSettings, KafkaConsumerSettings {
     companion object {
         const val KAFKA_HOST_VAR = "KAFKA_HOSTS"
         const val KAFKA_TOPIC_IN_V1_VAR = "KAFKA_TOPIC_IN_V1"
