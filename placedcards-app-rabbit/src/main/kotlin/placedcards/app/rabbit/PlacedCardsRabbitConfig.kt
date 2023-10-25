@@ -1,11 +1,17 @@
-package com.github.kondury.flashcards.placedcards.app.rabbit.config
+package com.github.kondury.flashcards.placedcards.app.rabbit
 
-import com.github.kondury.flashcards.placedcards.app.rabbit.controller.RabbitController
-import com.github.kondury.flashcards.placedcards.app.rabbit.processor.V1DirectRabbitProcessor
+import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
+import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
+import com.github.kondury.flashcards.app.rabbit.RabbitController
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 
-data class AppSettings(
-    val connectionConfig: ConnectionConfig = ConnectionConfig(),
+data class PlacedCardsRabbitConfig(
+    val connectionConfig: ConnectionConfig = ConnectionConfig(
+        host = "localhost",
+        port = 5672,
+        user = "guest",
+        password = "guest",
+    ),
     val fcCardProcessor: FcPlacedCardProcessor = FcPlacedCardProcessor(),
     val v1ProcessorConfig: ProcessorConfig = ProcessorConfig(
         keyIn = "in-v1",
