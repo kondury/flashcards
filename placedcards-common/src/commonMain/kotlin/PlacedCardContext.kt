@@ -16,16 +16,17 @@ data class PlacedCardContext(
     var timeStart: Instant = Instant.NONE,
 
     // before-known placed card data (if exists) for create, delete and move commands
-    var placedCardRequest: PlacedCard = PlacedCard(),
-    // after request handling placed card data for create, move and select commands
-    var placedCardResponse: PlacedCard = PlacedCard(),
+    var requestPlacedCard: PlacedCard = PlacedCard(),
     // init/select commands
-    var ownerId: UserId = UserId.NONE,
+    var requestOwnerId: UserId = UserId.NONE,
     // init/select commands
-    var workBox: FcBox = FcBox.NONE,
+    var requestWorkBox: FcBox = FcBox.NONE,
     // box after for move command
-    var boxAfter: FcBox = FcBox.NONE,
+    var requestBoxAfter: FcBox = FcBox.NONE,
     // sorting order for select command
-    var searchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
+    var requestSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
+
+    // after request handling placed card data for create, move and select commands
+    var responsePlacedCard: PlacedCard = PlacedCard(),
 )
 

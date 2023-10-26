@@ -16,14 +16,14 @@ fun CardContext.toCardCreateResponse() = CardCreateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
-    card = cardResponse.toCardResponseResource(),
+    card = responseCard.toCardResponseResource(),
 )
 
 fun CardContext.toCardReadResponse() = CardReadResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
-    card = cardResponse.toCardResponseResource(),
+    card = responseCard.toCardResponseResource(),
 )
 
 fun CardContext.toCardDeleteResponse() = CardDeleteResponse(

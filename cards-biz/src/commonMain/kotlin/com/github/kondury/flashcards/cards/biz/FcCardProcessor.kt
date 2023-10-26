@@ -12,7 +12,7 @@ class FcCardProcessor {
             "Currently working only in STUB mode."
         }
         when (ctx.command) {
-            CREATE_CARD, READ_CARD -> ctx.cardResponse = CardStub.get()
+            CREATE_CARD, READ_CARD -> ctx.responseCard = CardStub.get()
             DELETE_CARD, NONE -> {}
         }
     }

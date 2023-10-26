@@ -15,7 +15,7 @@ data class CardContext(
     var requestId: FcRequestId = FcRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
 
-    var cardRequest: Card = Card(),
-    var cardResponse: Card = Card(),
+    var requestCard: Card = Card(),
+    var responseCard: Card = Card(),
 )
 

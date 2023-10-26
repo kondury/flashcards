@@ -19,7 +19,7 @@ fun CardContext.fromCardCreateRequest(request: CardCreateRequest) {
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    cardRequest = request.card?.toInternal() ?: Card()
+    requestCard = request.card?.toInternal() ?: Card()
 }
 
 fun CardContext.fromCardDeleteRequest(request: CardDeleteRequest) {
@@ -28,7 +28,7 @@ fun CardContext.fromCardDeleteRequest(request: CardDeleteRequest) {
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    cardRequest = request.card?.id.toCardWithId()
+    requestCard = request.card?.id.toCardWithId()
 }
 
 fun CardContext.fromCardReadRequest(request: CardReadRequest) {
@@ -37,7 +37,7 @@ fun CardContext.fromCardReadRequest(request: CardReadRequest) {
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    cardRequest = request.card?.id.toCardWithId()
+    requestCard = request.card?.id.toCardWithId()
 }
 
 private fun CardCreateResource.toInternal(): Card = Card(

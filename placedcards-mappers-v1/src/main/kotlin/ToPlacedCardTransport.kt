@@ -18,14 +18,14 @@ fun PlacedCardContext.toPlacedCardCreateResponse() = PlacedCardCreateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
-    placedCard = placedCardResponse.toPlacedCardResponseResource(),
+    placedCard = responsePlacedCard.toPlacedCardResponseResource(),
 )
 
 fun PlacedCardContext.toPlacedCardMoveResponse() = PlacedCardMoveResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
-    placedCard = placedCardResponse.toPlacedCardResponseResource(),
+    placedCard = responsePlacedCard.toPlacedCardResponseResource(),
 )
 
 fun PlacedCardContext.toPlacedCardDeleteResponse() = PlacedCardDeleteResponse(
@@ -38,7 +38,7 @@ fun PlacedCardContext.toPlacedCardSelectResponse() = PlacedCardSelectResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = state.toResult(),
     errors = errors.toTransportErrors(),
-    placedCard = placedCardResponse.toPlacedCardResponseResource(),
+    placedCard = responsePlacedCard.toPlacedCardResponseResource(),
 )
 
 fun PlacedCardContext.toPlacedCardInitResponse() = PlacedCardInitResponse(
