@@ -20,7 +20,7 @@ fun PlacedCardContext.fromPlacedCardCreateRequest(request: PlacedCardCreateReque
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    placedCardRequest = request.placedCard?.toInternal() ?: PlacedCard()
+    requestPlacedCard = request.placedCard?.toInternal() ?: PlacedCard()
 }
 
 fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteRequest) {
@@ -29,7 +29,7 @@ fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteReque
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    placedCardRequest = request.placedCard?.id.toPlacedCardWithId()
+    requestPlacedCard = request.placedCard?.id.toPlacedCardWithId()
 }
 
 fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) {
@@ -38,8 +38,8 @@ fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) 
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    placedCardRequest = request.move?.id.toPlacedCardWithId()
-    boxAfter = request.move?.box.fromTransport()
+    requestPlacedCard = request.move?.id.toPlacedCardWithId()
+    requestBoxAfter = request.move?.box.fromTransport()
 }
 
 fun PlacedCardContext.fromPlacedCardInitRequest(request: PlacedCardInitRequest) {
@@ -48,8 +48,8 @@ fun PlacedCardContext.fromPlacedCardInitRequest(request: PlacedCardInitRequest) 
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    ownerId = request.init?.ownerId.toUserId()
-    workBox = request.init?.box.fromTransport()
+    requestOwnerId = request.init?.ownerId.toUserId()
+    requestWorkBox = request.init?.box.fromTransport()
 }
 
 fun PlacedCardContext.fromPlacedCardSelectRequest(request: PlacedCardSelectRequest) {
@@ -58,9 +58,9 @@ fun PlacedCardContext.fromPlacedCardSelectRequest(request: PlacedCardSelectReque
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    ownerId = request.select?.ownerId.toUserId()
-    workBox = request.select?.box.fromTransport()
-    searchStrategy = request.select?.searchStrategy.fromTransport()
+    requestOwnerId = request.select?.ownerId.toUserId()
+    requestWorkBox = request.select?.box.fromTransport()
+    requestSearchStrategy = request.select?.searchStrategy.fromTransport()
 }
 
 private fun PlacedCardCreateResource.toInternal(): PlacedCard = PlacedCard(
