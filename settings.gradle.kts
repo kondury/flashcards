@@ -23,6 +23,7 @@ pluginManagement {
 include("flashcards-acceptance")
 
 include("cards-api-v1-jackson")
+include("cards-api-log")
 include("cards-common")
 include("cards-mappers-v1")
 include("cards-stubs")
