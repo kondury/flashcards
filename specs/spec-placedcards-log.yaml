@@ -1,0 +1,86 @@
+openapi: 3.0.4
+info:
+  title: Placed cards log models
+  description: Log models for logging services
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+paths: {}
+
+components:
+  schemas:
+    LogModel:
+      title: Общая модель лога
+      description: Общая модель лога для всех микросервисов системы
+      type: object
+      properties:
+        messageTime:
+          type: string
+        logId:
+          type: string
+        requestId:
+          type: string
+        source:
+          type: string
+        placedCard:
+          $ref: '#/components/schemas/PlacedCardLogModel'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorLogModel'
+
+    ErrorLogModel:
+      title: Модель лога для ошибки
+      type: object
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+        code:
+          type: string
+        level:
+          type: string
+
+    PlacedCardLogModel:
+      title: Модель лога для микросервиса placedcards
+      type: object
+      properties:
+        operation:
+          type: string
+          enum:
+            - create
+            - move
+            - delete
+            - select
+            - init
+        requestPlacedCard:
+          $ref: '#/components/schemas/PlacedCardLog'
+        requestOwnerId:
+          type: string
+        requestWorkBox:
+          type: string
+        requestBoxAfter:
+          type: string
+        requestSearchStrategy:
+          type: string
+        responsePlacedCard:
+          $ref: '#/components/schemas/PlacedCardLog'
+
+    PlacedCardLog:
+      title: Модель лога для объявления
+      type: object
+      properties:
+        id:
+          type: string
+        ownerId:
+          type: string
+        box:
+          type: string
+        cardId:
+          type: string
+        createdOn:
+          type: string
+        updatedOn:
+          type: string
