@@ -8,8 +8,8 @@ import kotlinx.datetime.Clock
 
 
 suspend inline fun FcCardProcessor.process(
-    noinline receiveThenFromTransport: suspend (CardContext) -> Unit,
-    noinline toTransportThenRespond: suspend (CardContext) -> Unit,
+    crossinline receiveThenFromTransport: suspend (CardContext) -> Unit,
+    crossinline toTransportThenRespond: suspend (CardContext) -> Unit,
 ) {
     CardContext(timeStart = Clock.System.now()).run {
         try {
