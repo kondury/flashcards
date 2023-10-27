@@ -60,7 +60,7 @@ abstract class AbstractDockerCompose(
     override val inputUrl: URLBuilder
         get() = getUrl(0)
 
-    fun getUrl(no: Int) = URLBuilder(
+    private fun getUrl(no: Int) = URLBuilder(
         protocol = URLProtocol.HTTP,
         host = apps[no].let { compose.getServiceHost(it.service, it.port) },
         port = apps[no].let { compose.getServicePort(it.service, it.port) },

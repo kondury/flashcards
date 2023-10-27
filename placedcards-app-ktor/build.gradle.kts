@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":placedcards-common"))
     implementation(project(":placedcards-stubs"))
     implementation(project(":placedcards-biz"))
+    implementation(project(":placedcards-app-common"))
 
     implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"

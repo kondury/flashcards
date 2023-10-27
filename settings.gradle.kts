@@ -21,6 +21,8 @@ pluginManagement {
 
 //include("m1-init")
 include("flashcards-acceptance")
+include("flashcards-app-kafka")
+include("flashcards-app-rabbit")
 
 include("cards-api-v1-jackson")
 include("cards-common")
@@ -28,11 +30,18 @@ include("cards-mappers-v1")
 include("cards-stubs")
 include("cards-biz")
 include("cards-app-ktor")
+include("cards-app-kafka")
+include("cards-app-rabbit")
+include("cards-app-common")
+
 include("placedcards-api-v1-jackson")
 include("placedcards-common")
 include("placedcards-mappers-v1")
 include("placedcards-stubs")
 include("placedcards-biz")
 include("placedcards-app-ktor")
+include("placedcards-app-kafka")
+include("placedcards-app-rabbit")
+include("placedcards-app-common")
 
 
