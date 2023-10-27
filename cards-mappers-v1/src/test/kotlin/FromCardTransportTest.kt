@@ -35,8 +35,8 @@ internal class FromCardTransportTest {
             actual = context
         )
 
-        Assertions.assertEquals("Front text", context.cardRequest.front)
-        Assertions.assertEquals("Back text", context.cardRequest.back)
+        Assertions.assertEquals("Front text", context.requestCard.front)
+        Assertions.assertEquals("Back text", context.requestCard.back)
     }
 
     @Test
@@ -60,7 +60,7 @@ internal class FromCardTransportTest {
             expectedRequestId = "DeleteRequestId",
             actual = context
         )
-        Assertions.assertEquals("CardId", context.cardRequest.id.asString())
+        Assertions.assertEquals("CardId", context.requestCard.id.asString())
     }
 
     @Test
@@ -84,7 +84,7 @@ internal class FromCardTransportTest {
             expectedRequestId = "ReadRequestId",
             actual = context
         )
-        Assertions.assertEquals("CardId", context.cardRequest.id.asString())
+        Assertions.assertEquals("CardId", context.requestCard.id.asString())
     }
 
     private fun assertCommon(

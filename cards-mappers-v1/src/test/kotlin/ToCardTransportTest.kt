@@ -31,14 +31,14 @@ internal class ToCardTransportTest {
             Arguments.of(
                 CardContext(
                     command = CardCommand.CREATE_CARD,
-                    cardResponse = cardResponse,
+                    responseCard = cardResponse,
                 ),
                 CARD_ID, FRONT_TEXT, BACK_TEXT
             ),
             Arguments.of(
                 CardContext(
                     command = CardCommand.READ_CARD,
-                    cardResponse = cardResponse,
+                    responseCard = cardResponse,
                 ),
                 CARD_ID, FRONT_TEXT, BACK_TEXT
             ),

@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
-//val serializationVersion: String by project
 val logbackVersion: String by project
 val jUnitJupiterVersion: String by project
 
@@ -13,6 +12,12 @@ plugins {
     id("application")
     id("io.ktor.plugin")
     // kotlin("plugin.serialization")
+}
+
+val webjars: Configuration by configurations.creating
+dependencies {
+    val swaggerUiVersion: String by project
+    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
 repositories {
@@ -29,10 +34,8 @@ dependencies {
     implementation(project(":cards-api-v1-jackson"))
     implementation(project(":cards-mappers-v1"))
     implementation(project(":cards-common"))
-    implementation(project(":cards-stubs"))
     implementation(project(":cards-biz"))
     implementation(project(":cards-app-common"))
-
 
     implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"

@@ -36,21 +36,21 @@ internal class ToPlacedCardTransportTest {
             Arguments.of(
                 PlacedCardContext(
                     command = PlacedCardCommand.CREATE_PLACED_CARD,
-                    placedCardResponse = placedCardResponse.copy(box = FcBox.NEW),
+                    responsePlacedCard = placedCardResponse.copy(box = FcBox.NEW),
                 ),
                 PLACED_CARD_ID, USER_ID, Box.NEW, CARD_ID, CREATED_ON, UPDATED_ON
             ),
             Arguments.of(
                 PlacedCardContext(
                     command = PlacedCardCommand.MOVE_PLACED_CARD,
-                    placedCardResponse = placedCardResponse.copy(box = FcBox.FINISHED),
+                    responsePlacedCard = placedCardResponse.copy(box = FcBox.FINISHED),
                 ),
                 PLACED_CARD_ID, USER_ID, Box.FINISHED, CARD_ID, CREATED_ON, UPDATED_ON
             ),
             Arguments.of(
                 PlacedCardContext(
                     command = PlacedCardCommand.SELECT_PLACED_CARD,
-                    placedCardResponse = placedCardResponse.copy(box = FcBox.REPEAT),
+                    responsePlacedCard = placedCardResponse.copy(box = FcBox.REPEAT),
                 ),
                 PLACED_CARD_ID, USER_ID, Box.REPEAT, CARD_ID, CREATED_ON, UPDATED_ON
             ),

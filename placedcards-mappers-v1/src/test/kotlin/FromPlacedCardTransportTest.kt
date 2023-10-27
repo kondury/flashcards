@@ -38,9 +38,9 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals(FcBox.NEW, context.placedCardRequest.box)
-        assertEquals("OwnerId", context.placedCardRequest.ownerId.asString())
-        assertEquals("CardId", context.placedCardRequest.cardId.asString())
+        assertEquals(FcBox.NEW, context.requestPlacedCard.box)
+        assertEquals("OwnerId", context.requestPlacedCard.ownerId.asString())
+        assertEquals("CardId", context.requestPlacedCard.cardId.asString())
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals("PlacedCardId", context.placedCardRequest.id.asString())
+        assertEquals("PlacedCardId", context.requestPlacedCard.id.asString())
     }
 
     @Test
@@ -95,8 +95,8 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals(FcBox.REPEAT, context.boxAfter)
-        assertEquals("PlacedCardId", context.placedCardRequest.id.asString())
+        assertEquals(FcBox.REPEAT, context.requestBoxAfter)
+        assertEquals("PlacedCardId", context.requestPlacedCard.id.asString())
     }
 
     @Test
@@ -124,8 +124,8 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals(FcBox.NEW, context.workBox)
-        assertEquals("OwnerId", context.ownerId.asString())
+        assertEquals(FcBox.NEW, context.requestWorkBox)
+        assertEquals("OwnerId", context.requestOwnerId.asString())
     }
 
     @Test
@@ -154,9 +154,9 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals(FcBox.NEW, context.workBox)
-        assertEquals("OwnerId", context.ownerId.asString())
-        assertEquals(FcSearchStrategy.EARLIEST_CREATED, context.searchStrategy)
+        assertEquals(FcBox.NEW, context.requestWorkBox)
+        assertEquals("OwnerId", context.requestOwnerId.asString())
+        assertEquals(FcSearchStrategy.EARLIEST_CREATED, context.requestSearchStrategy)
     }
 
     private fun assertCommon(

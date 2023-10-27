@@ -15,7 +15,6 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
 
                 implementation(project(":cards-common"))
-//                implementation(project(":cards-stubs"))
                 implementation(project(":cards-biz"))
             }
         }

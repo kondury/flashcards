@@ -14,7 +14,7 @@ class FcPlacedCardProcessor {
         when (ctx.command) {
             CREATE_PLACED_CARD,
             MOVE_PLACED_CARD,
-            SELECT_PLACED_CARD -> ctx.placedCardResponse = PlacedCardStub.get()
+            SELECT_PLACED_CARD -> ctx.responsePlacedCard = PlacedCardStub.get()
             DELETE_PLACED_CARD,
             INIT_PLACED_CARD,
             NONE -> {}
