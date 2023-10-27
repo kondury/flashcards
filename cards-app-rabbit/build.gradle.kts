@@ -24,11 +24,11 @@ dependencies {
     implementation(project(":cards-api-v1-jackson"))
     implementation(project(":cards-mappers-v1"))
     implementation(project(":cards-common"))
-    implementation(project(":cards-stubs"))
     implementation(project(":cards-biz"))
     implementation(project(":cards-app-common"))
 
     testImplementation(kotlin("test-junit5"))
+    testImplementation(project(":cards-stubs"))
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
