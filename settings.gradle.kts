@@ -36,7 +36,6 @@ include("cards-app-rabbit")
 include("cards-app-common")
 
 include("placedcards-api-v1-jackson")
-include("placedcards-api-log")
 include("placedcards-common")
 include("placedcards-mappers-v1")
 include("placedcards-stubs")
