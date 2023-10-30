@@ -64,6 +64,10 @@ components:
       properties:
         id:
           type: string
+        title:
+          type: string
+        description:
+          type: string
         front:
           type: string
         back:
