@@ -24,6 +24,8 @@ include("flashcards-acceptance")
 include("flashcards-app-kafka")
 include("flashcards-app-rabbit")
 
+include("flashcards-lib-logging-common")
+
 include("cards-api-log")
 include("cards-api-v1-jackson")
 include("cards-common")
