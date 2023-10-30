@@ -15,8 +15,8 @@ kotlin {
         val serializationVersion: String by project
 
         val commonMain by getting {
-            val generatedResourceDir = layout.buildDirectory.dir("generate-resources").get().toString()
-            kotlin.srcDirs("${generatedResourceDir}/main/src/commonMain/kotlin")
+//            kotlin.srcDirs("$buildDir/generate-resources/main/src/commonMain/kotlin")
+            kotlin.srcDirs("${layout.buildDirectory}/generate-resources/main/src/commonMain/kotlin")
             dependencies {
                 implementation(kotlin("stdlib-common"))
 //                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
