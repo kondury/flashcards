@@ -8,6 +8,7 @@ version = rootProject.version
 dependencies {
     val logbackVersion: String by project
     val logbackEncoderVersion: String by project
+//    val logbackKafkaVersion: String by project
     val coroutinesVersion: String by project
     val janinoVersion: String by project
     val datetimeVersion: String by project
