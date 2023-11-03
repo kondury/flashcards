@@ -1,20 +1,20 @@
 package com.github.kondury.flashcards.cards.app.v1
 
-import com.github.kondury.flashcards.cards.biz.FcCardProcessor
+import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 
-fun Route.v1Card(processor: FcCardProcessor) {
+fun Route.v1Card(config: CardsApplicationConfig) {
     route("card") {
         post("create") {
-            call.createCard(processor)
+            call.createCard(config)
         }
         post("read") {
-            call.readCard(processor)
+            call.readCard(config)
         }
         post("delete") {
-            call.deleteCard(processor)
+            call.deleteCard(config)
         }
     }
 }

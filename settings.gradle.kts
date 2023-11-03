@@ -7,6 +7,8 @@ pluginManagement {
 
     val ktorVersion: String by settings
 
+//    val bmuschkoVersion: String by settings
+
     plugins {
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
@@ -16,6 +18,12 @@ pluginManagement {
         id("org.openapi.generator") version openapiVersion apply false
 
         id("io.ktor.plugin") version ktorVersion apply false
+
+//        id("com.github.johnrengelman.shadow") version pluginShadow apply false
+//
+//        id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+//        id("com.bmuschko.docker-remote-api") version bmuschkoVersion apply false
+
     }
 }
 

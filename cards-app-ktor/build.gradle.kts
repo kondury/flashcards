@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.util.suffixIfNot
 val ktorVersion: String by project
 val logbackVersion: String by project
 val jUnitJupiterVersion: String by project
+val fluentdLoggerVersion: String by project
+val moreAppendersVersion: String by project
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
@@ -11,13 +13,6 @@ plugins {
     kotlin("jvm")
     id("application")
     id("io.ktor.plugin")
-    // kotlin("plugin.serialization")
-}
-
-val webjars: Configuration by configurations.creating
-dependencies {
-    val swaggerUiVersion: String by project
-    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
 repositories {
@@ -43,8 +38,29 @@ dependencies {
     implementation(ktor("jackson", "serialization")) // io.ktor:ktor-serialization-jackson
     implementation(ktor("content-negotiation")) // io.ktor:ktor-server-content-negotiation
 
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+//    implementation(ktor("locations"))
+//    implementation(ktor("caching-headers"))
+//    implementation(ktor("call-logging"))
+//    implementation(ktor("auto-head-response"))
+//    implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
+//    implementation(ktor("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
+//    implementation(ktor("auto-head-response"))
+//    implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
+//    implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
+
+    // logging
     implementation(ktor("call-logging-jvm"))
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
+    implementation(project(":cards-api-log"))
+    implementation(project(":cards-mappers-log"))
+    implementation(project(":flashcards-lib-logging-common"))
+    implementation(project(":flashcards-lib-logging-logback"))
+
+    implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
+    implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
+
+    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
 
     testImplementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
     testImplementation(ktor("content-negotiation", prefix = "client-"))
