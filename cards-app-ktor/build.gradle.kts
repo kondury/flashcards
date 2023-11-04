@@ -60,8 +60,6 @@ dependencies {
     implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
     implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
 
-    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
-
     testImplementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
     testImplementation(ktor("content-negotiation", prefix = "client-"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
