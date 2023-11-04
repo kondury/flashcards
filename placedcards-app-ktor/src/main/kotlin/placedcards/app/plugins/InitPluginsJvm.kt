@@ -9,7 +9,6 @@ import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import org.slf4j.event.Level
 
-// todo extract common ktor plugins installation and move it to flashcards-app-ktor
 fun Application.initPluginsJvm(appLogger: AppLogger) {
 
 //    install(Routing)

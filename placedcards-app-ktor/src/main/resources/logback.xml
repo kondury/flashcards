@@ -51,13 +51,11 @@
 
     <root level="${LOG_COMMON_LEVEL}">
         <appender-ref ref="fluentd"/>
-        <!--        <appender-ref ref="asyncMyLogKafka"/>-->
         <appender-ref ref="STDOUT"/>
     </root>
 
     <logger name="com.github.kondury" level="${LOG_KONDURY_LEVEL}" additivity="false">
         <appender-ref ref="fluentd"/>
-        <!--        <appender-ref ref="asyncMyLogKafka"/>-->
         <appender-ref ref="STDOUT"/>
     </logger>
 
