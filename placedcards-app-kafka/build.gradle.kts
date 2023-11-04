@@ -10,7 +10,8 @@ application {
 dependencies {
     val kafkaVersion: String by project
     val coroutinesVersion: String by project
-    val jacksonVersion: String by project
+    val fluentdLoggerVersion: String by project
+    val moreAppendersVersion: String by project
     val jUnitJupiterVersion: String by project
 
     implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
@@ -27,6 +28,9 @@ dependencies {
     implementation(project(":placedcards-mappers-log"))
     implementation(project(":flashcards-lib-logging-common"))
     implementation(project(":flashcards-lib-logging-logback"))
+
+    implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
+    implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
 
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
