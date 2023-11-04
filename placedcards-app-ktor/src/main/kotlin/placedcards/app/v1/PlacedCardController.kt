@@ -3,7 +3,6 @@ package com.github.kondury.flashcards.placedcards.app.v1
 import com.github.kondury.flashcards.placedcards.api.v1.models.IRequest
 import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
 import com.github.kondury.flashcards.placedcards.app.common.process
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 import com.github.kondury.flashcards.placedcards.mappers.v1.fromTransport
 import com.github.kondury.flashcards.placedcards.mappers.v1.toTransportPlacedCard
 import io.ktor.server.application.*
