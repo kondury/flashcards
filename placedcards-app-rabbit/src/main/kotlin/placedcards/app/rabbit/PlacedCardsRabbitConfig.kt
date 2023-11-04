@@ -3,9 +3,16 @@ package com.github.kondury.flashcards.placedcards.app.rabbit
 import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
 import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
 import com.github.kondury.flashcards.app.rabbit.RabbitController
+import com.github.kondury.flashcards.logging.common.AppLoggerProvider
+import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
+import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 
 data class PlacedCardsRabbitConfig(
+    val placedCardsApplicationConfig: PlacedCardsApplicationConfig = object : PlacedCardsApplicationConfig {
+        override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor()
+        override val loggerProvider: AppLoggerProvider = AppLoggerProvider { getLogbackLogger(it) }
+    },
     val connectionConfig: ConnectionConfig = ConnectionConfig(
         host = "localhost",
         port = 5672,
@@ -22,7 +29,7 @@ data class PlacedCardsRabbitConfig(
         exchangeType = "direct"
     ),
     val v1RabbitProcessor: PlacedCardsV1RabbitProcessor = PlacedCardsV1RabbitProcessor(
-        processor = fcCardProcessor,
+        applicationConfig = placedCardsApplicationConfig,
         connectionConfig = connectionConfig,
         processorConfig = v1ProcessorConfig,
     ),

@@ -15,8 +15,11 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
 
                 implementation(project(":placedcards-common"))
-//                implementation(project(":cards-stubs"))
                 implementation(project(":placedcards-biz"))
+
+                implementation(project(":placedcards-api-log"))
+                implementation(project(":placedcards-mappers-log"))
+                implementation(project(":flashcards-lib-logging-common"))
             }
         }
         val commonTest by getting {
@@ -29,8 +32,8 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-//                implementation(project(":cards-api-v1-jackson"))
-//                implementation(project(":cards-mappers-v1"))
+//                implementation(project(":placedcards-api-v1-jackson"))
+//                implementation(project(":placedcards-mappers-v1"))
             }
         }
         val jvmTest by getting {
