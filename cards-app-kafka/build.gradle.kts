@@ -10,7 +10,6 @@ application {
 dependencies {
     val kafkaVersion: String by project
     val coroutinesVersion: String by project
-    val logbackVersion: String by project
     val fluentdLoggerVersion: String by project
     val moreAppendersVersion: String by project
     val jUnitJupiterVersion: String by project
