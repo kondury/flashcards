@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.util.suffixIfNot
 val ktorVersion: String by project
 val logbackVersion: String by project
 val jUnitJupiterVersion: String by project
+val fluentdLoggerVersion: String by project
+val moreAppendersVersion: String by project
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
@@ -54,6 +56,9 @@ dependencies {
     implementation(project(":flashcards-lib-logging-common"))
     implementation(project(":flashcards-lib-logging-logback"))
 
+    implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
+    implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
+
     testImplementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
     testImplementation(ktor("content-negotiation", prefix = "client-"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
@@ -77,7 +82,6 @@ jib {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
 
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
