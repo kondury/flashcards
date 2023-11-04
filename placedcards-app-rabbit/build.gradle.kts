@@ -9,6 +9,8 @@ dependencies {
     val rabbitVersion: String by project
     val coroutinesVersion: String by project
     val logbackVersion: String by project
+    val fluentdLoggerVersion: String by project
+    val moreAppendersVersion: String by project
     val kotlinLoggingJvmVersion: String by project
     val testContainersVersion: String by project
     val jUnitJupiterVersion: String by project
@@ -18,6 +20,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
+    implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
 
     implementation(project(":flashcards-app-rabbit"))
     implementation(project(":placedcards-api-v1-jackson"))
