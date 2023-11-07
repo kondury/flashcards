@@ -16,6 +16,10 @@ kotlin {
 
                 implementation(project(":cards-common"))
                 implementation(project(":cards-biz"))
+
+                implementation(project(":cards-api-log"))
+                implementation(project(":cards-mappers-log"))
+                implementation(project(":flashcards-lib-logging-common"))
             }
         }
         val commonTest by getting {

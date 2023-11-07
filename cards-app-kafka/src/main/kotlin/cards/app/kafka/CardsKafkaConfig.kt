@@ -3,12 +3,19 @@ package com.github.kondury.flashcards.cards.app.kafka
 import com.github.kondury.flashcards.app.kafka.TransformationStrategy
 import com.github.kondury.flashcards.app.kafka.createKafkaConsumer
 import com.github.kondury.flashcards.app.kafka.createKafkaProducer
+import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.CardContext
+import com.github.kondury.flashcards.logging.common.AppLoggerProvider
+import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
 
 data class CardsKafkaConfig(
+    val applicationConfig: CardsApplicationConfig = object : CardsApplicationConfig {
+        override val processor: FcCardProcessor = FcCardProcessor()
+        override val loggerProvider: AppLoggerProvider = AppLoggerProvider { getLogbackLogger(it) }
+    },
     val settings: CardsKafkaSettings = CardsKafkaSettings(),
     val strategies: List<TransformationStrategy<CardContext>> = listOf(
         CardsTransformationStrategyV1(
@@ -16,8 +23,7 @@ data class CardsKafkaConfig(
             settings.outTopicV1
         )
     ),
-    val processor: FcCardProcessor = FcCardProcessor(),
     val producer: Producer<String, String> = settings.createKafkaProducer(),
     val consumer: Consumer<String, String> = settings.createKafkaConsumer(),
-    val controller: CardsKafkaController = CardsKafkaController(strategies, processor, consumer, producer)
+    val controller: CardsKafkaController = CardsKafkaController(applicationConfig, strategies, consumer, producer)
 )
