@@ -9,6 +9,5 @@ enum class FcStub {
     WRONG_OWNER_ID,
     WRONG_BOX,
     WRONG_SEARCH_STRATEGY,
-    CANNOT_DELETE,
-    UNKNOWN_ERROR
+    DB_ERROR
 }

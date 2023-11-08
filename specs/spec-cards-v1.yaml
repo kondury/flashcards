@@ -273,7 +273,5 @@ components:
         - wrongCardId
         - wrongFrontSide
         - wrongBackSide
-        - cannotDelete
-        - unknownError
 
 

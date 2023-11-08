@@ -399,7 +399,5 @@ components:
         - wrongOwnerId
         - wrongBox
         - wrongSearchStrategy
-        - cannotDelete
-        - unknownError
 
 

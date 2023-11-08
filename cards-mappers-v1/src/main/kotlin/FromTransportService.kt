@@ -23,7 +23,5 @@ internal fun DebugResource?.transportToStubCase(): FcStub = when (this?.stub) {
     DebugStub.WRONG_CARD_ID -> FcStub.WRONG_CARD_ID
     DebugStub.WRONG_FRONT_SIDE -> FcStub.WRONG_FRONT_SIDE
     DebugStub.WRONG_BACK_SIDE -> FcStub.WRONG_BACK_SIDE
-    DebugStub.CANNOT_DELETE -> FcStub.CANNOT_DELETE
-    DebugStub.UNKNOWN_ERROR -> FcStub.UNKNOWN_ERROR
     null -> FcStub.NONE
 }
