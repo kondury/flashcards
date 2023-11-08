@@ -45,7 +45,6 @@ internal class FromCardTransportTest {
             requestId = "DeleteRequestId",
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.UNKNOWN_ERROR
             ),
             card = CardDeleteResource(id = "CardId")
         )
@@ -55,7 +54,7 @@ internal class FromCardTransportTest {
 
         assertCommon(
             expectedCommand = CardCommand.DELETE_CARD,
-            expectedStub = FcStub.UNKNOWN_ERROR,
+            expectedStub = FcStub.NONE,
             expectedMode = FcWorkMode.TEST,
             expectedRequestId = "DeleteRequestId",
             actual = context
@@ -69,7 +68,6 @@ internal class FromCardTransportTest {
             requestId = "ReadRequestId",
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.UNKNOWN_ERROR
             ),
             card = CardReadResource(id = "CardId")
         )
@@ -79,7 +77,7 @@ internal class FromCardTransportTest {
 
         assertCommon(
             expectedCommand = CardCommand.READ_CARD,
-            expectedStub = FcStub.UNKNOWN_ERROR,
+            expectedStub = FcStub.NONE,
             expectedMode = FcWorkMode.TEST,
             expectedRequestId = "ReadRequestId",
             actual = context

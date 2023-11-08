@@ -49,7 +49,6 @@ internal class FromPlacedCardTransportTest {
             requestId = "DeleteRequestId",
             debug = DebugResource(
                 mode = RunMode.PROD,
-                stub = DebugStub.CANNOT_DELETE
             ),
             placedCard = PlacedCardDeleteResource(
                 id = "PlacedCardId"
@@ -61,7 +60,7 @@ internal class FromPlacedCardTransportTest {
 
         assertCommon(
             expectedCommand = PlacedCardCommand.DELETE_PLACED_CARD,
-            expectedStub = FcStub.CANNOT_DELETE,
+            expectedStub = FcStub.NONE,
             expectedMode = FcWorkMode.PROD,
             expectedRequestId = "DeleteRequestId",
             actual = context

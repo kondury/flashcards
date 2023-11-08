@@ -7,6 +7,5 @@ enum class FcStub {
     WRONG_CARD_ID,
     WRONG_FRONT_SIDE,
     WRONG_BACK_SIDE,
-    CANNOT_DELETE,
-    UNKNOWN_ERROR
+    DB_ERROR,
 }
