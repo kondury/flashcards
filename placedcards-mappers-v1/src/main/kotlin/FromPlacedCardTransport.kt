@@ -5,6 +5,7 @@ import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
 import com.github.kondury.flashcards.placedcards.common.models.*
 import com.github.kondury.flashcards.placedcards.mappers.v1.exceptions.UnknownRequestClass
 
+
 fun PlacedCardContext.fromTransport(request: IRequest) = when (request) {
     is PlacedCardCreateRequest -> fromPlacedCardCreateRequest(request)
     is PlacedCardDeleteRequest -> fromPlacedCardDeleteRequest(request)
@@ -87,3 +88,5 @@ private fun SearchStrategy?.fromTransport(): FcSearchStrategy = when (this) {
     SearchStrategy.EARLIEST_REVIEWED -> FcSearchStrategy.EARLIEST_REVIEWED
     null -> FcSearchStrategy.NONE
 }
+
+private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
