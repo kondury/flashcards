@@ -4,6 +4,7 @@ import com.github.kondury.flashcards.cards.api.v1.models.*
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardCommand
+import com.github.kondury.flashcards.cards.common.models.CardId
 import com.github.kondury.flashcards.cards.mappers.v1.exceptions.UnknownRequestClass
 
 fun CardContext.fromTransport(request: IRequest) = when (request) {
@@ -46,4 +47,6 @@ private fun CardCreateResource.toInternal(): Card = Card(
 )
 
 private fun String?.toCardWithId() = Card(id = this.toCardId())
+
+private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
 

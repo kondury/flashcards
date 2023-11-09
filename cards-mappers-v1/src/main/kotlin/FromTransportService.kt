@@ -8,6 +8,7 @@ import com.github.kondury.flashcards.cards.common.models.FcRequestId
 import com.github.kondury.flashcards.cards.common.models.FcWorkMode
 import com.github.kondury.flashcards.cards.common.stubs.FcStub
 
+
 internal fun IRequest?.requestId() = this?.requestId?.let { FcRequestId(it) } ?: FcRequestId.NONE
 
 internal fun DebugResource?.transportToWorkMode(): FcWorkMode = when (this?.mode) {
