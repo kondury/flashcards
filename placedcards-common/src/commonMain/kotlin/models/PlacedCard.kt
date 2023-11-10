@@ -10,5 +10,11 @@ data class PlacedCard(
     val cardId: CardId = CardId.NONE,
     val createdOn: Instant = Instant.NONE,
     val updatedOn: Instant = Instant.NONE
-)
+) {
+    companion object {
+        val EMPTY = PlacedCard()
+    }
+}
 
+fun PlacedCard.isEmpty() = this == PlacedCard.EMPTY
+fun PlacedCard.isNotEmpty() = this != PlacedCard.EMPTY
