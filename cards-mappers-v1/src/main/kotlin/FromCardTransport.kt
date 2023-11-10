@@ -20,7 +20,7 @@ fun CardContext.fromCardCreateRequest(request: CardCreateRequest) {
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    requestCard = request.card?.toInternal() ?: Card()
+    requestCard = request.card?.toInternal() ?: Card.EMPTY
 }
 
 fun CardContext.fromCardDeleteRequest(request: CardDeleteRequest) {
