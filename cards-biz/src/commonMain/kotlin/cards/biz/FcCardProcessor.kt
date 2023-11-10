@@ -1,17 +1,17 @@
 package com.github.kondury.flashcards.cards.biz
 
 import com.github.kondury.flashcards.cards.biz.stub.*
+import com.github.kondury.flashcards.cards.biz.validation.*
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.CardCommand.*
 import com.github.kondury.flashcards.cor.dsl.rootChain
 
-
 class FcCardProcessor {
-    suspend fun exec(ctx: CardContext) = businessChain.exec(ctx)
+    suspend fun exec(context: CardContext) = businessChain.exec(context)
 
     companion object {
         private val businessChain = rootChain<CardContext> {
-            initState("CardContext status initialization")
+            initState()
 
             operation(CREATE_CARD) {
                 stubs(CREATE_CARD) {
@@ -21,6 +21,15 @@ class FcCardProcessor {
                     stubDbError(CREATE_CARD)
                     stubNoCase(CREATE_CARD)
                 }
+
+                validations(CREATE_CARD) {
+                    beforeValidation(CREATE_CARD)
+                    validateCardIdIsEmpty()
+                    validateFrontIsNotEmpty()
+                    validateBackIsNotEmpty()
+                    afterValidation(CREATE_CARD)
+                }
+                finish(CREATE_CARD)
             }
 
             operation(READ_CARD) {
@@ -31,6 +40,13 @@ class FcCardProcessor {
                     stubDbError(READ_CARD)
                     stubNoCase(READ_CARD)
                 }
+                validations(READ_CARD) {
+                    beforeValidation(READ_CARD)
+                    validateCardIdIsNotEmpty()
+                    validateCardIdHasProperFormat()
+                    afterValidation(READ_CARD)
+                }
+                finish(READ_CARD)
             }
 
             operation(DELETE_CARD) {
@@ -40,10 +56,20 @@ class FcCardProcessor {
                     stubDbError(DELETE_CARD)
                     stubNoCase(DELETE_CARD)
                 }
+                validations(DELETE_CARD) {
+                    beforeValidation(DELETE_CARD)
+                    validateCardIdIsNotEmpty()
+                    validateCardIdHasProperFormat()
+                    afterValidation(DELETE_CARD)
+                }
+                finish(DELETE_CARD)
             }
 
         }.build()
     }
 }
+
+
+
 
 

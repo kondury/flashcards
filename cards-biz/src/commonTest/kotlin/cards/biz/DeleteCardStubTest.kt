@@ -3,8 +3,9 @@ package com.github.kondury.flashcards.cards.biz
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.CardId
+import com.github.kondury.flashcards.cards.common.models.isEmpty
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 
 class DeleteCardStubTest {
@@ -17,7 +18,7 @@ class DeleteCardStubTest {
 
     @Test
     fun deleteCardSuccess() = testSuccessStub(processor, CardCommand.DELETE_CARD, requestCard) { context ->
-        assertEquals(Card(), context.responseCard)
+        assertTrue(context.responseCard.isEmpty())
     }
 
     @Test

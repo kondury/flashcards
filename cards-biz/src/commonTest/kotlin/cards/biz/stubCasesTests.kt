@@ -6,6 +6,7 @@ import com.github.kondury.flashcards.cards.common.stubs.FcStub
 import kotlinx.coroutines.test.runTest
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 internal fun testSuccessStub(
@@ -81,7 +82,7 @@ private fun runErrorStubTest(
     assertError: (FcError) -> Unit
 ) = runStubTest(processor, command, stub, requestCard) { context ->
     with(context) {
-        assertEquals(Card(), responseCard)
+        assertTrue(responseCard.isEmpty())
         assertEquals(FcState.FAILING, state)
         assertEquals(1, errors.size)
     }

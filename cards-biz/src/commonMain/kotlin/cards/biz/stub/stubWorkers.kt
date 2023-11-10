@@ -1,5 +1,6 @@
 package com.github.kondury.flashcards.cards.biz.stub
 
+import com.github.kondury.flashcards.cards.biz.fail
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.FcError
@@ -48,10 +49,7 @@ internal fun CorChainDsl<CardContext>.stubError(
     }
 }
 
-private fun CardContext.fail(error: FcError) {
-    state = FcState.FAILING
-    errors.add(error)
-}
-
 private fun getStubWorkerTitle(command: CardCommand, stubCase: FcStub): String =
     "Stub command ${command.name} with ${stubCase.name} result"
+
+
