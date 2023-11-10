@@ -19,11 +19,10 @@ fun CardContext.toLog(logId: String) = LogModel(
 )
 
 private fun CardContext.toCardLogModel(): CardLogModel? {
-    val cardNone = Card()
     return CardLogModel(
         operation = command.toLog(),
-        requestCard = requestCard.takeIf { it != cardNone }?.toLog(),
-        responseCard = responseCard.takeIf { it != cardNone }?.toLog(),
+        requestCard = requestCard.takeIf { it.isNotEmpty() }?.toLog(),
+        responseCard = responseCard.takeIf { it.isNotEmpty() }?.toLog(),
     ).takeIf { it != CardLogModel() }
 }
 
@@ -35,14 +34,16 @@ private fun CardCommand.toLog(): Operation? = when (this) {
 }
 
 private fun FcError.toLog() = ErrorLogModel(
-    message = message.takeIf { it.isNotBlank() },
-    field = field.takeIf { it.isNotBlank() },
-    code = code.takeIf { it.isNotBlank() },
+    message = message.takeIfNonBlank(),
+    field = field.takeIfNonBlank(),
+    code = code.takeIfNonBlank(),
     level = level.name,
 )
 
 private fun Card.toLog() = CardLog(
-    id = id.takeIf { it != CardId.NONE }?.asString(),
-    front = front.takeIf { it.isNotBlank() },
-    back = back.takeIf { it.isNotBlank() },
+    id = id.takeIf { it.isNotEmpty() }?.asString(),
+    front = front.takeIfNonBlank(),
+    back = back.takeIfNonBlank(),
 )
+
+private fun String.takeIfNonBlank(): String? = this.takeIf { it.isNotBlank() }

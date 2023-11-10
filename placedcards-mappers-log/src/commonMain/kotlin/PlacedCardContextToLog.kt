@@ -19,12 +19,12 @@ fun PlacedCardContext.toLog(logId: String) = LogModel(
 )
 
 private fun PlacedCardContext.toPlacedCardLogModel(): PlacedCardLogModel? {
-    val placedCardNone = PlacedCard()
+
     return PlacedCardLogModel(
         operation = command.toLog(),
-        requestPlacedCard = requestPlacedCard.takeIf { it != placedCardNone }?.toLog(),
-        responsePlacedCard = responsePlacedCard.takeIf { it != placedCardNone }?.toLog(),
-        requestOwnerId = requestOwnerId.takeIf { it != UserId.NONE }?.asString(),
+        requestPlacedCard = requestPlacedCard.takeIf { it.isNotEmpty() }?.toLog(),
+        responsePlacedCard = responsePlacedCard.takeIf { it.isNotEmpty() }?.toLog(),
+        requestOwnerId = requestOwnerId.takeIf { it.isNotEmpty() }?.asString(),
         requestWorkBox = requestWorkBox.takeIf { it != FcBox.NONE }?.name,
         requestBoxAfter = requestBoxAfter.takeIf { it != FcBox.NONE }?.name,
         requestSearchStrategy = requestSearchStrategy.takeIf { it != FcSearchStrategy.NONE }?.name
@@ -48,10 +48,10 @@ private fun FcError.toLog() = ErrorLogModel(
 )
 
 private fun PlacedCard.toLog() = PlacedCardLog(
-    id = id.takeIf { it != PlacedCardId.NONE }?.asString(),
-    ownerId = ownerId.takeIf { it != UserId.NONE }?.asString(),
+    id = id.takeIf { it.isNotEmpty() }?.asString(),
+    ownerId = ownerId.takeIf { it.isNotEmpty() }?.asString(),
     box = box.takeIf { it != FcBox.NONE }?.name,
-    cardId = cardId.takeIf { it != CardId.NONE }?.asString(),
+    cardId = cardId.takeIf { it.isNotEmpty() }?.asString(),
     createdOn = createdOn.toString(),
     updatedOn = updatedOn.toString(),
 )

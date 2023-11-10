@@ -33,7 +33,7 @@ fun CardContext.toCardDeleteResponse() = CardDeleteResponse(
 )
 
 private fun Card.toCardResponseResource() = CardResponseResource(
-    id = id.takeIf { it != CardId.NONE }?.asString(),
+    id = id.takeIf { it.isNotEmpty() }?.asString(),
     front = front.takeIf { it.isNotBlank() },
     back = back.takeIf { it.isNotBlank() },
 )

@@ -16,7 +16,7 @@ data class PlacedCardContext(
     var timeStart: Instant = Instant.NONE,
 
     // before-known placed card data (if exists) for create, delete and move commands
-    var requestPlacedCard: PlacedCard = PlacedCard(),
+    var requestPlacedCard: PlacedCard = PlacedCard.EMPTY,
     // init/select commands
     var requestOwnerId: UserId = UserId.NONE,
     // init/select commands
@@ -27,6 +27,6 @@ data class PlacedCardContext(
     var requestSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
 
     // after request handling placed card data for create, move and select commands
-    var responsePlacedCard: PlacedCard = PlacedCard(),
+    var responsePlacedCard: PlacedCard = PlacedCard.EMPTY,
 )
 

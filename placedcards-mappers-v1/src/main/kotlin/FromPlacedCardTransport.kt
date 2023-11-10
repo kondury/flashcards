@@ -21,7 +21,7 @@ fun PlacedCardContext.fromPlacedCardCreateRequest(request: PlacedCardCreateReque
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    requestPlacedCard = request.placedCard?.toInternal() ?: PlacedCard()
+    requestPlacedCard = request.placedCard?.toInternal() ?: PlacedCard.EMPTY
 }
 
 fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteRequest) {

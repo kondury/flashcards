@@ -48,9 +48,9 @@ fun PlacedCardContext.toPlacedCardInitResponse() = PlacedCardInitResponse(
 )
 
 fun PlacedCard.toPlacedCardResponseResource() = PlacedCardResponseResource(
-    id = id.takeIf { it != PlacedCardId.NONE }?.asString(),
-    ownerId = ownerId.takeIf { it != UserId.NONE }?.asString(),
-    cardId = cardId.takeIf { it != CardId.NONE }?.asString(),
+    id = id.takeIf { it.isNotEmpty() }?.asString(),
+    ownerId = ownerId.takeIf { it.isNotEmpty() }?.asString(),
+    cardId = cardId.takeIf { it.isNotEmpty() }?.asString(),
     box = box.toTransportPlacedCard(),
     createdOn = createdOn.toString(),
     updatedOn = updatedOn.toString(),

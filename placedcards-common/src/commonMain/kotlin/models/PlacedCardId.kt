@@ -10,3 +10,6 @@ value class PlacedCardId(private val id: String) {
         val NONE = PlacedCardId("")
     }
 }
+
+fun PlacedCardId.isEmpty() = this == PlacedCardId.NONE
+fun PlacedCardId.isNotEmpty() = this != PlacedCardId.NONE

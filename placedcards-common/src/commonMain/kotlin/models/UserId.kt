@@ -10,3 +10,5 @@ value class UserId(private val id: String) {
         val NONE = UserId("")
     }
 }
+
+fun UserId.isNotEmpty() = this != UserId.NONE
