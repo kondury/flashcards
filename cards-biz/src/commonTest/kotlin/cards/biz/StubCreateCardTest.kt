@@ -8,7 +8,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-class CreateCardStubTest {
+class StubCreateCardTest {
 
     companion object {
         private val processor = FcCardProcessor()

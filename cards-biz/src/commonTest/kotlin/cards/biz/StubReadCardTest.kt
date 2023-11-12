@@ -7,7 +7,7 @@ import com.github.kondury.flashcards.cards.stubs.CardStub
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ReadCardStubTest {
+class StubReadCardTest {
     companion object {
         private val processor = FcCardProcessor()
         private val id = CardId("100")

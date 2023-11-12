@@ -8,7 +8,7 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 
-class DeleteCardStubTest {
+class StubDeleteCardTest {
 
     companion object {
         private val processor = FcCardProcessor()
