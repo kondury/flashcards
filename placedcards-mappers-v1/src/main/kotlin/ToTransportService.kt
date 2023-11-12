@@ -8,6 +8,7 @@ import com.github.kondury.flashcards.placedcards.common.models.FcState
 internal fun FcState.toResult(): ResponseResult? = when (this) {
     FcState.RUNNING -> ResponseResult.SUCCESS
     FcState.FAILING -> ResponseResult.ERROR
+    FcState.FINISHING -> ResponseResult.SUCCESS
     FcState.NONE -> null
 }
 
