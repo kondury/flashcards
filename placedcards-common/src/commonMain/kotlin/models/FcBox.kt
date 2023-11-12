@@ -6,3 +6,5 @@ enum class FcBox {
     REPEAT,
     FINISHED
 }
+
+inline fun FcBox.isNotEmpty() = this != FcBox.NONE

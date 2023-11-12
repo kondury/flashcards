@@ -10,3 +10,5 @@ value class FcRequestId(private val id: String) {
         val NONE = FcRequestId("")
     }
 }
+
+inline fun FcRequestId.isNotEmpty() = this != FcRequestId.NONE

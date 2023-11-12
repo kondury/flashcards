@@ -13,7 +13,7 @@ fun CardContext.toLog(logId: String) = LogModel(
     messageTime = Clock.System.now().toString(),
     logId = logId,
     source = "flashcards-cards",
-    requestId = requestId.takeIf { it != FcRequestId.NONE }?.asString(),
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     card = toCardLogModel(),
     errors = errors.map { it.toLog() },
 )
@@ -21,8 +21,8 @@ fun CardContext.toLog(logId: String) = LogModel(
 private fun CardContext.toCardLogModel(): CardLogModel? {
     return CardLogModel(
         operation = command.toLog(),
-        requestCard = requestCard.takeIf { it.isNotEmpty() }?.toLog(),
-        responseCard = responseCard.takeIf { it.isNotEmpty() }?.toLog(),
+        requestCard = requestCard.takeNonEmptyOrNull()?.toLog(),
+        responseCard = responseCard.takeNonEmptyOrNull()?.toLog(),
     ).takeIf { it != CardLogModel() }
 }
 
@@ -34,16 +34,16 @@ private fun CardCommand.toLog(): Operation? = when (this) {
 }
 
 private fun FcError.toLog() = ErrorLogModel(
-    message = message.takeIfNonBlank(),
-    field = field.takeIfNonBlank(),
-    code = code.takeIfNonBlank(),
+    message = message.takeNonBlankOrNull(),
+    field = field.takeNonBlankOrNull(),
+    code = code.takeNonBlankOrNull(),
     level = level.name,
 )
 
 private fun Card.toLog() = CardLog(
-    id = id.takeIf { it.isNotEmpty() }?.asString(),
-    front = front.takeIfNonBlank(),
-    back = back.takeIfNonBlank(),
+    id = id.takeNonEmptyOrNull()?.asString(),
+    front = front.takeNonBlankOrNull(),
+    back = back.takeNonBlankOrNull(),
 )
 
-private fun String.takeIfNonBlank(): String? = this.takeIf { it.isNotBlank() }
+private inline fun Card.takeNonEmptyOrNull(): Card? = this.takeIf { it.isNotEmpty() }

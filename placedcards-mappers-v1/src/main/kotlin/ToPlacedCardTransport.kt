@@ -15,42 +15,42 @@ fun PlacedCardContext.toTransportPlacedCard(): IResponse = when (val cmd = comma
 }
 
 fun PlacedCardContext.toPlacedCardCreateResponse() = PlacedCardCreateResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
     placedCard = responsePlacedCard.toPlacedCardResponseResource(),
 )
 
 fun PlacedCardContext.toPlacedCardMoveResponse() = PlacedCardMoveResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
     placedCard = responsePlacedCard.toPlacedCardResponseResource(),
 )
 
 fun PlacedCardContext.toPlacedCardDeleteResponse() = PlacedCardDeleteResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
 )
 
 fun PlacedCardContext.toPlacedCardSelectResponse() = PlacedCardSelectResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
     placedCard = responsePlacedCard.toPlacedCardResponseResource(),
 )
 
 fun PlacedCardContext.toPlacedCardInitResponse() = PlacedCardInitResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
 )
 
 fun PlacedCard.toPlacedCardResponseResource() = PlacedCardResponseResource(
-    id = id.takeIf { it.isNotEmpty() }?.asString(),
-    ownerId = ownerId.takeIf { it.isNotEmpty() }?.asString(),
-    cardId = cardId.takeIf { it.isNotEmpty() }?.asString(),
+    id = id.takeNonEmptyOrNull()?.asString(),
+    ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
+    cardId = cardId.takeNonEmptyOrNull()?.asString(),
     box = box.toTransportPlacedCard(),
     createdOn = createdOn.toString(),
     updatedOn = updatedOn.toString(),

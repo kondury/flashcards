@@ -5,3 +5,5 @@ enum class FcSearchStrategy {
     EARLIEST_CREATED,
     EARLIEST_REVIEWED
 }
+
+inline fun FcSearchStrategy.isNotEmpty() = this != FcSearchStrategy.NONE

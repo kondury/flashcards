@@ -17,8 +17,8 @@ internal fun List<FcError>.toTransportErrors(): List<Error>? = this
     .takeIf { it.isNotEmpty() }
 
 internal fun FcError.toTransportError() = Error(
-    code = code.takeIf { it.isNotBlank() },
-    group = group.takeIf { it.isNotBlank() },
-    field = field.takeIf { it.isNotBlank() },
-    message = message.takeIf { it.isNotBlank() },
+    code = code.takeNonBlankOrNull(),
+    group = group.takeNonBlankOrNull(),
+    field = field.takeNonBlankOrNull(),
+    message = message.takeNonBlankOrNull(),
 )
