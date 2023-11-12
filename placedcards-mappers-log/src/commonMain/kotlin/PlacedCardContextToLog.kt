@@ -13,23 +13,21 @@ fun PlacedCardContext.toLog(logId: String) = LogModel(
     messageTime = Clock.System.now().toString(),
     logId = logId,
     source = "flashcards-placedcards",
-    requestId = requestId.takeIf { it != FcRequestId.NONE }?.asString(),
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     placedCard = toPlacedCardLogModel(),
     errors = errors.map { it.toLog() },
 )
 
-private fun PlacedCardContext.toPlacedCardLogModel(): PlacedCardLogModel? {
-
-    return PlacedCardLogModel(
+private fun PlacedCardContext.toPlacedCardLogModel(): PlacedCardLogModel? =
+    PlacedCardLogModel(
         operation = command.toLog(),
-        requestPlacedCard = requestPlacedCard.takeIf { it.isNotEmpty() }?.toLog(),
-        responsePlacedCard = responsePlacedCard.takeIf { it.isNotEmpty() }?.toLog(),
-        requestOwnerId = requestOwnerId.takeIf { it.isNotEmpty() }?.asString(),
-        requestWorkBox = requestWorkBox.takeIf { it != FcBox.NONE }?.name,
-        requestBoxAfter = requestBoxAfter.takeIf { it != FcBox.NONE }?.name,
-        requestSearchStrategy = requestSearchStrategy.takeIf { it != FcSearchStrategy.NONE }?.name
+        requestPlacedCard = requestPlacedCard.takeNonEmptyOrNull()?.toLog(),
+        responsePlacedCard = responsePlacedCard.takeNonEmptyOrNull()?.toLog(),
+        requestOwnerId = requestOwnerId.takeNonEmptyOrNull()?.asString(),
+        requestWorkBox = requestWorkBox.takeNonEmptyOrNull()?.name,
+        requestBoxAfter = requestBoxAfter.takeNonEmptyOrNull()?.name,
+        requestSearchStrategy = requestSearchStrategy.takeNonEmptyOrNull()?.name
     ).takeIf { it != PlacedCardLogModel() }
-}
 
 private fun PlacedCardCommand.toLog(): Operation? = when (this) {
     PlacedCardCommand.CREATE_PLACED_CARD -> Operation.CREATE
@@ -41,17 +39,21 @@ private fun PlacedCardCommand.toLog(): Operation? = when (this) {
 }
 
 private fun FcError.toLog() = ErrorLogModel(
-    message = message.takeIf { it.isNotBlank() },
-    field = field.takeIf { it.isNotBlank() },
-    code = code.takeIf { it.isNotBlank() },
+    message = message.takeNonBlankOrNull(),
+    field = field.takeNonBlankOrNull(),
+    code = code.takeNonBlankOrNull(),
     level = level.name,
 )
 
 private fun PlacedCard.toLog() = PlacedCardLog(
-    id = id.takeIf { it.isNotEmpty() }?.asString(),
-    ownerId = ownerId.takeIf { it.isNotEmpty() }?.asString(),
-    box = box.takeIf { it != FcBox.NONE }?.name,
-    cardId = cardId.takeIf { it.isNotEmpty() }?.asString(),
+    id = id.takeNonEmptyOrNull()?.asString(),
+    ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
+    box = box.takeNonEmptyOrNull()?.name,
+    cardId = cardId.takeNonEmptyOrNull()?.asString(),
     createdOn = createdOn.toString(),
     updatedOn = updatedOn.toString(),
 )
+
+private inline fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private inline fun FcSearchStrategy.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private inline fun FcBox.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }

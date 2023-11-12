@@ -10,5 +10,5 @@ data class Card(
     }
 }
 
-fun Card.isEmpty() = this == Card.EMPTY
-fun Card.isNotEmpty() = this != Card.EMPTY
+inline fun Card.isEmpty() = this == Card.EMPTY
+inline fun Card.isNotEmpty() = this != Card.EMPTY

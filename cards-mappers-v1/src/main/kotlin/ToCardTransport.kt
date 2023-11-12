@@ -13,28 +13,28 @@ fun CardContext.toTransportCard(): IResponse = when (val cmd = command) {
 }
 
 fun CardContext.toCardCreateResponse() = CardCreateResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
     card = responseCard.toCardResponseResource(),
 )
 
 fun CardContext.toCardReadResponse() = CardReadResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
     card = responseCard.toCardResponseResource(),
 )
 
 fun CardContext.toCardDeleteResponse() = CardDeleteResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    requestId = requestId.takeNonEmptyOrNull()?.asString(),
     result = state.toResult(),
     errors = errors.toTransportErrors(),
 )
 
 private fun Card.toCardResponseResource() = CardResponseResource(
-    id = id.takeIf { it.isNotEmpty() }?.asString(),
-    front = front.takeIf { it.isNotBlank() },
-    back = back.takeIf { it.isNotBlank() },
+    id = id.takeNonEmptyOrNull()?.asString(),
+    front = front.takeNonBlankOrNull(),
+    back = back.takeNonBlankOrNull(),
 )
 
