@@ -30,7 +30,7 @@ fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteReque
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    requestPlacedCard = request.placedCard?.id.toPlacedCardWithId()
+    requestPlacedCardId = request.placedCard?.id.toPlacedCardId()
 }
 
 fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) {
@@ -39,7 +39,7 @@ fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) 
     stubCase = request.debug.transportToStubCase()
     requestId = request.requestId()
 
-    requestPlacedCard = request.move?.id.toPlacedCardWithId()
+    requestPlacedCardId = request.move?.id.toPlacedCardId()
     requestBoxAfter = request.move?.box.fromTransport()
 }
 
@@ -70,11 +70,11 @@ private fun PlacedCardCreateResource.toInternal(): PlacedCard = PlacedCard(
     cardId = this.cardId.toCardId(),
 )
 
+//private fun String?.toPlacedCardWithId() = PlacedCard(id = this.toPlacedCardId())
+
 private fun String?.toPlacedCardId() = this?.let { PlacedCardId(it) } ?: PlacedCardId.NONE
-
-private fun String?.toPlacedCardWithId() = PlacedCard(id = this.toPlacedCardId())
-
 private fun String?.toUserId() = this?.let { UserId(it) } ?: UserId.NONE
+private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
 
 private fun Box?.fromTransport(): FcBox = when (this) {
     Box.NEW -> FcBox.NEW
@@ -89,4 +89,4 @@ private fun SearchStrategy?.fromTransport(): FcSearchStrategy = when (this) {
     null -> FcSearchStrategy.NONE
 }
 
-private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
+
