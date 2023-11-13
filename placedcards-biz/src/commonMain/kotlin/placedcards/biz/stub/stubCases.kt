@@ -111,7 +111,7 @@ internal fun CorChainDsl<PlacedCardContext>.stubNotFound(command: PlacedCardComm
             group = "db-error-stub",
             code = "db-error-stub-not-found",
             field = "",
-            message = "Card is not found"
+            message = "not found"
         )
     )
 
