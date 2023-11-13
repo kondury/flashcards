@@ -60,6 +60,4 @@ class ValidationCreateCardTest {
     @Test
     fun `createCard when back is empty then validation fails`() =
         testBackIsNotEmptyValidation(processor, CardCommand.CREATE_CARD)
-
-
 }

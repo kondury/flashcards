@@ -1,8 +1,8 @@
 package com.github.kondury.flashcards.cards.biz.validation
 
 import com.github.kondury.flashcards.cards.biz.fail
+import com.github.kondury.flashcards.cards.biz.validationError
 import com.github.kondury.flashcards.cards.common.CardContext
-import com.github.kondury.flashcards.cards.common.models.FcError
 import com.github.kondury.flashcards.cards.common.models.FcError.Level
 import com.github.kondury.flashcards.cards.common.models.isEmpty
 import com.github.kondury.flashcards.cards.common.models.isNotEmpty
@@ -90,15 +90,4 @@ fun CorChainDsl<CardContext>.validateCardIdHasProperFormat() = worker {
     }
 }
 
-private fun validationError(
-    field: String,
-    violationCode: String,
-    description: String,
-    level: Level = Level.INFO,
-) = FcError(
-    code = "validation-$field-$violationCode",
-    field = field,
-    group = "validation",
-    message = "Validation error for field $field: $description",
-    level = level,
-)
+
