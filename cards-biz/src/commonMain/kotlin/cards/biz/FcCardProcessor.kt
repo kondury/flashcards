@@ -16,6 +16,7 @@ class FcCardProcessor {
             operation(CREATE_CARD) {
                 stubs(CREATE_CARD) {
                     stubCreateCardSuccess()
+                    stubValidationWrongCardId(CREATE_CARD)
                     stubValidationWrongFrontSide(CREATE_CARD)
                     stubValidationWrongBackSide(CREATE_CARD)
                     stubDbError(CREATE_CARD)
