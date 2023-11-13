@@ -20,13 +20,13 @@ class StubReadCardTest {
     }
 
     @Test
-    fun wrongCardIdError() = testWrongCardIdErrorStub(processor, CardCommand.READ_CARD, requestCard)
+    fun wrongCardIdError() = testWrongCardIdErrorStub(processor, CardCommand.READ_CARD)
 
     @Test
-    fun databaseError() = testDatabaseErrorStub(processor, CardCommand.READ_CARD, requestCard)
+    fun databaseError() = testDatabaseErrorStub(processor, CardCommand.READ_CARD)
 
     @Test
-    fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.READ_CARD, requestCard)
+    fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.READ_CARD)
 
-    @Test fun stubNotFoundError() = testNotFoundStubError(processor, CardCommand.READ_CARD, requestCard)
+    @Test fun stubNotFoundError() = testNotFoundStubError(processor, CardCommand.READ_CARD)
 }

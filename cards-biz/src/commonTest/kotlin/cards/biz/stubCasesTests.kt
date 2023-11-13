@@ -20,8 +20,8 @@ internal fun testSuccessStub(
     assertSuccessSpecific(context)
 }
 
-internal fun testWrongCardIdErrorStub(processor: FcCardProcessor, command: CardCommand, requestCard: Card) =
-    runErrorStubTest(processor, command, FcStub.WRONG_CARD_ID, requestCard) { error ->
+internal fun testWrongCardIdErrorStub(processor: FcCardProcessor, command: CardCommand) =
+    runErrorStubTest(processor, command, FcStub.WRONG_CARD_ID) { error ->
         with(error) {
             assertEquals("validation", group)
             assertEquals("validation-id", code)
@@ -29,8 +29,8 @@ internal fun testWrongCardIdErrorStub(processor: FcCardProcessor, command: CardC
         }
     }
 
-internal fun testWrongFrontSideErrorStub(processor: FcCardProcessor, command: CardCommand, requestCard: Card) =
-    runErrorStubTest(processor, command, FcStub.WRONG_FRONT_SIDE, requestCard) { error ->
+internal fun testWrongFrontSideErrorStub(processor: FcCardProcessor, command: CardCommand) =
+    runErrorStubTest(processor, command, FcStub.WRONG_FRONT_SIDE) { error ->
         with(error) {
             assertEquals("validation", group)
             assertEquals("validation-front", code)
@@ -38,8 +38,8 @@ internal fun testWrongFrontSideErrorStub(processor: FcCardProcessor, command: Ca
         }
     }
 
-internal fun testWrongBackSideErrorStub(processor: FcCardProcessor, command: CardCommand, requestCard: Card) =
-    runErrorStubTest(processor, command, FcStub.WRONG_BACK_SIDE, requestCard) { error ->
+internal fun testWrongBackSideErrorStub(processor: FcCardProcessor, command: CardCommand) =
+    runErrorStubTest(processor, command, FcStub.WRONG_BACK_SIDE) { error ->
         with(error) {
             assertEquals("validation", group)
             assertEquals("validation-back", code)
@@ -47,8 +47,8 @@ internal fun testWrongBackSideErrorStub(processor: FcCardProcessor, command: Car
         }
     }
 
-internal fun testNotFoundStubError(processor: FcCardProcessor, command: CardCommand, requestCard: Card) =
-    runErrorStubTest(processor, command, FcStub.NOT_FOUND, requestCard) { error ->
+internal fun testNotFoundStubError(processor: FcCardProcessor, command: CardCommand) =
+    runErrorStubTest(processor, command, FcStub.NOT_FOUND) { error ->
         with(error) {
             assertEquals("db-error", group)
             assertEquals("db-error-card-not-found", code)
@@ -56,8 +56,8 @@ internal fun testNotFoundStubError(processor: FcCardProcessor, command: CardComm
         }
     }
 
-internal fun testDatabaseErrorStub(processor: FcCardProcessor, command: CardCommand, requestCard: Card) =
-    runErrorStubTest(processor, command, FcStub.DB_ERROR, requestCard) { error ->
+internal fun testDatabaseErrorStub(processor: FcCardProcessor, command: CardCommand) =
+    runErrorStubTest(processor, command, FcStub.DB_ERROR) { error ->
         with(error) {
             assertEquals("db-error", group)
             assertEquals("db-error-general", code)
@@ -65,8 +65,8 @@ internal fun testDatabaseErrorStub(processor: FcCardProcessor, command: CardComm
         }
     }
 
-internal fun testNoCaseStubError(processor: FcCardProcessor, command: CardCommand, requestCard: Card) =
-    runErrorStubTest(processor, command, FcStub.NONE, requestCard) { error ->
+internal fun testNoCaseStubError(processor: FcCardProcessor, command: CardCommand) =
+    runErrorStubTest(processor, command, FcStub.NONE) { error ->
         with(error) {
             assertEquals("stub-error", group)
             assertEquals("unsupported-case-stub", code)
@@ -78,9 +78,8 @@ private fun runErrorStubTest(
     processor: FcCardProcessor,
     command: CardCommand,
     stub: FcStub,
-    requestCard: Card,
     assertError: (FcError) -> Unit
-) = runStubTest(processor, command, stub, requestCard) { context ->
+) = runStubTest(processor, command, stub) { context ->
     with(context) {
         assertTrue(responseCard.isEmpty())
         assertEquals(FcState.FAILING, state)
@@ -94,7 +93,7 @@ private fun runStubTest(
     processor: FcCardProcessor,
     command: CardCommand,
     stub: FcStub,
-    requestCard: Card,
+    requestCard: Card = Card.EMPTY,
     assertions: (CardContext) -> Unit
 ) = runTest {
     val context = CardContext(

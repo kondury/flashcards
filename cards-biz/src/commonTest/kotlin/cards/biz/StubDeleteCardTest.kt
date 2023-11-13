@@ -22,11 +22,11 @@ class StubDeleteCardTest {
     }
 
     @Test
-    fun wrongCardIdError() = testWrongCardIdErrorStub(processor, CardCommand.DELETE_CARD, requestCard)
+    fun wrongCardIdError() = testWrongCardIdErrorStub(processor, CardCommand.DELETE_CARD)
 
     @Test
-    fun databaseError() = testDatabaseErrorStub(processor, CardCommand.DELETE_CARD, requestCard)
+    fun databaseError() = testDatabaseErrorStub(processor, CardCommand.DELETE_CARD)
 
     @Test
-    fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.DELETE_CARD, requestCard)
+    fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.DELETE_CARD)
 }

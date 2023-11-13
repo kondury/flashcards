@@ -34,14 +34,14 @@ class StubCreateCardTest {
     }
 
     @Test
-    fun wrongFrontSideError() = testWrongFrontSideErrorStub(processor, CardCommand.CREATE_CARD, requestCard)
+    fun wrongFrontSideError() = testWrongFrontSideErrorStub(processor, CardCommand.CREATE_CARD)
 
     @Test
-    fun wrongBackSideError() = testWrongBackSideErrorStub(processor, CardCommand.CREATE_CARD, requestCard)
+    fun wrongBackSideError() = testWrongBackSideErrorStub(processor, CardCommand.CREATE_CARD)
 
     @Test
-    fun databaseError() = testDatabaseErrorStub(processor, CardCommand.CREATE_CARD, requestCard)
+    fun databaseError() = testDatabaseErrorStub(processor, CardCommand.CREATE_CARD)
 
     @Test
-    fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.CREATE_CARD, requestCard)
+    fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.CREATE_CARD)
 }
