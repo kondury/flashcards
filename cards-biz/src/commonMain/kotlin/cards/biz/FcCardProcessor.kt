@@ -44,7 +44,7 @@ class FcCardProcessor {
                 validations(READ_CARD) {
                     beforeValidation(READ_CARD)
                     validateCardIdIsNotEmpty()
-                    validateCardIdHasProperFormat()
+                    validateCardIdMatchesFormat()
                     afterValidation(READ_CARD)
                 }
                 finish(READ_CARD)
@@ -60,7 +60,7 @@ class FcCardProcessor {
                 validations(DELETE_CARD) {
                     beforeValidation(DELETE_CARD)
                     validateCardIdIsNotEmpty()
-                    validateCardIdHasProperFormat()
+                    validateCardIdMatchesFormat()
                     afterValidation(DELETE_CARD)
                 }
                 finish(DELETE_CARD)

@@ -9,6 +9,8 @@ import com.github.kondury.flashcards.cards.common.models.isNotEmpty
 import com.github.kondury.flashcards.cor.dsl.CorChainDsl
 import com.github.kondury.flashcards.cor.dsl.worker
 
+private const val ID_FORMAT_PATTERN = "^[0-9a-zA-Z-]+$"
+
 internal fun CorChainDsl<CardContext>.validateFrontIsNotEmpty() = worker {
     this.title = "Validating: front is not empty"
     activeIf { validatingCard.front.isEmpty() }
@@ -69,12 +71,9 @@ internal fun CorChainDsl<CardContext>.validateCardIdIsEmpty() = worker {
     }
 }
 
-fun CorChainDsl<CardContext>.validateCardIdHasProperFormat() = worker {
+fun CorChainDsl<CardContext>.validateCardIdMatchesFormat() = worker {
     this.title = "Validating: card id has proper format"
-    activeIf {
-        val regex = Regex("^[0-9a-zA-Z-]+$")
-        validatingCard.id.isNotEmpty() && !validatingCard.id.asString().matches(regex)
-    }
+    activeIf { validatingCard.id.isNotEmpty() && !validatingCard.id.asString().matches(Regex(ID_FORMAT_PATTERN)) }
     handle {
         val encodedId = validatingCard.id.asString()
 //            .replace("<", "&lt;")
