@@ -10,9 +10,9 @@ import kotlin.test.fail
 internal fun runSuccessfulValidationTest(
     processor: FcCardProcessor,
     command: CardCommand,
-    requestCard: Card,
+    configureContext: CardContext.() -> Unit,
     assertSpecific: (CardContext) -> Unit
-) = runValidationTest(processor, command, requestCard) { context ->
+) = runValidationTest(processor, command, configureContext) { context ->
     assertEquals(FcState.FINISHING, context.state)
     assertTrue(context.validatedCard.isNotEmpty())
     assertTrue(context.errors.isEmpty())
@@ -22,9 +22,9 @@ internal fun runSuccessfulValidationTest(
 internal fun runSingleErrorValidationTest(
     processor: FcCardProcessor,
     command: CardCommand,
-    requestCard: Card,
+    configureContext: CardContext.() -> Unit,
     assertError: (FcError) -> Unit
-) = runValidationTest(processor, command, requestCard) { context ->
+) = runValidationTest(processor, command, configureContext) { context ->
     assertEquals(FcState.FAILING, context.state)
     assertTrue(context.validatedCard.isEmpty())
 
@@ -37,14 +37,13 @@ internal fun runSingleErrorValidationTest(
 internal fun runValidationTest(
     processor: FcCardProcessor,
     command: CardCommand,
-    requestCard: Card,
+    configureContext: CardContext.() -> Unit,
     assertions: (CardContext) -> Unit
 ) = runTest {
     val context = CardContext(
         command = command,
         workMode = FcWorkMode.TEST,
-        requestCard = requestCard
-    )
+    ).apply(configureContext)
     processor.exec(context)
     assertions(context)
 }

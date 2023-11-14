@@ -13,19 +13,18 @@ class StubCreateCardTest {
     companion object {
         private val processor = FcCardProcessor()
 
-        private val id = CardId("100")
+        private val cardId = CardId("100")
         private const val FRONT = "front text"
         private const val BACK = "back text"
 
-        private val requestCard = Card(
-            id = id,
-            front = FRONT,
-            back = BACK
-        )
     }
 
     @Test
-    fun createCardSuccess() = testSuccessStub(processor, CardCommand.CREATE_CARD, requestCard) { context ->
+    fun createCardSuccess() = testSuccessStub(
+        processor = processor,
+        command = CardCommand.CREATE_CARD,
+        configureContext = { requestCard = Card(cardId, FRONT, BACK) }
+    ) { context ->
         with(context.responseCard) {
             assertEquals(CardStub.get().id, id)
             assertEquals(FRONT, front)

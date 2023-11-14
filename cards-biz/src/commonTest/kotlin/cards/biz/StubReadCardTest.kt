@@ -10,14 +10,16 @@ import kotlin.test.assertEquals
 class StubReadCardTest {
     companion object {
         private val processor = FcCardProcessor()
-        private val id = CardId("100")
-        private val requestCard = Card(id = id)
+        private val cardId = CardId("100")
     }
 
     @Test
-    fun readCardSuccess() = testSuccessStub(processor, CardCommand.READ_CARD, requestCard) { context ->
-        assertEquals(CardStub.getWith(id = id), context.responseCard)
-    }
+    fun readCardSuccess() = testSuccessStub(
+        processor = processor,
+        command = CardCommand.READ_CARD,
+        configureContext = { requestCard = Card(id = cardId) },
+        assertSuccessSpecific = { context -> assertEquals(CardStub.getWith(id = cardId), context.responseCard) }
+    )
 
     @Test
     fun wrongCardIdError() = testWrongCardIdErrorStub(processor, CardCommand.READ_CARD)
@@ -28,5 +30,6 @@ class StubReadCardTest {
     @Test
     fun stubNoCaseError() = testNoCaseStubError(processor, CardCommand.READ_CARD)
 
-    @Test fun stubNotFoundError() = testNotFoundStubError(processor, CardCommand.READ_CARD)
+    @Test
+    fun stubNotFoundError() = testNotFoundStubError(processor, CardCommand.READ_CARD)
 }

@@ -12,9 +12,9 @@ import kotlin.test.fail
 internal fun testSuccessStub(
     processor: FcCardProcessor,
     command: CardCommand,
-    requestCard: Card,
+    configureContext: CardContext.() -> Unit,
     assertSuccessSpecific: (CardContext) -> Unit
-) = runStubTest(processor, command, FcStub.SUCCESS, requestCard) { context ->
+) = runStubTest(processor, command, FcStub.SUCCESS, configureContext) { context ->
     assertEquals(FcState.FINISHING, context.state)
     assertIs<MutableList<FcError>>(context.errors).isEmpty()
     assertSuccessSpecific(context)
@@ -77,32 +77,37 @@ internal fun testNoCaseStubError(processor: FcCardProcessor, command: CardComman
 private fun runErrorStubTest(
     processor: FcCardProcessor,
     command: CardCommand,
-    stub: FcStub,
+    stubCase: FcStub,
     assertError: (FcError) -> Unit
-) = runStubTest(processor, command, stub) { context ->
-    with(context) {
-        assertTrue(responseCard.isEmpty())
-        assertEquals(FcState.FAILING, state)
-        assertEquals(1, errors.size)
+) =
+    runStubTest(
+        processor,
+        command,
+        stubCase,
+        {}
+    ) { context ->
+        with(context) {
+            assertTrue(responseCard.isEmpty())
+            assertEquals(FcState.FAILING, state)
+            assertEquals(1, errors.size)
+        }
+        val error = context.errors.firstOrNull() ?: fail("context.errors expected to contain a single error")
+        assertError(error)
     }
-    val error = context.errors.firstOrNull() ?: fail("context.errors expected to contain a single error")
-    assertError(error)
-}
 
 private fun runStubTest(
     processor: FcCardProcessor,
     command: CardCommand,
-    stub: FcStub,
-    requestCard: Card = Card.EMPTY,
+    stubCase: FcStub,
+    configureContext: CardContext.() -> Unit,
     assertions: (CardContext) -> Unit
 ) = runTest {
     val context = CardContext(
         command = command,
         state = FcState.NONE,
         workMode = FcWorkMode.STUB,
-        stubCase = stub,
-        requestCard = requestCard
-    )
+        stubCase = stubCase,
+    ).apply(configureContext)
     processor.exec(context)
     assertions(context)
 }

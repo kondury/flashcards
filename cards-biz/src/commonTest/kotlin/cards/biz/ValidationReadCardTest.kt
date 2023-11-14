@@ -11,21 +11,30 @@ class ValidationReadCardTest {
     companion object {
         private val processor by lazy { FcCardProcessor() }
 
+        private const val GOOD_NOT_EMPTY_ID = "123-abs-ZX-"
+        private const val GOOD_NOT_EMPTY_ID_WITH_SPACES = " \t$GOOD_NOT_EMPTY_ID \t"
+
         private val normalizedCard = Card(id = CardId(GOOD_NOT_EMPTY_ID))
         private val denormalizedCard = Card(id = CardId(GOOD_NOT_EMPTY_ID_WITH_SPACES))
     }
 
     @Test
     fun `readCard when request is correct and normalized then validation is successful`() =
-        runSuccessfulValidationTest(processor, CardCommand.READ_CARD, normalizedCard) { context ->
-            assertEquals(normalizedCard, context.validatedCard)
-        }
+        runSuccessfulValidationTest(
+            processor = processor,
+            command = CardCommand.READ_CARD,
+            configureContext = { requestCard = normalizedCard },
+            assertSpecific = { context -> assertEquals(normalizedCard, context.validatedCard) }
+        )
 
     @Test
     fun `readCard when request is correct and denormalized then validation is successful`() =
-        runSuccessfulValidationTest(processor, CardCommand.READ_CARD, denormalizedCard) { context ->
-            assertEquals(normalizedCard, context.validatedCard)
-        }
+        runSuccessfulValidationTest(
+            processor = processor,
+            command = CardCommand.READ_CARD,
+            configureContext = { requestCard = denormalizedCard },
+            assertSpecific = { context -> assertEquals(normalizedCard, context.validatedCard) }
+        )
 
     @Test
     fun `readCard when id is empty then validation fails`() =

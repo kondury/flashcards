@@ -12,14 +12,16 @@ class StubDeleteCardTest {
 
     companion object {
         private val processor = FcCardProcessor()
-        private val id = CardId("100")
-        private val requestCard = Card(id = id)
+        private val cardId = CardId("100")
     }
 
     @Test
-    fun deleteCardSuccess() = testSuccessStub(processor, CardCommand.DELETE_CARD, requestCard) { context ->
-        assertTrue(context.responseCard.isEmpty())
-    }
+    fun deleteCardSuccess() = testSuccessStub(
+        processor = processor,
+        command = CardCommand.DELETE_CARD,
+        configureContext = { requestCard = Card(id = cardId) },
+        assertSuccessSpecific = { context -> assertTrue(context.responseCard.isEmpty()) }
+    )
 
     @Test
     fun wrongCardIdError() = testWrongCardIdErrorStub(processor, CardCommand.DELETE_CARD)
