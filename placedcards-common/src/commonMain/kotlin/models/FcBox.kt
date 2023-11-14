@@ -7,4 +7,5 @@ enum class FcBox {
     FINISHED
 }
 
+inline fun FcBox.isEmpty() = this == FcBox.NONE
 inline fun FcBox.isNotEmpty() = this != FcBox.NONE
