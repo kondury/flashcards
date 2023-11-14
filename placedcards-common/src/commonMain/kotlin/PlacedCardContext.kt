@@ -35,12 +35,12 @@ data class PlacedCardContext(
     var validatingWorkBox: FcBox = FcBox.NONE,
     var validatedWorkBox: FcBox = FcBox.NONE,
 
-    // box after for move command
+    // move command: box after
     var requestBoxAfter: FcBox = FcBox.NONE,
     var validatingBoxAfter: FcBox = FcBox.NONE,
     var validatedBoxAfter: FcBox = FcBox.NONE,
 
-    // sorting order for select command
+    // select command: sorting order
     var requestSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
     var validatingSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
     var validatedSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
