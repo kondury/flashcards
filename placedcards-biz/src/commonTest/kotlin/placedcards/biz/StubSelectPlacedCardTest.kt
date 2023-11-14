@@ -1,10 +1,11 @@
 package com.github.kondury.flashcards.placedcards.biz
 
-import com.github.kondury.flashcards.placedcards.common.models.*
+import com.github.kondury.flashcards.placedcards.common.models.FcBox
+import com.github.kondury.flashcards.placedcards.common.models.FcSearchStrategy
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand.SELECT_PLACED_CARD
+import com.github.kondury.flashcards.placedcards.common.models.UserId
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 
 class StubSelectPlacedCardTest {
