@@ -46,3 +46,4 @@ bin/
 #deploy/volumes/kafka/*
 #deploy/volumes/postgres/*
 deploy/data/rabbitmq/**/*
+/kotlin-js-store/
