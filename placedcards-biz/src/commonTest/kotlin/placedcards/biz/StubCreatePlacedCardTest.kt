@@ -16,18 +16,22 @@ class StubCreatePlacedCardTest {
         private val expectedOwnerId = UserId("user-id")
         private val expectedBox = FcBox.NEW
         private val expectedCardId = CardId("card-id")
-
-        private val requestPlacedCard = PlacedCard(
-            id = placedCardId,
-            ownerId = expectedOwnerId,
-            box = expectedBox,
-            cardId = expectedCardId
-        )
     }
 
     @Test
     fun createPlacedCardSuccess() =
-        runSuccessStubTest(processor, CREATE_PLACED_CARD, requestPlacedCard) { context ->
+        runSuccessStubTest(
+            processor = processor,
+            command = CREATE_PLACED_CARD,
+            configureContext = {
+                requestPlacedCard = PlacedCard(
+                    id = placedCardId,
+                    ownerId = expectedOwnerId,
+                    box = expectedBox,
+                    cardId = expectedCardId
+                )
+            }
+        ) { context ->
             with(context.responsePlacedCard) {
                 assertEquals(PlacedCardStub.get().id, id)
                 assertEquals(expectedOwnerId, ownerId)

@@ -4,12 +4,11 @@ import com.github.kondury.flashcards.placedcards.common.models.*
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
 import kotlin.test.assertEquals
 
-// create - placedCard.cardId
 internal fun testWrongCardIdErrorStub(processor: FcPlacedCardProcessor, command: PlacedCardCommand) =
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.WRONG_CARD_ID,
+        stubCase = FcStub.WRONG_CARD_ID,
     ) { error ->
         with(error) {
             assertEquals("validation-stub", group)
@@ -18,14 +17,11 @@ internal fun testWrongCardIdErrorStub(processor: FcPlacedCardProcessor, command:
         }
     }
 
-// create - placedCard.ownerId
-// init - ownerId
-// select - ownerId
 internal fun testWrongOwnerIdErrorStub(processor: FcPlacedCardProcessor, command: PlacedCardCommand) =
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.WRONG_OWNER_ID,
+        stubCase = FcStub.WRONG_OWNER_ID,
     ) { error ->
         with(error) {
             assertEquals("validation-stub", group)
@@ -34,14 +30,11 @@ internal fun testWrongOwnerIdErrorStub(processor: FcPlacedCardProcessor, command
         }
     }
 
-// create - placeCard.box
-// init, select - workBox
-// move - boxAfter
 internal fun testWrongBoxErrorStub(processor: FcPlacedCardProcessor, command: PlacedCardCommand) =
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.WRONG_BOX,
+        stubCase = FcStub.WRONG_BOX,
     ) { error ->
         with(error) {
             assertEquals("validation-stub", group)
@@ -54,7 +47,7 @@ internal fun testWrongPlacedCardIdErrorStub(processor: FcPlacedCardProcessor, co
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.WRONG_PLACED_CARD_ID,
+        stubCase = FcStub.WRONG_PLACED_CARD_ID,
     ) { error ->
         with(error) {
             assertEquals("validation-stub", group)
@@ -67,7 +60,7 @@ internal fun testWrongSearchStrategyErrorStub(processor: FcPlacedCardProcessor, 
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.WRONG_SEARCH_STRATEGY,
+        stubCase = FcStub.WRONG_SEARCH_STRATEGY,
     ) { error ->
         with(error) {
             assertEquals("validation-stub", group)
@@ -80,7 +73,7 @@ internal fun testNotFoundStubError(processor: FcPlacedCardProcessor, command: Pl
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.NOT_FOUND,
+        stubCase = FcStub.NOT_FOUND,
     ) { error ->
         with(error) {
             assertEquals("db-error-stub", group)
@@ -93,7 +86,7 @@ internal fun testDatabaseErrorStub(processor: FcPlacedCardProcessor, command: Pl
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.DB_ERROR,
+        stubCase = FcStub.DB_ERROR,
     ) { error ->
         with(error) {
             assertEquals("db-error-stub", group)
@@ -106,7 +99,7 @@ internal fun testNoCaseStubError(processor: FcPlacedCardProcessor, command: Plac
     runErrorStubTest(
         processor = processor,
         command = command,
-        stub = FcStub.NONE,
+        stubCase = FcStub.NONE,
     ) { error ->
         with(error) {
             assertEquals("error-stub", group)

@@ -18,8 +18,10 @@ class StubInitPlacedCardTest {
     fun initPlacedCardSuccess() = runSuccessStubTest(
         processor = processor,
         command = INIT_PLACED_CARD,
-        requestOwnerId = expectedOwnerId,
-        requestWorkBox = expectedBox,
+        configureContext = {
+            requestOwnerId = expectedOwnerId
+            requestWorkBox = expectedBox
+        }
     ) { context ->
         assertTrue(context.responsePlacedCard.isEmpty())
     }

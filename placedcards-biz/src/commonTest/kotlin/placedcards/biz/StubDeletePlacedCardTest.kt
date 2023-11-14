@@ -18,10 +18,8 @@ class StubDeletePlacedCardTest {
     fun deletePlacedCardSuccess() = runSuccessStubTest(
         processor = processor,
         command = PlacedCardCommand.DELETE_PLACED_CARD,
-        requestPlacedCardId = id
-    ) { context ->
-        assertTrue(context.responsePlacedCard.isEmpty())
-    }
+        configureContext = { requestPlacedCardId = id }
+    ) { context -> assertTrue(context.responsePlacedCard.isEmpty()) }
 
     @Test
     fun wrongPlacedCardIdError() = testWrongPlacedCardIdErrorStub(processor, PlacedCardCommand.DELETE_PLACED_CARD)

@@ -19,8 +19,10 @@ class StubMovePlacedCardTest {
     fun movePlacedCardSuccess() = runSuccessStubTest(
         processor = processor,
         command = PlacedCardCommand.MOVE_PLACED_CARD,
-        requestPlacedCardId = expectedId,
-        requestBoxAfter = expectedBox
+        configureContext = {
+            requestPlacedCardId = expectedId
+            requestBoxAfter = expectedBox
+        },
     ) { context ->
         with(context.responsePlacedCard) {
             assertEquals(expectedId, id)

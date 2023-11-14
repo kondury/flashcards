@@ -12,23 +12,13 @@ import kotlin.test.fail
 internal fun runSuccessStubTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,
-    requestPlacedCard: PlacedCard = PlacedCard.EMPTY,
-    requestPlacedCardId: PlacedCardId = PlacedCardId.NONE,
-    requestOwnerId: UserId = UserId.NONE,
-    requestWorkBox: FcBox = FcBox.NONE,
-    requestBoxAfter: FcBox = FcBox.NONE,
-    requestSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
+    configureContext: PlacedCardContext.() -> Unit,
     assertSuccessSpecific: (PlacedCardContext) -> Unit
 ) = runStubTest(
     processor = processor,
     command = command,
-    stub = FcStub.SUCCESS,
-    requestPlacedCard = requestPlacedCard,
-    requestPlacedCardId = requestPlacedCardId,
-    requestOwnerId = requestOwnerId,
-    requestWorkBox = requestWorkBox,
-    requestBoxAfter = requestBoxAfter,
-    requestSearchStrategy = requestSearchStrategy
+    stubCase = FcStub.SUCCESS,
+    configureContext = configureContext,
 ) { context ->
     assertEquals(FcState.FINISHING, context.state)
     assertIs<MutableList<FcError>>(context.errors).isEmpty()
@@ -38,12 +28,13 @@ internal fun runSuccessStubTest(
 internal fun runErrorStubTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,
-    stub: FcStub,
+    stubCase: FcStub,
     assertError: (FcError) -> Unit
 ) = runStubTest(
     processor = processor,
     command = command,
-    stub = stub,
+    stubCase = stubCase,
+    configureContext = { },
 ) { context ->
     with(context) {
         assertTrue(responsePlacedCard.isEmpty())
@@ -57,27 +48,16 @@ internal fun runErrorStubTest(
 internal fun runStubTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,
-    stub: FcStub,
-    requestPlacedCard: PlacedCard = PlacedCard.EMPTY,
-    requestPlacedCardId: PlacedCardId = PlacedCardId.NONE,
-    requestOwnerId: UserId = UserId.NONE,
-    requestWorkBox: FcBox = FcBox.NONE,
-    requestBoxAfter: FcBox = FcBox.NONE,
-    requestSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,
+    stubCase: FcStub,
+    configureContext: PlacedCardContext.() -> Unit,
     assertions: (PlacedCardContext) -> Unit
 ) = runTest {
     val context = PlacedCardContext(
         command = command,
         state = FcState.NONE,
         workMode = FcWorkMode.STUB,
-        stubCase = stub,
-        requestPlacedCard = requestPlacedCard,
-        requestPlacedCardId = requestPlacedCardId,
-        requestOwnerId = requestOwnerId,
-        requestWorkBox = requestWorkBox,
-        requestBoxAfter = requestBoxAfter,
-        requestSearchStrategy = requestSearchStrategy,
-    )
+        stubCase = stubCase,
+    ).apply(configureContext)
     processor.exec(context)
     assertions(context)
 }

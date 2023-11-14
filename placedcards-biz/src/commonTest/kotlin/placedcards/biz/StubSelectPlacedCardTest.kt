@@ -20,9 +20,11 @@ class StubSelectPlacedCardTest {
     fun selectPlacedCardSuccess() = runSuccessStubTest(
         processor = processor,
         command = SELECT_PLACED_CARD,
-        requestOwnerId = expectedOwnerId,
-        requestWorkBox = expectedBox,
-        requestSearchStrategy = expectedStrategy
+        configureContext = {
+            requestOwnerId = expectedOwnerId
+            requestWorkBox = expectedBox
+            requestSearchStrategy = expectedStrategy
+        }
     ) { context ->
         with(context.responsePlacedCard) {
             assertEquals(expectedOwnerId, ownerId)
