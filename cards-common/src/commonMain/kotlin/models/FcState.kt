@@ -4,4 +4,5 @@ enum class FcState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }

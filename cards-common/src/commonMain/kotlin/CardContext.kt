@@ -16,6 +16,8 @@ data class CardContext(
     var timeStart: Instant = Instant.NONE,
 
     var requestCard: Card = Card.EMPTY,
+    var validatingCard: Card = Card.EMPTY,
+    var validatedCard: Card = Card.EMPTY,
     var responseCard: Card = Card.EMPTY,
 )
 
