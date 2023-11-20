@@ -2,9 +2,9 @@ package com.github.kondury.flashcards.placedcards.biz.validation
 
 import com.github.kondury.flashcards.cor.dsl.CorChainDsl
 import com.github.kondury.flashcards.cor.dsl.worker
+import com.github.kondury.flashcards.placedcards.biz.fail
 import com.github.kondury.flashcards.placedcards.biz.validationError
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
-import com.github.kondury.flashcards.placedcards.common.helpers.fail
 import com.github.kondury.flashcards.placedcards.common.models.*
 import com.github.kondury.flashcards.placedcards.common.models.FcError.Level
 

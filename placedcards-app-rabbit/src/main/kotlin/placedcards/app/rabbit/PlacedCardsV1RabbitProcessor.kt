@@ -8,16 +8,15 @@ import com.github.kondury.flashcards.placedcards.api.v1.apiV1ResponseSerialize
 import com.github.kondury.flashcards.placedcards.api.v1.models.IRequest
 import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
 import com.github.kondury.flashcards.placedcards.app.common.process
+import com.github.kondury.flashcards.placedcards.biz.fail
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
-import com.github.kondury.flashcards.placedcards.common.helpers.addError
 import com.github.kondury.flashcards.placedcards.common.helpers.asFcError
-import com.github.kondury.flashcards.placedcards.common.models.FcState
 import com.github.kondury.flashcards.placedcards.mappers.v1.fromTransport
 import com.github.kondury.flashcards.placedcards.mappers.v1.toTransportPlacedCard
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Delivery
 
-//private val logger = KotlinLogging.logger {}
+
 private val loggerId = {}.javaClass.name.substringBefore("Kt$")
 
 class PlacedCardsV1RabbitProcessor(
@@ -60,10 +59,7 @@ class PlacedCardsV1RabbitProcessor(
             msg = e.stackTraceToString(),
             marker = "DEV"
         )
-        val context = PlacedCardContext().apply {
-            state = FcState.FAILING
-            addError(error = arrayOf(e.asFcError()))
-        }
+        val context = PlacedCardContext().apply { fail(e.asFcError()) }
         val response = context.toTransportPlacedCard()
         apiV1ResponseSerialize(response).run {
             basicPublish(processorConfig.exchange, processorConfig.keyOut, null, this.toByteArray())
