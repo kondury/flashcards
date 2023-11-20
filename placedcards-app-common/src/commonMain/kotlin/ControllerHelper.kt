@@ -3,9 +3,9 @@ package com.github.kondury.flashcards.placedcards.app.common
 import com.github.kondury.flashcards.logging.common.AppLogger
 import com.github.kondury.flashcards.placedcards.api.logs.mapper.toLog
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.biz.fail
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
 import com.github.kondury.flashcards.placedcards.common.helpers.asFcError
-import com.github.kondury.flashcards.placedcards.common.models.FcState
 import kotlinx.datetime.Clock
 
 
@@ -29,8 +29,7 @@ suspend inline fun FcPlacedCardProcessor.process(
             }
         } catch (e: Throwable) {
             logger.withLogging("$logId-failure") {
-                state = FcState.FAILING
-                errors.add(e.asFcError())
+                fail(e.asFcError())
                 this@process.exec(this)
                 toTransportThenRespond(this)
             }

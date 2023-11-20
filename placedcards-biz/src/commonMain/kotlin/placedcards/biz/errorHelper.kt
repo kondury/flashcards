@@ -1,9 +1,17 @@
 package com.github.kondury.flashcards.placedcards.biz
 
+import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
+import com.github.kondury.flashcards.placedcards.common.helpers.addError
 import com.github.kondury.flashcards.placedcards.common.models.FcError
+import com.github.kondury.flashcards.placedcards.common.models.FcState
 import com.github.kondury.flashcards.placedcards.common.models.FcWorkMode
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand.*
+
+fun PlacedCardContext.fail(error: FcError) {
+    state = FcState.FAILING
+    addError(error)
+}
 
 internal fun validationError(
     command: PlacedCardCommand = NONE,

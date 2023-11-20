@@ -8,10 +8,9 @@ import com.github.kondury.flashcards.cards.api.v1.apiV1ResponseSerialize
 import com.github.kondury.flashcards.cards.api.v1.models.IRequest
 import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import com.github.kondury.flashcards.cards.app.common.process
+import com.github.kondury.flashcards.cards.biz.fail
 import com.github.kondury.flashcards.cards.common.CardContext
-import com.github.kondury.flashcards.cards.common.helpers.addError
 import com.github.kondury.flashcards.cards.common.helpers.asFcError
-import com.github.kondury.flashcards.cards.common.models.FcState
 import com.github.kondury.flashcards.cards.mappers.v1.fromTransport
 import com.github.kondury.flashcards.cards.mappers.v1.toTransportCard
 import com.rabbitmq.client.Channel
@@ -60,11 +59,7 @@ class CardsV1RabbitProcessor(
             msg = e.stackTraceToString(),
             marker = "DEV"
         )
-        val context = CardContext().apply {
-            state = FcState.FAILING
-            addError(error = arrayOf(e.asFcError()))
-        }
-
+        val context = CardContext().apply { fail(e.asFcError()) }
         val response = context.toTransportCard()
         apiV1ResponseSerialize(response).run {
             basicPublish(processorConfig.exchange, processorConfig.keyOut, null, this.toByteArray())
