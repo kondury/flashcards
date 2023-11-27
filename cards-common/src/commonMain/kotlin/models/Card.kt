@@ -5,10 +5,12 @@ data class Card(
     val front: String = "",
     val back: String = "",
 ) {
+
     companion object {
         val EMPTY = Card()
     }
 }
 
-inline fun Card.isEmpty() = this == Card.EMPTY
-inline fun Card.isNotEmpty() = this != Card.EMPTY
+fun Card.isEmpty() = this == Card.EMPTY
+fun Card.isNotEmpty() = this != Card.EMPTY
+

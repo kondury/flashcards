@@ -71,7 +71,7 @@ internal fun CorChainDsl<CardContext>.validateCardIdIsEmpty() = worker {
     }
 }
 
-fun CorChainDsl<CardContext>.validateCardIdMatchesFormat() = worker {
+internal fun CorChainDsl<CardContext>.validateCardIdMatchesFormat() = worker {
     this.title = "Validating: card id has proper format"
     activeIf { validatingCard.id.isNotEmpty() && !validatingCard.id.asString().matches(Regex(ID_FORMAT_PATTERN)) }
     handle {
