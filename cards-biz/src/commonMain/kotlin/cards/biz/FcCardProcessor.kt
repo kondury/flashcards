@@ -3,11 +3,15 @@ package com.github.kondury.flashcards.cards.biz
 import com.github.kondury.flashcards.cards.biz.stub.*
 import com.github.kondury.flashcards.cards.biz.validation.*
 import com.github.kondury.flashcards.cards.common.CardContext
+import com.github.kondury.flashcards.cards.common.CardsCorConfig
 import com.github.kondury.flashcards.cards.common.models.CardCommand.*
 import com.github.kondury.flashcards.cor.dsl.rootChain
 
-class FcCardProcessor {
-    suspend fun exec(context: CardContext) = businessChain.exec(context)
+class FcCardProcessor(
+    private val cardsCorConfig: CardsCorConfig
+) {
+    suspend fun exec(context: CardContext) =
+        businessChain.exec(context.apply { repositoryConfig = cardsCorConfig.repositoryConfig })
 
     companion object {
         private val businessChain = rootChain<CardContext> {

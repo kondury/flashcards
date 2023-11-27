@@ -8,7 +8,7 @@ import com.github.kondury.flashcards.cor.dsl.CorChainDsl
 import com.github.kondury.flashcards.cor.dsl.chain
 import com.github.kondury.flashcards.cor.dsl.worker
 
-fun CorChainDsl<CardContext>.initState() = worker {
+internal fun CorChainDsl<CardContext>.initState() = worker {
     this.title = "CardContext state initialization"
     activeIf { state == FcState.NONE }
     handle { state = FcState.RUNNING }
