@@ -1,5 +1,6 @@
-package com.github.kondury.flashcards.cards.biz
+package com.github.kondury.flashcards.cards.biz.validation
 
+import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
 import kotlinx.coroutines.test.runTest

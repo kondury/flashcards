@@ -1,15 +1,21 @@
-package com.github.kondury.flashcards.cards.biz
+package com.github.kondury.flashcards.cards.biz.validation
 
+import com.github.kondury.flashcards.cards.biz.FcCardProcessor
+import com.github.kondury.flashcards.cards.common.CardRepositoryConfig
+import com.github.kondury.flashcards.cards.common.CardsCorConfig
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.CardId
+import com.github.kondury.flashcards.cards.repository.tests.StubCardRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ValidationCreateCardTest {
 
     companion object {
-        val processor by lazy { FcCardProcessor() }
+        private val repositoryConfig by lazy { CardRepositoryConfig(testRepository = StubCardRepository()) }
+        private val corConfig by lazy { CardsCorConfig(repositoryConfig) }
+        private val processor by lazy { FcCardProcessor(corConfig) }
 
         private const val SOME_EMPTY_STRING = " \t \t"
         private const val GOOD_NOT_EMPTY_ID = "123-abs-ZX-"

@@ -29,6 +29,8 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
 
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+
+                implementation(project(":cards-repo-tests"))
             }
         }
 
@@ -40,7 +42,14 @@ kotlin {
 
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("test-junit"))
+                val jUnitJupiterVersion: String by project
+                implementation(kotlin("test-junit5"))
+                implementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
+                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")
+            }
+
+            tasks.withType<Test> {
+                useJUnitPlatform()
             }
         }
     }
