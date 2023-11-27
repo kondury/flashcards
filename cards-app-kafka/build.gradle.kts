@@ -29,6 +29,8 @@ dependencies {
     implementation(project(":flashcards-lib-logging-common"))
     implementation(project(":flashcards-lib-logging-logback"))
 
+    implementation(project(":cards-repo-in-memory"))
+
     implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
     implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
 

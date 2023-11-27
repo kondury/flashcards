@@ -35,6 +35,8 @@ dependencies {
     implementation(project(":flashcards-lib-logging-common"))
     implementation(project(":flashcards-lib-logging-logback"))
 
+    implementation(project(":cards-repo-in-memory"))
+
     testImplementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
     testImplementation(kotlin("test-junit5"))
     testImplementation(project(":cards-stubs"))
