@@ -1,5 +1,7 @@
 package com.github.kondury.flashcards.cards.biz
 
+import com.github.kondury.flashcards.cards.biz.repository.*
+import com.github.kondury.flashcards.cards.biz.repository.repository
 import com.github.kondury.flashcards.cards.biz.stub.*
 import com.github.kondury.flashcards.cards.biz.validation.*
 import com.github.kondury.flashcards.cards.common.CardContext
@@ -16,6 +18,7 @@ class FcCardProcessor(
     companion object {
         private val businessChain = rootChain<CardContext> {
             initState()
+            initRepository()
 
             operation(CREATE_CARD) {
                 stubs(CREATE_CARD) {
@@ -26,7 +29,6 @@ class FcCardProcessor(
                     stubDbError(CREATE_CARD)
                     stubNoCase(CREATE_CARD)
                 }
-
                 validations(CREATE_CARD) {
                     beforeValidation(CREATE_CARD)
                     validateCardIdIsEmpty()
@@ -34,7 +36,11 @@ class FcCardProcessor(
                     validateBackIsNotEmpty()
                     afterValidation(CREATE_CARD)
                 }
-                finish(CREATE_CARD)
+                repository(CREATE_CARD) {
+                    repositoryPrepareCreate()
+                    repositoryCreate()
+                    repositoryResponse(CREATE_CARD)
+                }
             }
 
             operation(READ_CARD) {
@@ -51,7 +57,11 @@ class FcCardProcessor(
                     validateCardIdMatchesFormat()
                     afterValidation(READ_CARD)
                 }
-                finish(READ_CARD)
+                repository(READ_CARD) {
+                    repositoryRead()
+                    repositoryAfterRead()
+                    repositoryResponse(READ_CARD)
+                }
             }
 
             operation(DELETE_CARD) {
@@ -67,14 +77,15 @@ class FcCardProcessor(
                     validateCardIdMatchesFormat()
                     afterValidation(DELETE_CARD)
                 }
-                finish(DELETE_CARD)
+                repository(DELETE_CARD) {
+                    repositoryRead()
+                    repositoryPrepareDelete()
+                    repositoryDelete()
+                    repositoryResponse(DELETE_CARD)
+                }
             }
+            finish()
 
         }.build()
     }
 }
-
-
-
-
-
