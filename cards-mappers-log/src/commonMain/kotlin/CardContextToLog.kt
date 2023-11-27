@@ -46,4 +46,4 @@ private fun Card.toLog() = CardLog(
     back = back.takeNonBlankOrNull(),
 )
 
-private inline fun Card.takeNonEmptyOrNull(): Card? = this.takeIf { it.isNotEmpty() }
+private fun Card.takeNonEmptyOrNull(): Card? = this.takeIf { it.isNotEmpty() }
