@@ -27,7 +27,6 @@ pluginManagement {
     }
 }
 
-//include("m1-init")
 include("flashcards-acceptance")
 include("flashcards-app-kafka")
 include("flashcards-app-rabbit")
