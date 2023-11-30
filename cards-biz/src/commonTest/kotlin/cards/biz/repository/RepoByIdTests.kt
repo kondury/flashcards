@@ -42,7 +42,7 @@ fun repoNotFoundTest(command: CardCommand) = runTest {
             id = CardId("12345"),
             front = "Front",
             back = "Back",
-            lock = FcCardLock("123-234-abc-ABC"), // todo change lock id
+            lock = FcCardLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(context)

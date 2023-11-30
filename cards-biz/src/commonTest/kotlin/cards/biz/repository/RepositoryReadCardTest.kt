@@ -18,7 +18,8 @@ class RepositoryReadCardTest {
     private val initCard = Card(
         id = CardId("123"),
         front = "Front",
-        back = "Back"
+        back = "Back",
+        lock = FcCardLock("123-234-abc-ABC"),
     )
     private val repository by lazy {
         MockCardRepository(invokeRead = { CardDbResponse.success(initCard) })

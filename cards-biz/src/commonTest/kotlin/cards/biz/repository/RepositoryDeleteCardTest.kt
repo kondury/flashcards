@@ -19,7 +19,7 @@ class RepositoryDeleteCardTest {
         id = CardId("123"),
         front = "Front",
         back = "Back",
-        lock = FcCardLock("123-234-abc-ABC"), // todo change lock id
+        lock = FcCardLock("123-234-abc-ABC"),
     )
 
     private val repository by lazy {
@@ -36,7 +36,7 @@ class RepositoryDeleteCardTest {
     fun repoDeleteSuccessTest() = runTest {
         val cardToDelete = Card(
             id = CardId("123"),
-            lock = FcCardLock("123-234-abc-ABC"), // todo change lock id
+            lock = FcCardLock("123-234-abc-ABC"),
         )
         val context = CardContext(
             command = command,

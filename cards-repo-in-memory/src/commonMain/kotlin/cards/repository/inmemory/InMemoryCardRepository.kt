@@ -1,16 +1,15 @@
 package com.github.kondury.flashcards.cards.repository.inmemory
 
 import com.benasher44.uuid.uuid4
-import com.github.kondury.flashcards.cards.common.models.Card
-import com.github.kondury.flashcards.cards.common.models.CardId
-import com.github.kondury.flashcards.cards.common.models.FcError
-import com.github.kondury.flashcards.cards.common.models.isNotEmpty
+import com.github.kondury.flashcards.cards.common.models.*
 import com.github.kondury.flashcards.cards.common.repository.CardDbRequest
 import com.github.kondury.flashcards.cards.common.repository.CardDbResponse
+import com.github.kondury.flashcards.cards.common.repository.CardIdDbRequest
 import com.github.kondury.flashcards.cards.common.repository.CardRepository
 import com.github.kondury.flashcards.cards.repository.inmemory.model.CardEntity
 import io.github.reactivecircus.cache4k.Cache
-import com.github.kondury.flashcards.cards.common.repository.CardIdDbRequest
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -23,6 +22,7 @@ class InMemoryCardRepository(
     private val cache = Cache.Builder<String, CardEntity>()
         .expireAfterWrite(ttl)
         .build()
+    private val mutex: Mutex = Mutex()
 
     init {
         initObjects.forEach {
@@ -49,15 +49,37 @@ class InMemoryCardRepository(
     }
 
     override suspend fun delete(request: CardIdDbRequest): CardDbResponse {
-        val key = request.id.asStringOrNull() ?: return emptyIdError
-        cache.invalidate(key)
-        return CardDbResponse.SUCCESS_EMPTY
+        return doUpdate(request.id, request.lock) { key, _ ->
+            cache.invalidate(key)
+            CardDbResponse.SUCCESS_EMPTY
+        }
     }
 
     private fun save(card: Card) {
         val entity = CardEntity(card)
         if (entity.id == null) return
         cache.put(entity.id, entity)
+    }
+
+    private suspend fun doUpdate(
+        id: CardId,
+        lockBefore: FcCardLock,
+        successBlock: (key: String, oldCard: CardEntity) -> CardDbResponse
+    ): CardDbResponse {
+        val key = id.asStringOrNull() ?: return emptyIdError
+        val lockBeforeStr = lockBefore.asStringOrNull() ?: return emptyLockError
+        return mutex.withLock {
+            val storedCard = cache.get(key)
+            when {
+                storedCard == null -> notFoundError
+                storedCard.lock != lockBeforeStr ->
+                    CardDbResponse.errorConcurrent(
+                        lockBefore,
+                        storedCard.toInternal()
+                    )
+                else -> successBlock(key, storedCard)
+            }
+        }
     }
 
     companion object {
@@ -76,7 +98,16 @@ class InMemoryCardRepository(
                 message = "Not Found"
             )
         )
+        val emptyLockError = CardDbResponse.error(
+            FcError(
+                code = "lock-empty",
+                group = "validation",
+                field = "lock",
+                message = "Lock must not be null or blank"
+            )
+        )
     }
 
     private fun CardId.asStringOrNull() = this.takeIf { it.isNotEmpty() }?.asString()
+    private fun FcCardLock.asStringOrNull() = this.takeIf { it.isNotEmpty() }?.asString()
 }

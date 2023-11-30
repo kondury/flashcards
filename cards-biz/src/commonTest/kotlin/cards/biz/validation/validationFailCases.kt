@@ -4,6 +4,7 @@ import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.CardId
+import com.github.kondury.flashcards.cards.common.models.FcCardLock
 import kotlin.test.assertEquals
 
 private const val SOME_EMPTY_STRING = " \t \t"
@@ -64,21 +65,65 @@ internal fun testCardIdIsNotEmptyValidation(processor: FcCardProcessor, command:
     runSingleErrorValidationTest(
         processor = processor,
         command = command,
-        configureContext = { requestCard = Card(id = CardId.NONE) }
-    ) { error ->
-        assertEquals("validation-id-empty", error.code)
-        assertEquals("id", error.field)
-    }
+        configureContext = {
+            requestCard = Card(
+                id = CardId.NONE,
+                lock = FcCardLock(GOOD_NOT_EMPTY_ID)
+            )
+        },
+        assertError = { error ->
+            assertEquals("validation-id-empty", error.code)
+            assertEquals("id", error.field)
+        }
+    )
+
+internal fun testCardLockIsNotEmptyValidation(processor: FcCardProcessor, command: CardCommand) =
+    runSingleErrorValidationTest(
+        processor = processor,
+        command = command,
+        configureContext = {
+            requestCard = Card(
+                id = CardId(GOOD_NOT_EMPTY_ID),
+                lock = FcCardLock.NONE
+            )
+        },
+        assertError = { error ->
+            assertEquals("validation-lock-empty", error.code)
+            assertEquals("lock", error.field)
+        }
+    )
 
 internal fun testCardIdMatchesFormatValidation(processor: FcCardProcessor, command: CardCommand) =
     runSingleErrorValidationTest(
         processor = processor,
         command = command,
-        configureContext = { requestCard = Card(id = CardId(BAD_NOT_EMPTY_ID)) }
-    ) { error ->
-        assertEquals("validation-id-badFormat", error.code)
-        assertEquals("id", error.field)
-    }
+        configureContext = {
+            requestCard = Card(
+                id = CardId(BAD_NOT_EMPTY_ID),
+                lock = FcCardLock(GOOD_NOT_EMPTY_ID)
+            )
+        },
+        assertError = { error ->
+            assertEquals("validation-id-badFormat", error.code)
+            assertEquals("id", error.field)
+        }
+    )
+
+internal fun testCardLockMatchesFormatValidation(processor: FcCardProcessor, command: CardCommand) =
+    runSingleErrorValidationTest(
+        processor = processor,
+        command = command,
+        configureContext = {
+            requestCard = Card(
+                id = CardId(GOOD_NOT_EMPTY_ID),
+                lock = FcCardLock(BAD_NOT_EMPTY_ID)
+            )
+        },
+        assertError = { error ->
+            assertEquals("validation-lock-badFormat", error.code)
+            assertEquals("lock", error.field)
+        }
+    )
 
 
 

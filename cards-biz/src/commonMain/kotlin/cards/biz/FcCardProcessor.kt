@@ -75,6 +75,8 @@ class FcCardProcessor(
                     beforeValidation(DELETE_CARD)
                     validateCardIdIsNotEmpty()
                     validateCardIdMatchesFormat()
+                    validateLockNotEmpty()
+                    validateLockMatchesFormat()
                     afterValidation(DELETE_CARD)
                 }
                 repository(DELETE_CARD) {

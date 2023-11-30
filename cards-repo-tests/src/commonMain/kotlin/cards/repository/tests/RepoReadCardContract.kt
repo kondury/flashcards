@@ -8,36 +8,36 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
+import kotlin.test.fail
+
 interface RepoReadCardContract {
     val cardRepository: CardRepository
 
     companion object : BaseInitCards("readCard") {
-        override val initObjects: List<Card> = listOf(
-            createInitTestModel("readCard")
-        )
-    }
+        private val existingCard = createInitTestModel("readCard")
+        private val nonExistentCardId = CardId("card-repo-readCard-notFound")
 
-    fun getExistingCard() = initObjects.first()
-    fun getNonExistentCardId() = CardId("card-repo-readCard-notFound")
+        override val initObjects: List<Card> = listOf(existingCard)
+    }
 
     @Test
     fun readCardSuccess() = runRepoTest {
-        val existingCard = getExistingCard()
-        val result = cardRepository.read(CardIdDbRequest(existingCard.id))
+        val request = CardIdDbRequest(existingCard.id)
+        val dbResponse = cardRepository.read(request)
 
-        assertEquals(true, result.isSuccess)
-        assertEquals(existingCard, result.data)
-        assertEquals(emptyList(), result.errors)
+        assertEquals(true, dbResponse.isSuccess)
+        assertEquals(existingCard, dbResponse.data)
+        assertEquals(emptyList(), dbResponse.errors)
     }
 
     @Test
     fun readCardNotFound() = runRepoTest {
-        val nonExistentCardId = getNonExistentCardId()
-        val result = cardRepository.read(CardIdDbRequest(nonExistentCardId))
-
-        assertEquals(false, result.isSuccess)
-        assertEquals(null, result.data)
-        val error = result.errors.find { it.code == "not-found" }
-        assertEquals("id", error?.field)
+        val request = CardIdDbRequest(nonExistentCardId)
+        val dbResponse = cardRepository.read(request)
+        assertEquals(false, dbResponse.isSuccess)
+        assertEquals(null, dbResponse.data)
+        val error = dbResponse.errors.find { it.code == "not-found" }
+            ?: fail("Errors list is expected to contain not-found error")
+        assertEquals("id", error.field)
     }
 }
