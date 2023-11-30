@@ -223,7 +223,7 @@ components:
             box:
               $ref: '#/components/schemas/Box'
             lock:
-              $ref: '#/components/schemas/LockType'
+              $ref: '#/components/schemas/Lock'
 
     PlacedCardMoveResponse:
       allOf:
@@ -255,7 +255,7 @@ components:
             id:
               $ref: '#/components/schemas/PlacedCardId'
             lock:
-              $ref: '#/components/schemas/LockType'
+              $ref: '#/components/schemas/Lock'
 
     # Placed card select
     PlacedCardSelectRequest:
@@ -327,6 +327,8 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/PlacedCardId'
+            lock:
+              $ref: '#/components/schemas/Lock'
             createdOn:
               type: string
               format: date-time
@@ -362,7 +364,7 @@ components:
       type: string
       description: Идентификатор изучаемой карточки
 
-    LockType:
+    Lock:
       type: string
       description: Версия оптимистичной блокировки
 

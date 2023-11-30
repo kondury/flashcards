@@ -6,7 +6,7 @@ import com.github.kondury.flashcards.cards.common.models.FcError
 fun Throwable.asFcError(
     code: String = "unknown",
     group: String = "exceptions",
-    message: String = this.message ?: "",
+    message: String = this.message.orEmpty(),
 ) = FcError(
     code = code,
     group = group,

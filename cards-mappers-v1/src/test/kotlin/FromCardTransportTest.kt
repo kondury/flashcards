@@ -20,7 +20,7 @@ internal class FromCardTransportTest {
             ),
             card = CardCreateResource(
                 front = "Front text",
-                back = "Back text"
+                back = "Back text",
             )
         )
 

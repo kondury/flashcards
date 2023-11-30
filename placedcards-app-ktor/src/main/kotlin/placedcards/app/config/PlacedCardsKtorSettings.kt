@@ -9,7 +9,7 @@ data class PlacedCardsKtorSettings(
 ) : LoggerSettings {
 
     constructor(config: ApplicationConfig) : this(
-        appUrls = config.propertyOrNull("ktor.urls")?.getList() ?: emptyList(),
-        mode = config.propertyOrNull("ktor.logger")?.getString() ?: "",
+        appUrls = config.propertyOrNull("ktor.urls")?.getList().orEmpty(),
+        mode = config.propertyOrNull("ktor.logger")?.getString().orEmpty(),
     )
 }
