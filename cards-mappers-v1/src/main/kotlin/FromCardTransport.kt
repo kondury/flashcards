@@ -15,38 +15,41 @@ fun CardContext.fromTransport(request: IRequest) = when (request) {
 }
 
 fun CardContext.fromCardCreateRequest(request: CardCreateRequest) {
-    command = CardCommand.CREATE_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
-    requestCard = request.card?.toInternal() ?: Card.EMPTY
+    fromTransportCommon(CardCommand.CREATE_CARD, request.debug, request)
+    fromTransportResource(request.card) {
+        Card(
+            front = front.orEmpty(),
+            back = back.orEmpty()
+        )
+    }
 }
 
 fun CardContext.fromCardDeleteRequest(request: CardDeleteRequest) {
-    command = CardCommand.DELETE_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
-    requestCard = request.card?.id.toCardWithId()
+    fromTransportCommon(CardCommand.DELETE_CARD, request.debug, request)
+    fromTransportResource(request.card) {
+        Card(
+            id = id.toCardId(),
+        )
+    }
 }
 
 fun CardContext.fromCardReadRequest(request: CardReadRequest) {
-    command = CardCommand.READ_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
-    requestCard = request.card?.id.toCardWithId()
+    fromTransportCommon(CardCommand.READ_CARD, request.debug, request)
+    fromTransportResource(request.card) {
+        Card(id = id.toCardId())
+    }
 }
 
-private fun CardCreateResource.toInternal(): Card = Card(
-    front = this.front ?: "",
-    back = this.back ?: "",
-)
+private fun CardContext.fromTransportCommon(cmd: CardCommand, debug: DebugResource?, request: IRequest) {
+    command = cmd
+    workMode = debug.transportToWorkMode()
+    stubCase = debug.transportToStubCase()
+    requestId = request.requestId()
+}
 
-private fun String?.toCardWithId() = Card(id = this.toCardId())
+private fun <T> CardContext.fromTransportResource(card: T?, toInternal: T.() -> Card) {
+    requestCard = card?.toInternal() ?: Card.EMPTY
+}
 
 private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
 

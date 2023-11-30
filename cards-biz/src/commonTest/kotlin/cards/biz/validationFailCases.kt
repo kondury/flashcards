@@ -69,7 +69,7 @@ internal fun testCardIdIsNotEmptyValidation(processor: FcCardProcessor, command:
         assertEquals("id", error.field)
     }
 
-internal fun testCardIdHasProperFormatValidation(processor: FcCardProcessor, command: CardCommand) =
+internal fun testCardIdMatchesFormatValidation(processor: FcCardProcessor, command: CardCommand) =
     runSingleErrorValidationTest(
         processor = processor,
         command = command,

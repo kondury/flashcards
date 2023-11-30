@@ -42,5 +42,5 @@ class ValidationReadCardTest {
 
     @Test
     fun `readCard when id has wrong format then validation fails`() =
-        testCardIdHasProperFormatValidation(processor, CardCommand.READ_CARD)
+        testCardIdMatchesFormatValidation(processor, CardCommand.READ_CARD)
 }

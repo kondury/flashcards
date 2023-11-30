@@ -207,7 +207,7 @@ components:
             id:
               $ref: '#/components/schemas/CardId'
             lock:
-              $ref: '#/components/schemas/LockType'
+              $ref: '#/components/schemas/Lock'
 
     # Card details
     CardResource:
@@ -228,6 +228,8 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/CardId'
+            lock:
+              $ref: '#/components/schemas/Lock'
 
     # Common details
     UserId:
@@ -238,7 +240,7 @@ components:
       type: string
       description: Идентификатор карточки
 
-    LockType:
+    Lock:
       type: string
       description: Версия оптимистичной блокировки
 

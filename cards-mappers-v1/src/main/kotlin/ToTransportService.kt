@@ -2,10 +2,12 @@ package com.github.kondury.flashcards.cards.mappers.v1
 
 import com.github.kondury.flashcards.cards.api.v1.models.*
 import com.github.kondury.flashcards.cards.common.models.FcError
+import com.github.kondury.flashcards.cards.common.models.FcRequestId
 import com.github.kondury.flashcards.cards.common.models.FcState
 
+internal fun FcRequestId.toRequestId() = this.takeNonEmptyOrNull()?.asString()
 
-internal fun FcState.toResult(): ResponseResult? = when (this) {
+internal fun FcState.toResponseResult(): ResponseResult? = when (this) {
     FcState.RUNNING -> ResponseResult.SUCCESS
     FcState.FAILING -> ResponseResult.ERROR
     FcState.FINISHING -> ResponseResult.SUCCESS
