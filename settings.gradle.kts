@@ -47,6 +47,7 @@ include("cards-app-kafka")
 include("cards-app-rabbit")
 include("cards-app-common")
 include("cards-repo-in-memory")
+include("cards-repo-postgresql")
 include("cards-repo-tests")
 
 include("placedcards-api-log")
