@@ -16,7 +16,7 @@ data class PlacedCardsKtorConfig(
     constructor(config: ApplicationConfig) : this(settings = PlacedCardsKtorSettings(config))
 }
 
-// todo move to flashcards-app-common or to flashcards-app-ktor
+// todo move to flashcards-app-common
 private fun getLoggerProvider(loggerSettings: LoggerSettings): AppLoggerProvider =
     when (loggerSettings.mode) {
         "logback", "" -> AppLoggerProvider { getLogbackLogger(it) }
