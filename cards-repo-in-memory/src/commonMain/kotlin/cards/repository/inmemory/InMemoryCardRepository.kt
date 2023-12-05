@@ -4,6 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.github.kondury.flashcards.cards.common.models.*
 import com.github.kondury.flashcards.cards.common.repository.CardDbRequest
 import com.github.kondury.flashcards.cards.common.repository.CardDbResponse
+import com.github.kondury.flashcards.cards.common.repository.CardDbResponse.Companion.emptyIdErrorResponse
+import com.github.kondury.flashcards.cards.common.repository.CardDbResponse.Companion.emptyLockErrorResponse
+import com.github.kondury.flashcards.cards.common.repository.CardDbResponse.Companion.notFoundErrorResponse
 import com.github.kondury.flashcards.cards.common.repository.CardIdDbRequest
 import com.github.kondury.flashcards.cards.common.repository.CardRepository
 import com.github.kondury.flashcards.cards.repository.inmemory.model.CardEntity
@@ -34,6 +37,7 @@ class InMemoryCardRepository(
         val key = randomUuid()
         val card = request.card.copy(
             id = CardId(key),
+            lock = FcCardLock(randomUuid())
         )
         val entity = CardEntity(card)
         cache.put(key, entity)
@@ -41,11 +45,11 @@ class InMemoryCardRepository(
     }
 
     override suspend fun read(request: CardIdDbRequest): CardDbResponse {
-        val key = request.id.asStringOrNull() ?: return emptyIdError
+        val key = request.id.asStringOrNull() ?: return emptyIdErrorResponse
         return cache.get(key)
             ?.toInternal()
             ?.let { CardDbResponse.success(it) }
-            ?: notFoundError
+            ?: notFoundErrorResponse
     }
 
     override suspend fun delete(request: CardIdDbRequest): CardDbResponse {
@@ -66,12 +70,12 @@ class InMemoryCardRepository(
         lockBefore: FcCardLock,
         successBlock: (key: String, oldCard: CardEntity) -> CardDbResponse
     ): CardDbResponse {
-        val key = id.asStringOrNull() ?: return emptyIdError
-        val lockBeforeStr = lockBefore.asStringOrNull() ?: return emptyLockError
+        val key = id.asStringOrNull() ?: return emptyIdErrorResponse
+        val lockBeforeStr = lockBefore.asStringOrNull() ?: return emptyLockErrorResponse
         return mutex.withLock {
             val storedCard = cache.get(key)
             when {
-                storedCard == null -> notFoundError
+                storedCard == null -> notFoundErrorResponse
                 storedCard.lock != lockBeforeStr ->
                     CardDbResponse.errorConcurrent(
                         lockBefore,
@@ -80,32 +84,6 @@ class InMemoryCardRepository(
                 else -> successBlock(key, storedCard)
             }
         }
-    }
-
-    companion object {
-        val emptyIdError = CardDbResponse.error(
-            FcError(
-                code = "id-empty",
-                group = "validation",
-                field = "id",
-                message = "Id must not be null or blank"
-            )
-        )
-        val notFoundError = CardDbResponse.error(
-            FcError(
-                code = "not-found",
-                field = "id",
-                message = "Not Found"
-            )
-        )
-        val emptyLockError = CardDbResponse.error(
-            FcError(
-                code = "lock-empty",
-                group = "validation",
-                field = "lock",
-                message = "Lock must not be null or blank"
-            )
-        )
     }
 
     private fun CardId.asStringOrNull() = this.takeIf { it.isNotEmpty() }?.asString()
