@@ -50,8 +50,8 @@ private fun PlacedCard.toLog() = PlacedCardLog(
     ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
     box = box.takeNonEmptyOrNull()?.name,
     cardId = cardId.takeNonEmptyOrNull()?.asString(),
-    createdOn = createdOn.toString(),
-    updatedOn = updatedOn.toString(),
+    createdAt = createdAt.toString(),
+    updatedAt = updatedAt.toString(),
 )
 
 private inline fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }

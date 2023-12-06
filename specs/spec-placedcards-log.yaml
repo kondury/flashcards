@@ -44,7 +44,7 @@ components:
           type: string
 
     PlacedCardLogModel:
-      title: Модель лога для микросервиса placedcards
+      title: Модель лога микросервиса placedcards
       type: object
       properties:
         operation:
@@ -61,15 +61,13 @@ components:
           type: string
         requestWorkBox:
           type: string
-        requestBoxAfter:
-          type: string
         requestSearchStrategy:
           type: string
         responsePlacedCard:
           $ref: '#/components/schemas/PlacedCardLog'
 
     PlacedCardLog:
-      title: Модель лога для объявления
+      title: Модель лога изучаемой карточки
       type: object
       properties:
         id:
@@ -80,7 +78,7 @@ components:
           type: string
         cardId:
           type: string
-        createdOn:
+        createdAt:
           type: string
-        updatedOn:
+        updatedAt:
           type: string

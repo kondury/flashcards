@@ -114,16 +114,16 @@ class PlacedCardSerializationTest {
             box = Box.NEW,
             ownerId = "OwnerId",
             cardId = "CardId",
-            createdOn = "2023-09-25T10:00:00Z",
-            updatedOn = "2023-10-25T10:00:00Z",
+            createdAt = "2023-09-25T10:00:00Z",
+            updatedAt = "2023-10-25T10:00:00Z",
         )
         private val placedCardResponseJsonChecks = listOf(
             "\"requestId\":\"mockedRequestId\"",
             "\"id\":\"PlacedCardId\"",
             "\"box\":\"new\"",
             "\"ownerId\":\"OwnerId\"",
-            "\"createdOn\":\"2023-09-25T10:00:00Z\"",
-            "\"updatedOn\":\"2023-10-25T10:00:00Z\"",
+            "\"createdAt\":\"2023-09-25T10:00:00Z\"",
+            "\"updatedAt\":\"2023-10-25T10:00:00Z\"",
         )
         private val placedCardCreateResponse = PlacedCardCreateResponse(
             requestId = "mockedRequestId",
@@ -307,8 +307,8 @@ class PlacedCardSerializationTest {
                     "ownerId":"OwnerId",
                     "cardId":"CardId",
                     "id":"PlacedCardId",
-                    "createdOn":"2023-09-25T10:00:00Z",
-                    "updatedOn":"2023-10-25T10:00:00Z"
+                    "createdAt":"2023-09-25T10:00:00Z",
+                    "updatedAt":"2023-10-25T10:00:00Z"
                 }
             }        
         """.trimIndent()
@@ -354,8 +354,8 @@ class PlacedCardSerializationTest {
                     "ownerId":"OwnerId",
                     "cardId":"CardId",
                     "id":"PlacedCardId",
-                    "createdOn":"2023-09-25T10:00:00Z",
-                    "updatedOn":"2023-10-25T10:00:00Z"
+                    "createdAt":"2023-09-25T10:00:00Z",
+                    "updatedAt":"2023-10-25T10:00:00Z"
                 }
             }
         """.trimIndent()
@@ -374,8 +374,8 @@ class PlacedCardSerializationTest {
                     "ownerId":"OwnerId",
                     "cardId":"CardId",
                     "id":"PlacedCardId",
-                    "createdOn":"2023-09-25T10:00:00Z",
-                    "updatedOn":"2023-10-25T10:00:00Z"
+                    "createdAt":"2023-09-25T10:00:00Z",
+                    "updatedAt":"2023-10-25T10:00:00Z"
                 }
             }
         """.trimIndent()
