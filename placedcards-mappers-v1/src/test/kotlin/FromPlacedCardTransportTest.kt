@@ -66,7 +66,7 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals("PlacedCardId", context.requestPlacedCardId.asString())
+        assertEquals("PlacedCardId", context.requestPlacedCard.id.asString())
     }
 
     @Test
@@ -94,8 +94,8 @@ internal class FromPlacedCardTransportTest {
             actual = context
         )
 
-        assertEquals(FcBox.REPEAT, context.requestBoxAfter)
-        assertEquals("PlacedCardId", context.requestPlacedCardId.asString())
+        assertEquals(FcBox.REPEAT, context.requestPlacedCard.box)
+        assertEquals("PlacedCardId", context.requestPlacedCard.id.asString())
     }
 
     @Test

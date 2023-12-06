@@ -15,10 +15,10 @@ import kotlin.test.assertEquals
 class PlacedCardContextToLogTest {
 
     companion object {
-        private const val REQ_CREATED_ON = "2023-09-09T09:09:09Z"
-        private const val REQ_UPDATED_ON = "2023-10-10T10:10:10Z"
-        private const val RES_CREATED_ON = "2023-11-11T11:11:11Z"
-        private const val RES_UPDATED_ON = "2023-12-12T12:12:12Z"
+        private const val REQ_CREATED_AT = "2023-09-09T09:09:09Z"
+        private const val REQ_UPDATED_AT = "2023-10-10T10:10:10Z"
+        private const val RES_CREATED_AT = "2023-11-11T11:11:11Z"
+        private const val RES_UPDATED_AT = "2023-12-12T12:12:12Z"
     }
 
     @Test
@@ -39,20 +39,19 @@ class PlacedCardContextToLogTest {
                 ownerId = UserId("user-1"),
                 box = FcBox.NEW,
                 cardId = CardId("card-1"),
-                createdOn = Instant.parse(REQ_CREATED_ON),
-                updatedOn = Instant.parse(REQ_UPDATED_ON),
+                createdAt = Instant.parse(REQ_CREATED_AT),
+                updatedAt = Instant.parse(REQ_UPDATED_AT),
             ),
             requestOwnerId = UserId("user-2"),
-            requestWorkBox = FcBox.NEW,
-            requestBoxAfter = FcBox.REPEAT,
+            requestWorkBox = FcBox.REPEAT,
             requestSearchStrategy = FcSearchStrategy.EARLIEST_CREATED,
             responsePlacedCard = PlacedCard(
                 id = PlacedCardId("456"),
                 ownerId = UserId("user-3"),
                 box = FcBox.FINISHED,
                 cardId = CardId("card-2"),
-                createdOn = Instant.parse(RES_CREATED_ON),
-                updatedOn = Instant.parse(RES_UPDATED_ON),
+                createdAt = Instant.parse(RES_CREATED_AT),
+                updatedAt = Instant.parse(RES_UPDATED_AT),
             )
         )
     )
@@ -64,20 +63,19 @@ class PlacedCardContextToLogTest {
                 ownerId = "user-1",
                 box = "NEW",
                 cardId = "card-1",
-                createdOn = REQ_CREATED_ON,
-                updatedOn = REQ_UPDATED_ON,
+                createdAt = REQ_CREATED_AT,
+                updatedAt = REQ_UPDATED_AT,
             ),
             requestOwnerId = "user-2",
-            requestWorkBox = "NEW",
-            requestBoxAfter = "REPEAT",
+            requestWorkBox = "REPEAT",
             requestSearchStrategy = "EARLIEST_CREATED",
             responsePlacedCard = PlacedCardLog(
                 id = "456",
                 ownerId = "user-3",
                 box = "FINISHED",
                 cardId = "card-2",
-                createdOn = RES_CREATED_ON,
-                updatedOn = RES_UPDATED_ON
+                createdAt = RES_CREATED_AT,
+                updatedAt = RES_UPDATED_AT
             ),
         )
         val expectedErrors = listOf(

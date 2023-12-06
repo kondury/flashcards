@@ -50,9 +50,9 @@ class FcPlacedCardProcessor {
 
                 validations(MOVE_PLACED_CARD) {
                     beforeMovePlacedCardValidation()
-                    validatePlacedCardIdIsNotEmpty(MOVE_PLACED_CARD) { validatingPlacedCardId }
-                    validatePlacedCardIdMatchesFormat(MOVE_PLACED_CARD) { validatingPlacedCardId }
-                    validateBoxIsNotEmpty(MOVE_PLACED_CARD) { validatingBoxAfter }
+                    validatePlacedCardIdIsNotEmpty(MOVE_PLACED_CARD) { validatingPlacedCard.id }
+                    validatePlacedCardIdMatchesFormat(MOVE_PLACED_CARD) { validatingPlacedCard.id }
+                    validateBoxIsNotEmpty(MOVE_PLACED_CARD) { validatingPlacedCard.box }
                     afterMovePlacedCardValidation()
                 }
                 finish(MOVE_PLACED_CARD)
@@ -90,8 +90,8 @@ class FcPlacedCardProcessor {
 
                 validations(DELETE_PLACED_CARD) {
                     beforeDeletePlacedCardValidation()
-                    validatePlacedCardIdIsNotEmpty(DELETE_PLACED_CARD) { validatingPlacedCardId }
-                    validatePlacedCardIdMatchesFormat(DELETE_PLACED_CARD) { validatingPlacedCardId }
+                    validatePlacedCardIdIsNotEmpty(DELETE_PLACED_CARD) { validatingPlacedCard.id }
+                    validatePlacedCardIdMatchesFormat(DELETE_PLACED_CARD) { validatingPlacedCard.id }
                     afterDeletePlacedCardValidation()
 
                 }

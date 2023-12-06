@@ -23,12 +23,14 @@ class ValidationMovePlacedCardTest {
             processor = processor,
             command = MOVE_PLACED_CARD,
             configure = {
-                requestPlacedCardId = expectedPlacedCardId
-                requestBoxAfter = expectedBoxAfter
+                requestPlacedCard = PlacedCard(
+                    id = expectedPlacedCardId,
+                    box = expectedBoxAfter
+                )
             }
         ) { context ->
-            assertEquals(expectedPlacedCardId, context.validatedPlacedCardId)
-            assertEquals(expectedBoxAfter, context.validatedBoxAfter)
+            assertEquals(expectedPlacedCardId, context.validatedPlacedCard.id)
+            assertEquals(expectedBoxAfter, context.validatedPlacedCard.box)
         }
 
     @Test
@@ -37,33 +39,41 @@ class ValidationMovePlacedCardTest {
             processor = processor,
             command = MOVE_PLACED_CARD,
             configure = {
-                requestPlacedCardId = PlacedCardId(GOOD_ID_WITH_SPACES)
-                requestBoxAfter = expectedBoxAfter
+                requestPlacedCard = PlacedCard(
+                    id = PlacedCardId(GOOD_ID_WITH_SPACES),
+                    box = expectedBoxAfter
+                )
             }
         ) { context ->
-            assertEquals(expectedPlacedCardId, context.validatedPlacedCardId)
-            assertEquals(expectedBoxAfter, context.validatedBoxAfter)
+            assertEquals(expectedPlacedCardId, context.validatedPlacedCard.id)
+            assertEquals(expectedBoxAfter, context.validatedPlacedCard.box)
         }
 
     @Test
     fun `movePlacedCard when placedCardId is empty then validation fails`() =
         testPlacedCardIdIsNotEmptyValidation(processor, MOVE_PLACED_CARD) {
-            requestPlacedCardId = PlacedCardId.NONE
-            requestBoxAfter = expectedBoxAfter
+            requestPlacedCard = PlacedCard(
+                id = PlacedCardId.NONE,
+                box = expectedBoxAfter
+            )
         }
 
     @Test
     fun `movePlacedCard when placedCardId has wrong format then validation fails`() =
         testPlacedCardIdMatchesFormatValidation(processor, MOVE_PLACED_CARD) {
-            requestPlacedCardId = PlacedCardId(BAD_NOT_EMPTY_ID)
-            requestBoxAfter = expectedBoxAfter
+            requestPlacedCard = PlacedCard(
+                id = PlacedCardId(BAD_NOT_EMPTY_ID),
+                box = expectedBoxAfter
+            )
         }
 
     @Test
     fun `movePlacedCard when boxAfter is empty then validation fails`() =
         testBoxIsNotEmptyValidation(processor, MOVE_PLACED_CARD) {
-            requestPlacedCardId = PlacedCardId(GOOD_ID)
-            requestBoxAfter = FcBox.NONE
+            requestPlacedCard = PlacedCard(
+                id = PlacedCardId(GOOD_ID),
+                box = FcBox.NONE
+            )
         }
 
 }

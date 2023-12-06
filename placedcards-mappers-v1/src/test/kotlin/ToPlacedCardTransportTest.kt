@@ -18,8 +18,8 @@ internal class ToPlacedCardTransportTest {
         private const val PLACED_CARD_ID = "PlacedCardId"
         private const val CARD_ID = "CardId"
         private const val USER_ID = "UserId"
-        private const val CREATED_ON = "2023-09-09T09:09:09Z"
-        private const val UPDATED_ON = "2023-10-10T10:10:10Z"
+        private const val CREATED_AT = "2023-09-09T09:09:09Z"
+        private const val UPDATED_AT = "2023-10-10T10:10:10Z"
 
         private const val REQUEST_ID = "RequestId"
 
@@ -27,8 +27,8 @@ internal class ToPlacedCardTransportTest {
             id = PlacedCardId(PLACED_CARD_ID),
             ownerId = UserId(USER_ID),
             cardId = CardId(CARD_ID),
-            createdOn = Instant.parse(CREATED_ON),
-            updatedOn = Instant.parse(UPDATED_ON),
+            createdAt = Instant.parse(CREATED_AT),
+            updatedAt = Instant.parse(UPDATED_AT),
         )
 
         @JvmStatic
@@ -38,21 +38,21 @@ internal class ToPlacedCardTransportTest {
                     command = PlacedCardCommand.CREATE_PLACED_CARD,
                     responsePlacedCard = placedCardResponse.copy(box = FcBox.NEW),
                 ),
-                PLACED_CARD_ID, USER_ID, Box.NEW, CARD_ID, CREATED_ON, UPDATED_ON
+                PLACED_CARD_ID, USER_ID, Box.NEW, CARD_ID, CREATED_AT, UPDATED_AT
             ),
             Arguments.of(
                 PlacedCardContext(
                     command = PlacedCardCommand.MOVE_PLACED_CARD,
                     responsePlacedCard = placedCardResponse.copy(box = FcBox.FINISHED),
                 ),
-                PLACED_CARD_ID, USER_ID, Box.FINISHED, CARD_ID, CREATED_ON, UPDATED_ON
+                PLACED_CARD_ID, USER_ID, Box.FINISHED, CARD_ID, CREATED_AT, UPDATED_AT
             ),
             Arguments.of(
                 PlacedCardContext(
                     command = PlacedCardCommand.SELECT_PLACED_CARD,
                     responsePlacedCard = placedCardResponse.copy(box = FcBox.REPEAT),
                 ),
-                PLACED_CARD_ID, USER_ID, Box.REPEAT, CARD_ID, CREATED_ON, UPDATED_ON
+                PLACED_CARD_ID, USER_ID, Box.REPEAT, CARD_ID, CREATED_AT, UPDATED_AT
             ),
         )
 
@@ -150,8 +150,8 @@ internal class ToPlacedCardTransportTest {
                 assertEquals(expectedCardId, cardId)
                 assertEquals(expectedUserId, ownerId)
                 assertEquals(expectedBox, box)
-                assertEquals(expectedCreatedOn, createdOn)
-                assertEquals(expectedUpdatedOn, updatedOn)
+                assertEquals(expectedCreatedOn, createdAt)
+                assertEquals(expectedUpdatedOn, updatedAt)
             }
         else fail("Actual placed card resource mustn't be null")
     }

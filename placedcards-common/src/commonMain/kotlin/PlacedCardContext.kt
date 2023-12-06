@@ -4,6 +4,7 @@ import kotlinx.datetime.Instant
 import com.github.kondury.flashcards.placedcards.common.models.*
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
 
+
 data class PlacedCardContext(
     var command: PlacedCardCommand = PlacedCardCommand.NONE,
     var state: FcState = FcState.NONE,
@@ -15,15 +16,12 @@ data class PlacedCardContext(
     var requestId: FcRequestId = FcRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
 
-    // create command
+    // create command:  ownerId, box, cardId, createdAt, updatedAt
+    // move command: id, box, updatedAt
+    // delete command: id
     var requestPlacedCard: PlacedCard = PlacedCard.EMPTY,
     var validatingPlacedCard: PlacedCard = PlacedCard.EMPTY,
     var validatedPlacedCard: PlacedCard = PlacedCard.EMPTY,
-
-    // delete/move commands
-    var requestPlacedCardId: PlacedCardId = PlacedCardId.NONE,
-    var validatingPlacedCardId: PlacedCardId = PlacedCardId.NONE,
-    var validatedPlacedCardId: PlacedCardId = PlacedCardId.NONE,
 
     // init/select commands
     var requestOwnerId: UserId = UserId.NONE,
@@ -34,11 +32,6 @@ data class PlacedCardContext(
     var requestWorkBox: FcBox = FcBox.NONE,
     var validatingWorkBox: FcBox = FcBox.NONE,
     var validatedWorkBox: FcBox = FcBox.NONE,
-
-    // move command: box after
-    var requestBoxAfter: FcBox = FcBox.NONE,
-    var validatingBoxAfter: FcBox = FcBox.NONE,
-    var validatedBoxAfter: FcBox = FcBox.NONE,
 
     // select command: sorting order
     var requestSearchStrategy: FcSearchStrategy = FcSearchStrategy.NONE,

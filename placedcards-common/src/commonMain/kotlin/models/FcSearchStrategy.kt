@@ -6,5 +6,5 @@ enum class FcSearchStrategy {
     EARLIEST_REVIEWED
 }
 
-inline fun FcSearchStrategy.isEmpty() = this == FcSearchStrategy.NONE
-inline fun FcSearchStrategy.isNotEmpty() = this != FcSearchStrategy.NONE
+fun FcSearchStrategy.isEmpty() = this == FcSearchStrategy.NONE
+fun FcSearchStrategy.isNotEmpty() = this != FcSearchStrategy.NONE

@@ -52,8 +52,8 @@ fun PlacedCard.toPlacedCardResponseResource() = PlacedCardResponseResource(
     ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
     cardId = cardId.takeNonEmptyOrNull()?.asString(),
     box = box.toTransportPlacedCard(),
-    createdOn = createdOn.toString(),
-    updatedOn = updatedOn.toString(),
+    createdAt = createdAt.toString(),
+    updatedAt = updatedAt.toString(),
 )
 
 fun FcBox.toTransportPlacedCard(): Box? = when (this) {

@@ -12,29 +12,14 @@ object PlacedCardStub {
         ownerId: UserId = STUB.ownerId,
         box: FcBox = STUB.box,
         cardId: CardId = STUB.cardId,
-        createdOn: Instant = STUB.createdOn,
-        updatedOn: Instant = STUB.updatedOn,
+        createdAt: Instant = STUB.createdAt,
+        updatedAt: Instant = STUB.updatedAt,
     ): PlacedCard = STUB.copy(
         id = id,
         ownerId = ownerId,
         box = box,
         cardId = cardId,
-        createdOn = createdOn,
-        updatedOn = updatedOn
+        createdAt = createdAt,
+        updatedAt = updatedAt
     )
-
-
-//    fun prepareResult(block: PlacedCard.() -> Unit): PlacedCard = get().apply(block)
-//
-//    private fun fcCard(
-//        base: PlacedCard,
-//        id: String,
-//        box: FcBox,
-//        cardId: String,
-//    ) = base.copy(
-//        id = PlacedCardId(id),
-//        box = box,
-//        cardId = CardId(cardId),
-//    )
-
 }

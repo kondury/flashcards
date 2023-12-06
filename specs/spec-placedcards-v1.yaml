@@ -329,11 +329,11 @@ components:
               $ref: '#/components/schemas/PlacedCardId'
             lock:
               $ref: '#/components/schemas/Lock'
-            createdOn:
+            createdAt:
               type: string
               format: date-time
               description: время добавления карточки в пользовательские коробки
-            updatedOn:
+            updatedAt:
               type: string
               format: date-time
               description: время обновления информации о изучаемой карточке

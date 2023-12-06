@@ -13,8 +13,7 @@ internal fun CorChainDsl<PlacedCardContext>.beforeCreatePlacedCardValidation() =
 
 internal fun CorChainDsl<PlacedCardContext>.beforeMovePlacedCardValidation() =
     beforeValidation(MOVE_PLACED_CARD) {
-        validatingPlacedCardId = requestPlacedCardId.normalized
-        validatingBoxAfter = requestBoxAfter
+        validatingPlacedCard = requestPlacedCard.normalized
     }
 
 internal fun CorChainDsl<PlacedCardContext>.beforeSelectPlacedCardValidation() =
@@ -26,7 +25,7 @@ internal fun CorChainDsl<PlacedCardContext>.beforeSelectPlacedCardValidation() =
 
 internal fun CorChainDsl<PlacedCardContext>.beforeDeletePlacedCardValidation() =
     beforeValidation(DELETE_PLACED_CARD) {
-        validatingPlacedCardId = requestPlacedCardId.normalized
+        validatingPlacedCard = requestPlacedCard.normalized
     }
 
 internal fun CorChainDsl<PlacedCardContext>.beforeInitPlacedCardValidation() =

@@ -31,7 +31,7 @@ components:
             $ref: '#/components/schemas/ErrorLogModel'
 
     CardLogModel:
-      title: Модель лога для микросервиса cards
+      title: Модель лога микросервиса cards
       type: object
       properties:
         operation:
@@ -46,7 +46,7 @@ components:
           $ref: '#/components/schemas/CardLog'
 
     ErrorLogModel:
-      title: Модель лога для ошибки
+      title: Модель лога ошибки
       type: object
       properties:
         message:
@@ -59,7 +59,7 @@ components:
           type: string
 
     CardLog:
-      title: Модель лога для объявления
+      title: Модель лога карточки
       type: object
       properties:
         id:

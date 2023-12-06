@@ -25,7 +25,6 @@ private fun PlacedCardContext.toPlacedCardLogModel(): PlacedCardLogModel? =
         responsePlacedCard = responsePlacedCard.takeNonEmptyOrNull()?.toLog(),
         requestOwnerId = requestOwnerId.takeNonEmptyOrNull()?.asString(),
         requestWorkBox = requestWorkBox.takeNonEmptyOrNull()?.name,
-        requestBoxAfter = requestBoxAfter.takeNonEmptyOrNull()?.name,
         requestSearchStrategy = requestSearchStrategy.takeNonEmptyOrNull()?.name
     ).takeIf { it != PlacedCardLogModel() }
 
@@ -50,10 +49,10 @@ private fun PlacedCard.toLog() = PlacedCardLog(
     ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
     box = box.takeNonEmptyOrNull()?.name,
     cardId = cardId.takeNonEmptyOrNull()?.asString(),
-    createdOn = createdOn.toString(),
-    updatedOn = updatedOn.toString(),
+    createdAt = createdAt.toString(),
+    updatedAt = updatedAt.toString(),
 )
 
-private inline fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
-private inline fun FcSearchStrategy.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
-private inline fun FcBox.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private fun FcSearchStrategy.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private fun FcBox.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }

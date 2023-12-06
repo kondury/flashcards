@@ -1,6 +1,7 @@
 package com.github.kondury.flashcards.placedcards.biz
 
 import com.github.kondury.flashcards.placedcards.common.models.FcBox
+import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardId
 import kotlin.test.Test
@@ -20,8 +21,10 @@ class StubMovePlacedCardTest {
         processor = processor,
         command = PlacedCardCommand.MOVE_PLACED_CARD,
         configureContext = {
-            requestPlacedCardId = expectedId
-            requestBoxAfter = expectedBox
+            requestPlacedCard = PlacedCard(
+                id = expectedId,
+                box = expectedBox
+            )
         },
     ) { context ->
         with(context.responsePlacedCard) {
