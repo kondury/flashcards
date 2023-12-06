@@ -11,4 +11,4 @@ value class FcRequestId(private val id: String) {
     }
 }
 
-inline fun FcRequestId.isNotEmpty() = this != FcRequestId.NONE
+fun FcRequestId.isNotEmpty() = this != FcRequestId.NONE

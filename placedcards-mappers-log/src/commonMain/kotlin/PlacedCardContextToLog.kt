@@ -54,6 +54,6 @@ private fun PlacedCard.toLog() = PlacedCardLog(
     updatedAt = updatedAt.toString(),
 )
 
-private inline fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
-private inline fun FcSearchStrategy.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
-private inline fun FcBox.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private fun FcSearchStrategy.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+private fun FcBox.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }

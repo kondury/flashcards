@@ -16,5 +16,5 @@ data class PlacedCard(
     }
 }
 
-inline fun PlacedCard.isEmpty() = this == PlacedCard.EMPTY
-inline fun PlacedCard.isNotEmpty() = this != PlacedCard.EMPTY
+fun PlacedCard.isEmpty() = this == PlacedCard.EMPTY
+fun PlacedCard.isNotEmpty() = this != PlacedCard.EMPTY

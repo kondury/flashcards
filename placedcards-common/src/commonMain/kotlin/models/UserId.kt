@@ -11,5 +11,5 @@ value class UserId(private val id: String) {
     }
 }
 
-inline fun UserId.isEmpty() = this == UserId.NONE
-inline fun UserId.isNotEmpty() = this != UserId.NONE
+fun UserId.isEmpty() = this == UserId.NONE
+fun UserId.isNotEmpty() = this != UserId.NONE
