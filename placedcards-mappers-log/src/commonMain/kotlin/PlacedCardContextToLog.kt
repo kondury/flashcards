@@ -25,7 +25,6 @@ private fun PlacedCardContext.toPlacedCardLogModel(): PlacedCardLogModel? =
         responsePlacedCard = responsePlacedCard.takeNonEmptyOrNull()?.toLog(),
         requestOwnerId = requestOwnerId.takeNonEmptyOrNull()?.asString(),
         requestWorkBox = requestWorkBox.takeNonEmptyOrNull()?.name,
-        requestBoxAfter = requestBoxAfter.takeNonEmptyOrNull()?.name,
         requestSearchStrategy = requestSearchStrategy.takeNonEmptyOrNull()?.name
     ).takeIf { it != PlacedCardLogModel() }
 

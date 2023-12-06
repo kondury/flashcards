@@ -1,5 +1,6 @@
 package com.github.kondury.flashcards.placedcards.biz
 
+import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardId
 import com.github.kondury.flashcards.placedcards.common.models.isEmpty
@@ -11,14 +12,16 @@ class StubDeletePlacedCardTest {
 
     companion object {
         private val processor = FcPlacedCardProcessor()
-        private val id = PlacedCardId("100")
+        private val placedCardId = PlacedCardId("100")
     }
 
     @Test
     fun deletePlacedCardSuccess() = runSuccessStubTest(
         processor = processor,
         command = PlacedCardCommand.DELETE_PLACED_CARD,
-        configureContext = { requestPlacedCardId = id }
+        configureContext = {
+            requestPlacedCard = PlacedCard(id = placedCardId)
+        }
     ) { context -> assertTrue(context.responsePlacedCard.isEmpty()) }
 
     @Test

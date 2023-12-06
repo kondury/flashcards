@@ -19,8 +19,8 @@ internal fun CorChainDsl<PlacedCardContext>.stubCreatePlacedCardSuccess() =
 internal fun CorChainDsl<PlacedCardContext>.stubMovePlacedCardSuccess() =
     stubSuccess(PlacedCardCommand.MOVE_PLACED_CARD) {
         responsePlacedCard = PlacedCardStub.getWith(
-            id = requestPlacedCardId,
-            box = requestBoxAfter,
+            id = requestPlacedCard.id,
+            box = requestPlacedCard.box,
         )
     }
 

@@ -16,74 +16,71 @@ fun PlacedCardContext.fromTransport(request: IRequest) = when (request) {
 }
 
 fun PlacedCardContext.fromPlacedCardCreateRequest(request: PlacedCardCreateRequest) {
-    command = PlacedCardCommand.CREATE_PLACED_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
-    requestPlacedCard = request.placedCard?.toInternal() ?: PlacedCard.EMPTY
+    fromTransportCommon(PlacedCardCommand.CREATE_PLACED_CARD, request.debug, request)
+    fromTransportResource(request.placedCard) {
+        PlacedCard(
+            ownerId = ownerId.toUserId(),
+            box = box.toFcBox(),
+            cardId = cardId.toCardId(),
+        )
+    }
 }
 
 fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteRequest) {
-    command = PlacedCardCommand.DELETE_PLACED_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
-    requestPlacedCardId = request.placedCard?.id.toPlacedCardId()
+    fromTransportCommon(PlacedCardCommand.DELETE_PLACED_CARD, request.debug, request)
+    fromTransportResource(request.placedCard) {
+        PlacedCard(
+            id = id.toPlacedCardId(),
+        )
+    }
 }
 
 fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) {
-    command = PlacedCardCommand.MOVE_PLACED_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
-    requestPlacedCardId = request.move?.id.toPlacedCardId()
-    requestBoxAfter = request.move?.box.fromTransport()
+    fromTransportCommon(PlacedCardCommand.MOVE_PLACED_CARD, request.debug, request)
+    fromTransportResource(request.move) {
+        PlacedCard(
+            id = id.toPlacedCardId(),
+            box = box.toFcBox(),
+        )
+    }
 }
 
 fun PlacedCardContext.fromPlacedCardInitRequest(request: PlacedCardInitRequest) {
-    command = PlacedCardCommand.INIT_PLACED_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
+    fromTransportCommon(PlacedCardCommand.INIT_PLACED_CARD, request.debug, request)
     requestOwnerId = request.init?.ownerId.toUserId()
-    requestWorkBox = request.init?.box.fromTransport()
+    requestWorkBox = request.init?.box.toFcBox()
 }
 
 fun PlacedCardContext.fromPlacedCardSelectRequest(request: PlacedCardSelectRequest) {
-    command = PlacedCardCommand.SELECT_PLACED_CARD
-    workMode = request.debug.transportToWorkMode()
-    stubCase = request.debug.transportToStubCase()
-    requestId = request.requestId()
-
+    fromTransportCommon(PlacedCardCommand.SELECT_PLACED_CARD, request.debug, request)
     requestOwnerId = request.select?.ownerId.toUserId()
-    requestWorkBox = request.select?.box.fromTransport()
-    requestSearchStrategy = request.select?.searchStrategy.fromTransport()
+    requestWorkBox = request.select?.box.toFcBox()
+    requestSearchStrategy = request.select?.searchStrategy.toFcSearchStrategy()
 }
 
-private fun PlacedCardCreateResource.toInternal(): PlacedCard = PlacedCard(
-    ownerId = this.ownerId.toUserId(),
-    box = this.box.fromTransport(),
-    cardId = this.cardId.toCardId(),
-)
+fun PlacedCardContext.fromTransportCommon(cmd: PlacedCardCommand, debug: DebugResource?, request: IRequest) {
+    command = cmd
+    workMode = debug.transportToWorkMode()
+    stubCase = debug.transportToStubCase()
+    requestId = request.requestId()
+}
 
-//private fun String?.toPlacedCardWithId() = PlacedCard(id = this.toPlacedCardId())
+private fun <T> PlacedCardContext.fromTransportResource(card: T?, toInternal: T.() -> PlacedCard) {
+    requestPlacedCard = card?.toInternal() ?: PlacedCard.EMPTY
+}
 
 private fun String?.toPlacedCardId() = this?.let { PlacedCardId(it) } ?: PlacedCardId.NONE
 private fun String?.toUserId() = this?.let { UserId(it) } ?: UserId.NONE
 private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
 
-private fun Box?.fromTransport(): FcBox = when (this) {
+private fun Box?.toFcBox(): FcBox = when (this) {
     Box.NEW -> FcBox.NEW
     Box.REPEAT -> FcBox.REPEAT
     Box.FINISHED -> FcBox.FINISHED
     null -> FcBox.NONE
 }
 
-private fun SearchStrategy?.fromTransport(): FcSearchStrategy = when (this) {
+private fun SearchStrategy?.toFcSearchStrategy(): FcSearchStrategy = when (this) {
     SearchStrategy.EARLIEST_CREATED -> FcSearchStrategy.EARLIEST_CREATED
     SearchStrategy.EARLIEST_REVIEWED -> FcSearchStrategy.EARLIEST_REVIEWED
     null -> FcSearchStrategy.NONE

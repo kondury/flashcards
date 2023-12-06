@@ -43,8 +43,7 @@ class PlacedCardContextToLogTest {
                 updatedAt = Instant.parse(REQ_UPDATED_AT),
             ),
             requestOwnerId = UserId("user-2"),
-            requestWorkBox = FcBox.NEW,
-            requestBoxAfter = FcBox.REPEAT,
+            requestWorkBox = FcBox.REPEAT,
             requestSearchStrategy = FcSearchStrategy.EARLIEST_CREATED,
             responsePlacedCard = PlacedCard(
                 id = PlacedCardId("456"),
@@ -68,8 +67,7 @@ class PlacedCardContextToLogTest {
                 updatedAt = REQ_UPDATED_AT,
             ),
             requestOwnerId = "user-2",
-            requestWorkBox = "NEW",
-            requestBoxAfter = "REPEAT",
+            requestWorkBox = "REPEAT",
             requestSearchStrategy = "EARLIEST_CREATED",
             responsePlacedCard = PlacedCardLog(
                 id = "456",
