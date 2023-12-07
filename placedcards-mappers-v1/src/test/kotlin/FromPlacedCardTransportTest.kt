@@ -51,7 +51,8 @@ internal class FromPlacedCardTransportTest {
                 mode = RunMode.PROD,
             ),
             placedCard = PlacedCardDeleteResource(
-                id = "PlacedCardId"
+                id = "PlacedCardId",
+                lock = "123-234-abc-ABC"
             )
         )
 
@@ -67,6 +68,7 @@ internal class FromPlacedCardTransportTest {
         )
 
         assertEquals("PlacedCardId", context.requestPlacedCard.id.asString())
+        assertEquals("123-234-abc-ABC", context.requestPlacedCard.lock.asString())
     }
 
     @Test
@@ -80,6 +82,7 @@ internal class FromPlacedCardTransportTest {
             move = PlacedCardMoveResource(
                 id = "PlacedCardId",
                 box = Box.REPEAT,
+                lock = "123-234-abc-ABC",
             )
         )
 
@@ -96,6 +99,7 @@ internal class FromPlacedCardTransportTest {
 
         assertEquals(FcBox.REPEAT, context.requestPlacedCard.box)
         assertEquals("PlacedCardId", context.requestPlacedCard.id.asString())
+        assertEquals("123-234-abc-ABC", context.requestPlacedCard.lock.asString())
     }
 
     @Test

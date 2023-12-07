@@ -31,6 +31,7 @@ fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteReque
     requestPlacedCard = request.placedCard.mapOrDefault(PlacedCard.EMPTY) {
         PlacedCard(
             id = it.id.mapOrDefault(PlacedCardId.NONE, ::PlacedCardId),
+            lock = it.lock.mapOrDefault(FcPlacedCardLock.NONE, ::FcPlacedCardLock),
         )
     }
 }
@@ -41,6 +42,7 @@ fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) 
         PlacedCard(
             id = it.id.mapOrDefault(PlacedCardId.NONE, ::PlacedCardId),
             box = it.box.toFcBoxOrNone(),
+            lock = it.lock.mapOrDefault(FcPlacedCardLock.NONE, ::FcPlacedCardLock),
         )
     }
 }
