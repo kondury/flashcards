@@ -61,5 +61,6 @@ include("placedcards-app-ktor")
 include("placedcards-app-kafka")
 include("placedcards-app-rabbit")
 include("placedcards-app-common")
+include("placedcards-repo-tests")
 
 
