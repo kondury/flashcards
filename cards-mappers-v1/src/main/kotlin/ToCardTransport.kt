@@ -8,15 +8,23 @@ import com.github.kondury.flashcards.cards.mappers.v1.exceptions.UnknownFcComman
 
 
 fun CardContext.toTransportCard(): IResponse = when (val cmd = command) {
-    CREATE_CARD -> CardCreateResponse(null, toRequestId(), toResult(), toErrors(), toCard())
-    READ_CARD -> CardReadResponse(null, toRequestId(), toResult(), toErrors(), toCard())
-    DELETE_CARD -> CardDeleteResponse(null, toRequestId(), toResult(), toErrors())
-    NONE -> throw UnknownFcCommand(cmd)
+    CREATE_CARD -> {
+        CardCreateResponse(null, toRequestId(), toResult(), toErrors(), toCard())
+    }
+    READ_CARD -> {
+        CardReadResponse(null, toRequestId(), toResult(), toErrors(), toCard())
+    }
+    DELETE_CARD -> {
+        CardDeleteResponse(null, toRequestId(), toResult(), toErrors())
+    }
+    NONE -> {
+        throw UnknownFcCommand(cmd)
+    }
 }
 
-private fun CardContext.toRequestId() = requestId.toRequestId()
-private fun CardContext.toResult() = state.toResponseResult()
-private fun CardContext.toErrors() = errors.toTransportErrors()
+private fun CardContext.toRequestId() = requestId.toRequestIdOrNull()
+private fun CardContext.toResult() = state.toResponseResultOrNull()
+private fun CardContext.toErrors() = errors.toTransportErrorsOrNull()
 private fun CardContext.toCard() = responseCard.toCardResponseResource()
 
 private fun Card.toCardResponseResource() = CardResponseResource(

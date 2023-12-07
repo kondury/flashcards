@@ -7,7 +7,7 @@ import com.github.kondury.flashcards.placedcards.api.v1.apiV1RequestSerialize
 import com.github.kondury.flashcards.placedcards.api.v1.apiV1ResponseDeserialize
 import com.github.kondury.flashcards.placedcards.api.v1.models.*
 import com.github.kondury.flashcards.placedcards.mappers.v1.toPlacedCardResponseResource
-import com.github.kondury.flashcards.placedcards.mappers.v1.toTransportPlacedCard
+import com.github.kondury.flashcards.placedcards.mappers.v1.toTransportBoxOrNull
 import com.github.kondury.flashcards.placedcards.stubs.PlacedCardStub
 import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.ConnectionFactory
@@ -94,7 +94,7 @@ internal class RabbitMqPlacedCardControllerTest {
                 stub = DebugStub.SUCCESS
             ),
             placedCard = PlacedCardCreateResource(
-                box = placedCardStub.box.toTransportPlacedCard(),
+                box = placedCardStub.box.toTransportBoxOrNull(),
                 ownerId = placedCardStub.ownerId.asString(),
                 cardId = placedCardStub.cardId.asString()
             ),
@@ -115,7 +115,7 @@ internal class RabbitMqPlacedCardControllerTest {
             ),
             move = PlacedCardMoveResource(
                 id = placedCardStub.id.asString(),
-                box = placedCardStub.box.toTransportPlacedCard(),
+                box = placedCardStub.box.toTransportBoxOrNull(),
             ),
         ),
     ) { response: PlacedCardMoveResponse ->
@@ -134,7 +134,7 @@ internal class RabbitMqPlacedCardControllerTest {
             ),
             select = PlacedCardSelectResource(
                 ownerId = placedCardStub.ownerId.asString(),
-                box = placedCardStub.box.toTransportPlacedCard(),
+                box = placedCardStub.box.toTransportBoxOrNull(),
                 searchStrategy = null
             ),
         ),
@@ -171,7 +171,7 @@ internal class RabbitMqPlacedCardControllerTest {
             ),
             init = PlacedCardInitResource(
                 ownerId = placedCardStub.ownerId.asString(),
-                box = placedCardStub.box.toTransportPlacedCard(),
+                box = placedCardStub.box.toTransportBoxOrNull(),
             ),
         ),
     ) { response: PlacedCardInitResponse ->
