@@ -17,70 +17,68 @@ fun PlacedCardContext.fromTransport(request: IRequest) = when (request) {
 
 fun PlacedCardContext.fromPlacedCardCreateRequest(request: PlacedCardCreateRequest) {
     fromTransportCommon(PlacedCardCommand.CREATE_PLACED_CARD, request.debug, request)
-    fromTransportResource(request.placedCard) {
+    requestPlacedCard = request.placedCard.toPlacedCardOrEmpty {
         PlacedCard(
-            ownerId = ownerId.toUserId(),
-            box = box.toFcBox(),
-            cardId = cardId.toCardId(),
+            ownerId = ownerId.toUserIdOrNone(),
+            box = box.toFcBoxOrNone(),
+            cardId = cardId.toCardIdOrNone(),
         )
     }
 }
 
 fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteRequest) {
     fromTransportCommon(PlacedCardCommand.DELETE_PLACED_CARD, request.debug, request)
-    fromTransportResource(request.placedCard) {
+    requestPlacedCard = request.placedCard.toPlacedCardOrEmpty {
         PlacedCard(
-            id = id.toPlacedCardId(),
+            id = id.toPlacedCardIdOrNone(),
         )
     }
 }
 
 fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) {
     fromTransportCommon(PlacedCardCommand.MOVE_PLACED_CARD, request.debug, request)
-    fromTransportResource(request.move) {
+    requestPlacedCard = request.move.toPlacedCardOrEmpty {
         PlacedCard(
-            id = id.toPlacedCardId(),
-            box = box.toFcBox(),
+            id = id.toPlacedCardIdOrNone(),
+            box = box.toFcBoxOrNone(),
         )
     }
 }
 
 fun PlacedCardContext.fromPlacedCardInitRequest(request: PlacedCardInitRequest) {
     fromTransportCommon(PlacedCardCommand.INIT_PLACED_CARD, request.debug, request)
-    requestOwnerId = request.init?.ownerId.toUserId()
-    requestWorkBox = request.init?.box.toFcBox()
+    requestOwnerId = request.init?.ownerId.toUserIdOrNone()
+    requestWorkBox = request.init?.box.toFcBoxOrNone()
 }
 
 fun PlacedCardContext.fromPlacedCardSelectRequest(request: PlacedCardSelectRequest) {
     fromTransportCommon(PlacedCardCommand.SELECT_PLACED_CARD, request.debug, request)
-    requestOwnerId = request.select?.ownerId.toUserId()
-    requestWorkBox = request.select?.box.toFcBox()
-    requestSearchStrategy = request.select?.searchStrategy.toFcSearchStrategy()
+    requestOwnerId = request.select?.ownerId.toUserIdOrNone()
+    requestWorkBox = request.select?.box.toFcBoxOrNone()
+    requestSearchStrategy = request.select?.searchStrategy.toFcSearchStrategyOrNone()
 }
 
 fun PlacedCardContext.fromTransportCommon(cmd: PlacedCardCommand, debug: DebugResource?, request: IRequest) {
     command = cmd
-    workMode = debug.transportToWorkMode()
-    stubCase = debug.transportToStubCase()
-    requestId = request.requestId()
+    workMode = debug.toWorkMode()
+    stubCase = debug.toStubCaseOrNone()
+    requestId = request.requestIdOrNone()
 }
 
-private fun <T> PlacedCardContext.fromTransportResource(card: T?, toInternal: T.() -> PlacedCard) {
-    requestPlacedCard = card?.toInternal() ?: PlacedCard.EMPTY
-}
+private fun <T> T?.toPlacedCardOrEmpty(toInternal: T.() -> PlacedCard) = this?.toInternal() ?: PlacedCard.EMPTY
 
-private fun String?.toPlacedCardId() = this?.let { PlacedCardId(it) } ?: PlacedCardId.NONE
-private fun String?.toUserId() = this?.let { UserId(it) } ?: UserId.NONE
-private fun String?.toCardId(): CardId = this?.let { CardId(it) } ?: CardId.NONE
+private fun String?.toPlacedCardIdOrNone() = this?.let { PlacedCardId(it) } ?: PlacedCardId.NONE
+private fun String?.toUserIdOrNone() = this?.let { UserId(it) } ?: UserId.NONE
+private fun String?.toCardIdOrNone() = this?.let { CardId(it) } ?: CardId.NONE
 
-private fun Box?.toFcBox(): FcBox = when (this) {
+private fun Box?.toFcBoxOrNone() = when (this) {
     Box.NEW -> FcBox.NEW
     Box.REPEAT -> FcBox.REPEAT
     Box.FINISHED -> FcBox.FINISHED
     null -> FcBox.NONE
 }
 
-private fun SearchStrategy?.toFcSearchStrategy(): FcSearchStrategy = when (this) {
+private fun SearchStrategy?.toFcSearchStrategyOrNone() = when (this) {
     SearchStrategy.EARLIEST_CREATED -> FcSearchStrategy.EARLIEST_CREATED
     SearchStrategy.EARLIEST_REVIEWED -> FcSearchStrategy.EARLIEST_REVIEWED
     null -> FcSearchStrategy.NONE

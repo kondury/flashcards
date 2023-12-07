@@ -5,16 +5,16 @@ import com.github.kondury.flashcards.cards.common.models.FcError
 import com.github.kondury.flashcards.cards.common.models.FcRequestId
 import com.github.kondury.flashcards.cards.common.models.FcState
 
-internal fun FcRequestId.toRequestId() = this.takeNonEmptyOrNull()?.asString()
+internal fun FcRequestId.toRequestIdOrNull() = this.takeNonEmptyOrNull()?.asString()
 
-internal fun FcState.toResponseResult(): ResponseResult? = when (this) {
+internal fun FcState.toResponseResultOrNull(): ResponseResult? = when (this) {
     FcState.RUNNING -> ResponseResult.SUCCESS
     FcState.FAILING -> ResponseResult.ERROR
     FcState.FINISHING -> ResponseResult.SUCCESS
     FcState.NONE -> null
 }
 
-internal fun List<FcError>.toTransportErrors(): List<Error>? = this
+internal fun List<FcError>.toTransportErrorsOrNull(): List<Error>? = this
     .map { it.toTransportError() }
     .toList()
     .takeIf { it.isNotEmpty() }

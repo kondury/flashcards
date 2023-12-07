@@ -8,16 +8,16 @@ import com.github.kondury.flashcards.placedcards.common.models.FcRequestId
 import com.github.kondury.flashcards.placedcards.common.models.FcWorkMode
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
 
-internal fun IRequest?.requestId() = this?.requestId?.let { FcRequestId(it) } ?: FcRequestId.NONE
+internal fun IRequest?.requestIdOrNone() = this?.requestId?.let { FcRequestId(it) } ?: FcRequestId.NONE
 
-internal fun DebugResource?.transportToWorkMode(): FcWorkMode = when (this?.mode) {
+internal fun DebugResource?.toWorkMode(): FcWorkMode = when (this?.mode) {
     RunMode.PROD -> FcWorkMode.PROD
     RunMode.TEST -> FcWorkMode.TEST
     RunMode.STUB -> FcWorkMode.STUB
     null -> FcWorkMode.PROD
 }
 
-internal fun DebugResource?.transportToStubCase(): FcStub = when (this?.stub) {
+internal fun DebugResource?.toStubCaseOrNone(): FcStub = when (this?.stub) {
     DebugStub.SUCCESS -> FcStub.SUCCESS
     DebugStub.NOT_FOUND -> FcStub.NOT_FOUND
     DebugStub.WRONG_CARD_ID -> FcStub.WRONG_CARD_ID
