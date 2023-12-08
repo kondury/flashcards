@@ -1,5 +1,6 @@
-package com.github.kondury.flashcards.placedcards.biz
+package com.github.kondury.flashcards.placedcards.biz.validation
 
+import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
 import com.github.kondury.flashcards.placedcards.common.models.*
 import kotlinx.coroutines.test.runTest
@@ -10,12 +11,12 @@ import kotlin.test.fail
 internal fun runSuccessfulValidationTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,
-    configure: PlacedCardContext.() -> Unit,
+    configureContext: PlacedCardContext.() -> Unit,
     assertSpecific: (PlacedCardContext) -> Unit
 ) = runValidationTest(
     processor = processor,
     command = command,
-    configure = configure,
+    configureContext = configureContext,
 ) { context ->
     assertEquals(FcState.FINISHING, context.state)
     assertTrue(context.errors.isEmpty())
@@ -25,13 +26,9 @@ internal fun runSuccessfulValidationTest(
 internal fun runSingleErrorValidationTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,
-    configure: PlacedCardContext.() -> Unit = {},
+    configureContext: PlacedCardContext.() -> Unit = {},
     assertError: (FcError) -> Unit
-) = runValidationTest(
-    processor,
-    command,
-    configure = configure
-) { context ->
+) = runValidationTest(processor, command, configureContext) { context ->
     assertEquals(FcState.FAILING, context.state)
     assertTrue(context.validatedPlacedCard.isEmpty())
 
@@ -44,13 +41,13 @@ internal fun runSingleErrorValidationTest(
 internal fun runValidationTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,
-    configure: PlacedCardContext.() -> Unit = {},
+    configureContext: PlacedCardContext.() -> Unit = {},
     assertions: (PlacedCardContext) -> Unit
 ) = runTest {
     val context = PlacedCardContext(
         command = command,
         workMode = FcWorkMode.TEST
-    ).apply(configure)
+    ).apply(configureContext)
     processor.exec(context)
     assertions(context)
 }

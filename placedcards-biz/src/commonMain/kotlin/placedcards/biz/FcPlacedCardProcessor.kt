@@ -3,16 +3,21 @@ package com.github.kondury.flashcards.placedcards.biz
 import com.github.kondury.flashcards.cor.dsl.rootChain
 import com.github.kondury.flashcards.placedcards.biz.stub.*
 import com.github.kondury.flashcards.placedcards.biz.validation.*
+import com.github.kondury.flashcards.placedcards.biz.repository.*
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
+import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand.*
 
-class FcPlacedCardProcessor {
-
-    suspend fun exec(context: PlacedCardContext) = businessChain.exec(context)
+class FcPlacedCardProcessor(
+    private val placedCardsCorConfig: PlacedCardsCorConfig
+) {
+    suspend fun exec(context: PlacedCardContext) =
+        businessChain.exec(context.apply { repositoryConfig = placedCardsCorConfig.repositoryConfig })
 
     companion object {
         private val businessChain = rootChain<PlacedCardContext> {
             initState()
+            initRepository()
 
             operation(CREATE_PLACED_CARD) {
                 stubs(CREATE_PLACED_CARD) {
@@ -35,7 +40,12 @@ class FcPlacedCardProcessor {
                     validateBoxIsNotEmpty(CREATE_PLACED_CARD) { validatingPlacedCard.box }
                     afterCreatePlacedCardValidation()
                 }
-                finish(CREATE_PLACED_CARD)
+
+                repository(CREATE_PLACED_CARD) {
+                    repositoryPrepareCreate()
+                    repositoryCreate()
+                    repositoryResponse(CREATE_PLACED_CARD)
+                }
             }
 
             operation(MOVE_PLACED_CARD) {
@@ -52,10 +62,18 @@ class FcPlacedCardProcessor {
                     beforeMovePlacedCardValidation()
                     validatePlacedCardIdIsNotEmpty(MOVE_PLACED_CARD) { validatingPlacedCard.id }
                     validatePlacedCardIdMatchesFormat(MOVE_PLACED_CARD) { validatingPlacedCard.id }
+                    validateLockIsNotEmpty(MOVE_PLACED_CARD)
+                    validateLockMatchesFormat(MOVE_PLACED_CARD)
                     validateBoxIsNotEmpty(MOVE_PLACED_CARD) { validatingPlacedCard.box }
                     afterMovePlacedCardValidation()
                 }
-                finish(MOVE_PLACED_CARD)
+
+                repository(MOVE_PLACED_CARD) {
+                    repositoryRead()
+                    repositoryPrepareMove()
+                    repositoryMove()
+                    repositoryResponse(MOVE_PLACED_CARD)
+                }
             }
 
             operation(SELECT_PLACED_CARD) {
@@ -77,7 +95,11 @@ class FcPlacedCardProcessor {
                     validateSearchStrategyIsNotEmpty(SELECT_PLACED_CARD) { validatingSearchStrategy }
                     afterSelectPlacedCardValidation()
                 }
-                finish(SELECT_PLACED_CARD)
+
+                repository(SELECT_PLACED_CARD) {
+                    repositorySelect()
+                    repositoryResponse(SELECT_PLACED_CARD)
+                }
             }
 
             operation(DELETE_PLACED_CARD) {
@@ -92,10 +114,17 @@ class FcPlacedCardProcessor {
                     beforeDeletePlacedCardValidation()
                     validatePlacedCardIdIsNotEmpty(DELETE_PLACED_CARD) { validatingPlacedCard.id }
                     validatePlacedCardIdMatchesFormat(DELETE_PLACED_CARD) { validatingPlacedCard.id }
+                    validateLockIsNotEmpty(DELETE_PLACED_CARD)
+                    validateLockMatchesFormat(DELETE_PLACED_CARD)
                     afterDeletePlacedCardValidation()
-
                 }
-                finish(DELETE_PLACED_CARD)
+
+                repository(DELETE_PLACED_CARD) {
+                    repositoryRead()
+                    repositoryPrepareDelete()
+                    repositoryDelete()
+                    repositoryResponse(DELETE_PLACED_CARD)
+                }
             }
 
             operation(INIT_PLACED_CARD) {
@@ -115,9 +144,15 @@ class FcPlacedCardProcessor {
                     validateBoxIsNotEmpty(INIT_PLACED_CARD) { validatingWorkBox }
                     afterInitPlacedCardValidation()
                 }
-                finish(INIT_PLACED_CARD)
+
+//                repository(INIT_PLACED_CARD) {
+//                    repositoryPrepareInit()
+//                    repositoryInit()
+//                    repositoryResponse(INIT_PLACED_CARD)
+//                }
             }
 
+            finish()
         }.build()
     }
 }

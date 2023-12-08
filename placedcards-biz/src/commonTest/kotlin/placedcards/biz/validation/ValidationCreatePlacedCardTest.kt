@@ -1,10 +1,14 @@
-package com.github.kondury.flashcards.placedcards.biz
+package com.github.kondury.flashcards.placedcards.biz.validation
 
+import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
+import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
 import com.github.kondury.flashcards.placedcards.common.models.CardId
 import com.github.kondury.flashcards.placedcards.common.models.FcBox
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand.CREATE_PLACED_CARD
 import com.github.kondury.flashcards.placedcards.common.models.UserId
+import com.github.kondury.flashcards.placedcards.repository.tests.StubPlacedCardRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -14,7 +18,7 @@ class ValidationCreatePlacedCardTest {
 
         private const val GOOD_ID = "id-1"
         private const val GOOD_ID_WITH_SPACES = " \t$GOOD_ID \t "
-        private const val BAD_NOT_EMPTY_ID = "(${GOOD_ID})"
+        private const val BAD_NOT_EMPTY_ID = "($GOOD_ID)"
 
         private val expectedPlacedCard = PlacedCard(
             ownerId = UserId(GOOD_ID),
@@ -22,7 +26,10 @@ class ValidationCreatePlacedCardTest {
             cardId = CardId(GOOD_ID),
         )
 
-        val processor by lazy { FcPlacedCardProcessor() }
+        private val repositoryConfig by lazy { PlacedCardRepositoryConfig(testRepository = StubPlacedCardRepository()) }
+        private val corConfig by lazy { PlacedCardsCorConfig(repositoryConfig) }
+        private val processor by lazy { FcPlacedCardProcessor(corConfig) }
+
     }
 
     @Test
@@ -30,7 +37,7 @@ class ValidationCreatePlacedCardTest {
         runSuccessfulValidationTest(
             processor = processor,
             command = CREATE_PLACED_CARD,
-            configure = { requestPlacedCard = expectedPlacedCard }
+            configureContext = { requestPlacedCard = expectedPlacedCard }
         ) { context ->
             assertEquals(expectedPlacedCard, context.validatedPlacedCard)
         }
@@ -40,7 +47,7 @@ class ValidationCreatePlacedCardTest {
         runSuccessfulValidationTest(
             processor = processor,
             command = CREATE_PLACED_CARD,
-            configure = {
+            configureContext = {
                 requestPlacedCard = PlacedCard(
                     ownerId = UserId(GOOD_ID_WITH_SPACES),
                     box = FcBox.NEW,

@@ -13,6 +13,11 @@ fun PlacedCardContext.fail(error: FcError) {
     addError(error)
 }
 
+fun PlacedCardContext.fail(errors: List<FcError>) {
+    state = FcState.FAILING
+    addError(*errors.toTypedArray())
+}
+
 internal fun validationError(
     command: PlacedCardCommand = NONE,
     workMode: FcWorkMode = FcWorkMode.PROD,
@@ -32,3 +37,18 @@ internal fun validationError(
         level = level,
     )
 }
+
+internal fun configurationError(
+    field: String = "",
+    violationCode: String,
+    description: String,
+    exception: Exception? = null,
+    level: FcError.Level = FcError.Level.ERROR,
+) = FcError(
+    field = field,
+    code = "administration-$violationCode",
+    group = "administration",
+    message = "Microservice management error: $description",
+    level = level,
+    exception = exception,
+)

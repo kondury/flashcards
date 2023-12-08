@@ -22,6 +22,7 @@ private const val FIELD_OWNER_ID = "ownerId"
 private const val FIELD_CARD_ID = "cardId"
 private const val FIELD_PLACED_CARD_ID = "placedCardId"
 private const val FIELD_BOX = "box"
+private const val FIELD_LOCK = "lock"
 
 
 internal fun CorChainDsl<PlacedCardContext>.validateSearchStrategyIsNotEmpty(
@@ -75,6 +76,46 @@ internal fun CorChainDsl<PlacedCardContext>.validatePlacedCardIdIsNotEmpty(
                 field = FIELD_PLACED_CARD_ID,
                 violationCode = CODE_EMPTY,
                 description = MSG_FIELD_IS_REQUIRED,
+                level = Level.INFO
+            )
+        )
+    }
+}
+
+internal fun CorChainDsl<PlacedCardContext>.validateLockIsNotEmpty(
+    command: PlacedCardCommand
+) = worker {
+    this.title = "Validating: lock is not empty"
+    activeIf { validatingPlacedCard.lock.isEmpty() }
+    handle {
+        fail(
+            validationError(
+                command = command,
+                field = FIELD_LOCK,
+                violationCode = CODE_EMPTY,
+                description = MSG_FIELD_IS_REQUIRED,
+                level = Level.INFO
+            )
+        )
+    }
+}
+
+internal fun CorChainDsl<PlacedCardContext>.validateLockMatchesFormat(
+    command: PlacedCardCommand
+) = worker {
+    this.title = "Validating: lock has proper format"
+    activeIf {
+        validatingPlacedCard.lock.isNotEmpty()
+                && !validatingPlacedCard.lock.asString().matches(Regex(ID_FORMAT_PATTERN))
+    }
+    handle {
+        val encodedLock = validatingPlacedCard.lock.asString()
+        fail(
+            validationError(
+                command = command,
+                field = FIELD_LOCK,
+                violationCode = CODE_MISMATCHING_FORMAT,
+                description = "value $encodedLock must contain only letters, numbers and hyphens",
                 level = Level.INFO
             )
         )

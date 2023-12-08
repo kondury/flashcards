@@ -4,14 +4,22 @@ import com.github.kondury.flashcards.logging.common.AppLoggerProvider
 import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
 import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
+import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
+import com.github.kondury.flashcards.placedcards.repository.inmemory.InMemoryPlacedCardRepository
 import io.ktor.server.config.*
 
 
 data class PlacedCardsKtorConfig(
     private val settings: PlacedCardsKtorSettings,
 ) : PlacedCardsApplicationConfig by object : PlacedCardsApplicationConfig {
-    override val loggerProvider: AppLoggerProvider = getLoggerProvider(settings)
-    override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor()
+        override val loggerProvider: AppLoggerProvider = AppLoggerProvider { getLogbackLogger(it) }
+        override val repositoryConfig = PlacedCardRepositoryConfig(
+            prodRepository = InMemoryPlacedCardRepository(),
+            testRepository = InMemoryPlacedCardRepository(),
+        )
+        override val corConfig = PlacedCardsCorConfig(repositoryConfig)
+        override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
 } {
     constructor(config: ApplicationConfig) : this(settings = PlacedCardsKtorSettings(config))
 }

@@ -1,5 +1,7 @@
-package com.github.kondury.flashcards.placedcards.biz
+package com.github.kondury.flashcards.placedcards.biz.stub
 
+import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
 import com.github.kondury.flashcards.placedcards.common.models.FcBox
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand
@@ -7,11 +9,13 @@ import com.github.kondury.flashcards.placedcards.common.models.PlacedCardId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 class StubMovePlacedCardTest {
 
     companion object {
-        private val processor = FcPlacedCardProcessor()
+        private val placedCardsRepositoryConfig = PlacedCardsCorConfig.NONE
+        private val placedCardsCorConfig = PlacedCardsCorConfig(placedCardsRepositoryConfig)
+        private val processor = FcPlacedCardProcessor(placedCardsCorConfig)
+
         private val expectedId = PlacedCardId("100")
         private val expectedBox = FcBox.REPEAT
     }

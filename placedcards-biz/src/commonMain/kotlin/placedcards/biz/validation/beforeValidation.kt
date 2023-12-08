@@ -52,9 +52,13 @@ private val UserId.normalized: UserId
 private val PlacedCardId.normalized: PlacedCardId
     get() = PlacedCardId(asString().normalized)
 
+private val FcPlacedCardLock.normalized: FcPlacedCardLock
+    get() = FcPlacedCardLock(asString().normalized)
+
 private val PlacedCard.normalized: PlacedCard
     get() = this.copy(
         id = id.normalized,
+        lock = lock.normalized,
         ownerId = ownerId.normalized,
         cardId = cardId.normalized,
     )

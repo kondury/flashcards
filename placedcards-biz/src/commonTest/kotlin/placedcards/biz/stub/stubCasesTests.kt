@@ -1,5 +1,6 @@
-package com.github.kondury.flashcards.placedcards.biz
+package com.github.kondury.flashcards.placedcards.biz.stub
 
+import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 import com.github.kondury.flashcards.placedcards.common.models.*
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
 import kotlin.test.assertEquals

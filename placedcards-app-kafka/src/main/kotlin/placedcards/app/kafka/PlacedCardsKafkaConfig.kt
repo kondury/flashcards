@@ -8,13 +8,21 @@ import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
 import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
+import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
+import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
+import com.github.kondury.flashcards.placedcards.repository.inmemory.InMemoryPlacedCardRepository
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
 
 data class PlacedCardsKafkaConfig(
     val applicationConfig: PlacedCardsApplicationConfig = object : PlacedCardsApplicationConfig {
-        override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor()
         override val loggerProvider: AppLoggerProvider = AppLoggerProvider { getLogbackLogger(it) }
+        override val repositoryConfig = PlacedCardRepositoryConfig(
+            prodRepository = InMemoryPlacedCardRepository(),
+            testRepository = InMemoryPlacedCardRepository(),
+        )
+        override val corConfig = PlacedCardsCorConfig(repositoryConfig)
+        override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
     },
     val settings: PlacedCardsKafkaSettings = PlacedCardsKafkaSettings(),
     val strategies: List<TransformationStrategy<PlacedCardContext>> = listOf(
