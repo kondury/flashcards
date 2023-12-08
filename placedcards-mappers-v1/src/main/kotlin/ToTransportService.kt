@@ -5,7 +5,7 @@ import com.github.kondury.flashcards.placedcards.common.models.FcError
 import com.github.kondury.flashcards.placedcards.common.models.FcRequestId
 import com.github.kondury.flashcards.placedcards.common.models.FcState
 
-internal fun FcRequestId.toRequestIdOrNull() = this.takeNonEmptyOrNull()?.asString()
+internal fun FcRequestId.asStringOrNull() = this.asString().takeNonBlankOrNull()
 
 internal fun FcState.toResponseResultOrNull(): ResponseResult? = when (this) {
     FcState.RUNNING -> ResponseResult.SUCCESS

@@ -17,59 +17,53 @@ fun PlacedCardContext.fromTransport(request: IRequest) = when (request) {
 
 fun PlacedCardContext.fromPlacedCardCreateRequest(request: PlacedCardCreateRequest) {
     fromTransportCommon(PlacedCardCommand.CREATE_PLACED_CARD, request.debug, request)
-    requestPlacedCard = request.placedCard.toPlacedCardOrEmpty {
+    requestPlacedCard = request.placedCard.mapOrDefault(PlacedCard.EMPTY) {
         PlacedCard(
-            ownerId = ownerId.toUserIdOrNone(),
-            box = box.toFcBoxOrNone(),
-            cardId = cardId.toCardIdOrNone(),
+            ownerId = it.ownerId.mapOrDefault(UserId.NONE, ::UserId),
+            box = it.box.toFcBoxOrNone(),
+            cardId = it.cardId.mapOrDefault(CardId.NONE, ::CardId),
         )
     }
 }
 
 fun PlacedCardContext.fromPlacedCardDeleteRequest(request: PlacedCardDeleteRequest) {
     fromTransportCommon(PlacedCardCommand.DELETE_PLACED_CARD, request.debug, request)
-    requestPlacedCard = request.placedCard.toPlacedCardOrEmpty {
+    requestPlacedCard = request.placedCard.mapOrDefault(PlacedCard.EMPTY) {
         PlacedCard(
-            id = id.toPlacedCardIdOrNone(),
+            id = it.id.mapOrDefault(PlacedCardId.NONE, ::PlacedCardId),
         )
     }
 }
 
 fun PlacedCardContext.fromPlacedCardMoveRequest(request: PlacedCardMoveRequest) {
     fromTransportCommon(PlacedCardCommand.MOVE_PLACED_CARD, request.debug, request)
-    requestPlacedCard = request.move.toPlacedCardOrEmpty {
+    requestPlacedCard = request.move.mapOrDefault(PlacedCard.EMPTY) {
         PlacedCard(
-            id = id.toPlacedCardIdOrNone(),
-            box = box.toFcBoxOrNone(),
+            id = it.id.mapOrDefault(PlacedCardId.NONE, ::PlacedCardId),
+            box = it.box.toFcBoxOrNone(),
         )
     }
 }
 
 fun PlacedCardContext.fromPlacedCardInitRequest(request: PlacedCardInitRequest) {
     fromTransportCommon(PlacedCardCommand.INIT_PLACED_CARD, request.debug, request)
-    requestOwnerId = request.init?.ownerId.toUserIdOrNone()
+    requestOwnerId = request.init?.ownerId.mapOrDefault(UserId.NONE, ::UserId)
     requestWorkBox = request.init?.box.toFcBoxOrNone()
 }
 
 fun PlacedCardContext.fromPlacedCardSelectRequest(request: PlacedCardSelectRequest) {
     fromTransportCommon(PlacedCardCommand.SELECT_PLACED_CARD, request.debug, request)
-    requestOwnerId = request.select?.ownerId.toUserIdOrNone()
+    requestOwnerId = request.select?.ownerId.mapOrDefault(UserId.NONE, ::UserId)
     requestWorkBox = request.select?.box.toFcBoxOrNone()
     requestSearchStrategy = request.select?.searchStrategy.toFcSearchStrategyOrNone()
 }
 
-fun PlacedCardContext.fromTransportCommon(cmd: PlacedCardCommand, debug: DebugResource?, request: IRequest) {
+private fun PlacedCardContext.fromTransportCommon(cmd: PlacedCardCommand, debug: DebugResource?, request: IRequest) {
     command = cmd
     workMode = debug.toWorkMode()
     stubCase = debug.toStubCaseOrNone()
-    requestId = request.requestIdOrNone()
+    requestId = request.requestId.mapOrDefault(FcRequestId.NONE, ::FcRequestId)
 }
-
-private fun <T> T?.toPlacedCardOrEmpty(toInternal: T.() -> PlacedCard) = this?.toInternal() ?: PlacedCard.EMPTY
-
-private fun String?.toPlacedCardIdOrNone() = this?.let { PlacedCardId(it) } ?: PlacedCardId.NONE
-private fun String?.toUserIdOrNone() = this?.let { UserId(it) } ?: UserId.NONE
-private fun String?.toCardIdOrNone() = this?.let { CardId(it) } ?: CardId.NONE
 
 private fun Box?.toFcBoxOrNone() = when (this) {
     Box.NEW -> FcBox.NEW
@@ -83,5 +77,3 @@ private fun SearchStrategy?.toFcSearchStrategyOrNone() = when (this) {
     SearchStrategy.EARLIEST_REVIEWED -> FcSearchStrategy.EARLIEST_REVIEWED
     null -> FcSearchStrategy.NONE
 }
-
-

@@ -27,15 +27,15 @@ fun PlacedCardContext.toTransportPlacedCard(): IResponse = when (val cmd = comma
     }
 }
 
-private fun PlacedCardContext.toRequestId() = requestId.toRequestIdOrNull()
+private fun PlacedCardContext.toRequestId() = requestId.asStringOrNull()
 private fun PlacedCardContext.toResult() = state.toResponseResultOrNull()
 private fun PlacedCardContext.toErrors() = errors.toTransportErrorsOrNull()
 private fun PlacedCardContext.toPlacedCard() = responsePlacedCard.toPlacedCardResponseResource()
 
 fun PlacedCard.toPlacedCardResponseResource() = PlacedCardResponseResource(
-    id = id.takeNonEmptyOrNull()?.asString(),
-    ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
-    cardId = cardId.takeNonEmptyOrNull()?.asString(),
+    id = id.asStringOrNull(),
+    ownerId = ownerId.asStringOrNull(),
+    cardId = cardId.asStringOrNull(),
     box = box.toTransportBoxOrNull(),
     createdAt = createdAt.toString(),
     updatedAt = updatedAt.toString(),

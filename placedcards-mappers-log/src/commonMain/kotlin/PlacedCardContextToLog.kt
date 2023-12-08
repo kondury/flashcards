@@ -13,7 +13,7 @@ fun PlacedCardContext.toLog(logId: String) = LogModel(
     messageTime = Clock.System.now().toString(),
     logId = logId,
     source = "flashcards-placedcards",
-    requestId = requestId.takeNonEmptyOrNull()?.asString(),
+    requestId = requestId.asStringOrNull(),
     placedCard = toPlacedCardLogModel(),
     errors = errors.map { it.toLog() },
 )
@@ -23,9 +23,9 @@ private fun PlacedCardContext.toPlacedCardLogModel(): PlacedCardLogModel? =
         operation = command.toLog(),
         requestPlacedCard = requestPlacedCard.takeNonEmptyOrNull()?.toLog(),
         responsePlacedCard = responsePlacedCard.takeNonEmptyOrNull()?.toLog(),
-        requestOwnerId = requestOwnerId.takeNonEmptyOrNull()?.asString(),
-        requestWorkBox = requestWorkBox.takeNonEmptyOrNull()?.name,
-        requestSearchStrategy = requestSearchStrategy.takeNonEmptyOrNull()?.name
+        requestOwnerId = requestOwnerId.asStringOrNull(),
+        requestWorkBox = requestWorkBox.asStringOrNull(),
+        requestSearchStrategy = requestSearchStrategy.asStringOrNull()
     ).takeIf { it != PlacedCardLogModel() }
 
 private fun PlacedCardCommand.toLog(): Operation? = when (this) {
@@ -45,14 +45,19 @@ private fun FcError.toLog() = ErrorLogModel(
 )
 
 private fun PlacedCard.toLog() = PlacedCardLog(
-    id = id.takeNonEmptyOrNull()?.asString(),
-    ownerId = ownerId.takeNonEmptyOrNull()?.asString(),
-    box = box.takeNonEmptyOrNull()?.name,
-    cardId = cardId.takeNonEmptyOrNull()?.asString(),
+    id = id.asStringOrNull(),
+    ownerId = ownerId.asStringOrNull(),
+    box = box.asStringOrNull(),
+    cardId = cardId.asStringOrNull(),
     createdAt = createdAt.toString(),
     updatedAt = updatedAt.toString(),
 )
 
 private fun PlacedCard.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
-private fun FcSearchStrategy.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
-private fun FcBox.takeNonEmptyOrNull() = this.takeIf { it.isNotEmpty() }
+
+private fun PlacedCardId.asStringOrNull() = this.asString().takeNonBlankOrNull()
+private fun UserId.asStringOrNull() = this.asString().takeNonBlankOrNull()
+private fun CardId.asStringOrNull() = this.asString().takeNonBlankOrNull()
+
+private fun FcSearchStrategy.asStringOrNull() = this.takeIf { it.isNotEmpty() }?.name
+private fun FcBox.asStringOrNull() = this.takeIf { it.isNotEmpty() }?.name
