@@ -63,5 +63,4 @@ include("placedcards-app-rabbit")
 include("placedcards-app-common")
 include("placedcards-repo-tests")
 include("placedcards-repo-in-memory")
-
-
+include("placedcards-repo-postgresql")
