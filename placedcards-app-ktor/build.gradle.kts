@@ -5,6 +5,8 @@ val logbackVersion: String by project
 val jUnitJupiterVersion: String by project
 val fluentdLoggerVersion: String by project
 val moreAppendersVersion: String by project
+val testContainersVersion: String by project
+val kmpUUIDVersion: String by project
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
@@ -47,9 +49,10 @@ dependencies {
 //    implementation(ktor("auto-head-response"))
 //    implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
 //    implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
+    implementation(ktor("config-yaml")) // "io.ktor:ktor-server-config-yaml:$ktorVersion"
 
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation(ktor("call-logging-jvm"))
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     implementation(project(":placedcards-api-log"))
     implementation(project(":placedcards-mappers-log"))
@@ -57,20 +60,28 @@ dependencies {
     implementation(project(":flashcards-lib-logging-logback"))
 
     implementation(project(":placedcards-repo-in-memory"))
+    implementation(project(":placedcards-repo-postgresql"))
 
     implementation("com.sndyuk:logback-more-appenders:$moreAppendersVersion")
     implementation("org.fluentd:fluent-logger:$fluentdLoggerVersion")
 
     testImplementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
     testImplementation(ktor("content-negotiation", prefix = "client-"))
+
+    testImplementation("org.testcontainers:postgresql:$testContainersVersion")
+    testImplementation("com.benasher44:uuid:$kmpUUIDVersion")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion")
+
+    testImplementation(project(":placedcards-stubs"))
+    testImplementation(project(":placedcards-repo-tests"))
 
 }
 
 ktor {
     docker {
-        localImageName.set(project.name + "-ktor")
+        localImageName.set(project.name)
         imageTag.set(project.version.toString())
         jreVersion.set(JavaVersion.VERSION_17)
     }

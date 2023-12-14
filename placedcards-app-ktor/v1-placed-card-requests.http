@@ -11,7 +11,7 @@ Cache-Control: no-cache
   "requestType": "createPlacedCard",
   "requestId": "create-req",
   "debug": {
-    "mode": "stub",
+    "mode": "prod",
     "stub": "success"
   },
   "placedCard": {
@@ -31,11 +31,12 @@ Cache-Control: no-cache
   "requestType": "deletePlacedCard",
   "requestId": "delete-req",
   "debug": {
-    "mode": "stub",
+    "mode": "prod",
     "stub": "success"
   },
   "placedCard": {
-    "id": "12345"
+    "id": "b57edab9-8588-41f2-a350-de8553e54ad9",
+    "lock": "lock"
   }
 }
 
@@ -49,7 +50,7 @@ Cache-Control: no-cache
   "requestType": "movePlacedCard",
   "requestId": "move-req",
   "debug": {
-    "mode": "stub",
+    "mode": "test",
     "stub": "success"
   },
   "move": {
