@@ -1,3 +1,3 @@
 # Архитектурная диаграмма
 
-![Комопнентная архитектура](./flashcards-architecture.svg)
+![Компонентная архитектура](./flashcards-architecture.svg)

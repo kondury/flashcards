@@ -14,7 +14,7 @@ private val loggerId = Application::moduleJvm::class.jvmName.substringBefore("$"
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
+// Referenced in application.yml
 fun Application.moduleJvm(config: CardsApplicationConfig = CardsKtorConfig(environment.config)) {
     val logger = config.loggerProvider.logger(loggerId)
     initPluginsJvm(logger)

@@ -17,5 +17,4 @@ fun getLogbackLogger(logger: Logger): AppLogger = LogbackWrapper(
 
 fun getLogbackLogger(clazz: KClass<*>): AppLogger = getLogbackLogger(LoggerFactory.getLogger(clazz.java) as Logger)
 
-@Suppress("unused")
 fun getLogbackLogger(loggerId: String): AppLogger = getLogbackLogger(LoggerFactory.getLogger(loggerId) as Logger)
