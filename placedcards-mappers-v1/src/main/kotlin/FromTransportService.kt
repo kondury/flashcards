@@ -2,13 +2,9 @@ package com.github.kondury.flashcards.placedcards.mappers.v1
 
 import com.github.kondury.flashcards.placedcards.api.v1.models.DebugResource
 import com.github.kondury.flashcards.placedcards.api.v1.models.DebugStub
-import com.github.kondury.flashcards.placedcards.api.v1.models.IRequest
 import com.github.kondury.flashcards.placedcards.api.v1.models.RunMode
-import com.github.kondury.flashcards.placedcards.common.models.FcRequestId
 import com.github.kondury.flashcards.placedcards.common.models.FcWorkMode
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
-
-internal fun IRequest?.requestIdOrNone() = this?.requestId?.let { FcRequestId(it) } ?: FcRequestId.NONE
 
 internal fun DebugResource?.toWorkMode(): FcWorkMode = when (this?.mode) {
     RunMode.PROD -> FcWorkMode.PROD

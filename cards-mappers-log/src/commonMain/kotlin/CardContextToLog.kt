@@ -13,7 +13,7 @@ fun CardContext.toLog(logId: String) = LogModel(
     messageTime = Clock.System.now().toString(),
     logId = logId,
     source = "flashcards-cards",
-    requestId = requestId.takeNonEmptyOrNull()?.asString(),
+    requestId = requestId.asStringOrNull(),
     card = toCardLogModel(),
     errors = errors.map { it.toLog() },
 )
@@ -41,9 +41,11 @@ private fun FcError.toLog() = ErrorLogModel(
 )
 
 private fun Card.toLog() = CardLog(
-    id = id.takeNonEmptyOrNull()?.asString(),
+    id = id.asStringOrNull(),
     front = front.takeNonBlankOrNull(),
     back = back.takeNonBlankOrNull(),
 )
 
 private fun Card.takeNonEmptyOrNull(): Card? = this.takeIf { it.isNotEmpty() }
+
+private fun CardId.asStringOrNull() = this.asString().takeNonBlankOrNull()

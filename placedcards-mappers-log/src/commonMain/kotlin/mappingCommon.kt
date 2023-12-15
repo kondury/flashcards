@@ -1,10 +1,7 @@
 package com.github.kondury.flashcards.placedcards.api.logs.mapper
 
-import com.github.kondury.flashcards.placedcards.common.models.*
+import com.github.kondury.flashcards.placedcards.common.models.FcRequestId
 
-internal fun FcRequestId.takeNonEmptyOrNull() = takeIf { it.isNotEmpty() }
-internal fun UserId.takeNonEmptyOrNull() = takeIf { it.isNotEmpty() }
-internal fun PlacedCardId.takeNonEmptyOrNull() = takeIf { it.isNotEmpty() }
-internal fun CardId.takeNonEmptyOrNull() = takeIf { it.isNotEmpty() }
+internal fun FcRequestId.asStringOrNull() = this.asString().takeNonBlankOrNull()
 
 internal fun String.takeNonBlankOrNull() = this.takeIf { it.isNotBlank() }

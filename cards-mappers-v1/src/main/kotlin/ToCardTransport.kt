@@ -22,13 +22,13 @@ fun CardContext.toTransportCard(): IResponse = when (val cmd = command) {
     }
 }
 
-private fun CardContext.toRequestId() = requestId.toRequestIdOrNull()
+private fun CardContext.toRequestId() = requestId.asStringOrNull()
 private fun CardContext.toResult() = state.toResponseResultOrNull()
 private fun CardContext.toErrors() = errors.toTransportErrorsOrNull()
 private fun CardContext.toCard() = responseCard.toCardResponseResource()
 
 private fun Card.toCardResponseResource() = CardResponseResource(
-    id = id.takeNonEmptyOrNull()?.asString(),
+    id = id.asStringOrNull(),
     front = front.takeNonBlankOrNull(),
     back = back.takeNonBlankOrNull(),
 )
