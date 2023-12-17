@@ -11,12 +11,12 @@ Cache-Control: no-cache
   "requestType": "createCard",
   "requestId": "create-req",
   "debug": {
-    "mode": "stub",
+    "mode": "prod",
     "stub": "success"
   },
   "card": {
-    "front": "Front text",
-    "back": "Back text"
+    "front": "Front text2",
+    "back": "Back text2"
   }
 }
 
@@ -30,11 +30,12 @@ Cache-Control: no-cache
   "requestType": "deleteCard",
   "requestId": "delete-req",
   "debug": {
-    "mode": "stub",
+    "mode": "prod",
     "stub": "success"
   },
   "card": {
-    "id": "12345"
+    "id": "d0a87a1e-089d-4348-ab1e-b34633d28330",
+    "lock": "dfd64b2f-070c-4230-b8d7-87e6c7b87b2b"
   }
 }
 
@@ -46,12 +47,12 @@ Cache-Control: no-cache
 
 {
   "requestType": "readCard",
-  "requestId": "read-req",
+  "requestId": "read-req2",
   "debug": {
-    "mode": "stub",
+    "mode": "prod",
     "stub": "success"
   },
   "card": {
-    "id": "12345"
+    "id": "d0a87a1e-089d-4348-ab1e-b34633d28330"
   }
 }

@@ -1,0 +1,26 @@
+ktor:
+  development: true
+  deployment:
+    port: "$PORT:8081"
+  watch:
+    - classes
+    - resources
+  application:
+    modules:
+      - "com.github.kondury.flashcards.placedcards.app.ApplicationJvmKt.moduleJvm"
+  urls:
+    # todo plain ip addresses to construct urls later in runtime
+    - "http://127.0.0.1:8081/"
+    - "http://0.0.0.0:8081/"
+  #    - "http://192.168.0.182:8081/"
+  logger: "logback"
+
+placed-cards:
+  repository:
+    test: "$DB_TYPE_TEST:in-memory"
+    prod: "$DB_TYPE_PROD:in-memory"
+    psql:
+      password: "$POSTGRES_PASSWORD:placedcards-pass"
+      schema: "$POSTGRES_DB:placedcards"
+      url: "$SQL_URL:jdbc:postgresql://localhost:5432/placedcards"
+      user: "$POSTGRES_USER:postgres"

@@ -11,6 +11,11 @@ fun CardContext.fail(error: FcError) {
     addError(error)
 }
 
+fun CardContext.fail(errors: List<FcError>) {
+    state = FcState.FAILING
+    addError(*errors.toTypedArray())
+}
+
 internal fun validationError(
     field: String,
     violationCode: String,
@@ -22,4 +27,19 @@ internal fun validationError(
     group = "validation",
     message = "Validation error for field $field: $description",
     level = level,
+)
+
+internal fun configurationError(
+    field: String = "",
+    violationCode: String,
+    description: String,
+    exception: Exception? = null,
+    level: FcError.Level = FcError.Level.ERROR,
+) = FcError(
+    field = field,
+    code = "administration-$violationCode",
+    group = "administration",
+    message = "Microservice management error: $description",
+    level = level,
+    exception = exception,
 )

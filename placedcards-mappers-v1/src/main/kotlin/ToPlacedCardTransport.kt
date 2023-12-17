@@ -39,6 +39,7 @@ fun PlacedCard.toPlacedCardResponseResource() = PlacedCardResponseResource(
     box = box.toTransportBoxOrNull(),
     createdAt = createdAt.toString(),
     updatedAt = updatedAt.toString(),
+    lock = lock.asStringOrNull(),
 )
 
 fun FcBox.toTransportBoxOrNull(): Box? = when (this) {

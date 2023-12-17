@@ -1,13 +1,16 @@
 package com.github.kondury.flashcards.cards.common
 
-import kotlinx.datetime.Instant
 import com.github.kondury.flashcards.cards.common.models.*
+import com.github.kondury.flashcards.cards.common.repository.CardRepository
 import com.github.kondury.flashcards.cards.common.stubs.FcStub
+import kotlinx.datetime.Instant
 
 data class CardContext(
     var command: CardCommand = CardCommand.NONE,
     var state: FcState = FcState.NONE,
     var errors: MutableList<FcError> = mutableListOf(),
+
+    var repositoryConfig: CardRepositoryConfig = CardRepositoryConfig.NONE,
 
     var workMode: FcWorkMode = FcWorkMode.PROD,
     var stubCase: FcStub = FcStub.NONE,
@@ -19,5 +22,10 @@ data class CardContext(
     var validatingCard: Card = Card.EMPTY,
     var validatedCard: Card = Card.EMPTY,
     var responseCard: Card = Card.EMPTY,
+
+    var repository: CardRepository = CardRepository.NoOpCardRepository,
+    var repoReadCard: Card = Card.EMPTY,
+    var repoPreparedCard: Card = Card.EMPTY,
+    var repoResponseCard: Card = Card.EMPTY
 )
 

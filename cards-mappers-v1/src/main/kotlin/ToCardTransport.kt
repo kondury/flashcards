@@ -29,6 +29,7 @@ private fun CardContext.toCard() = responseCard.toCardResponseResource()
 
 private fun Card.toCardResponseResource() = CardResponseResource(
     id = id.asStringOrNull(),
+    lock = lock.asStringOrNull(),
     front = front.takeNonBlankOrNull(),
     back = back.takeNonBlankOrNull(),
 )

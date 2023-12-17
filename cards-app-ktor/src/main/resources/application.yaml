@@ -1,0 +1,25 @@
+ktor:
+  development: true
+  deployment:
+    port: "$PORT:8080"
+  watch:
+    - classes
+    - resources
+  application:
+    modules:
+      - "com.github.kondury.flashcards.cards.app.ApplicationJvmKt.moduleJvm"
+  urls:
+    - "http://127.0.0.1:8080/"
+    - "http://0.0.0.0:8080/"
+  #    - "http://192.168.0.182:8080/"
+  logger: "logback"
+
+cards:
+  repository:
+    test: "$DB_TYPE_TEST:in-memory"
+    prod: "$DB_TYPE_PROD:in-memory"
+    psql:
+      password: "$POSTGRES_PASSWORD:cards-pass"
+      schema: "$POSTGRES_DB:cards"
+      url: "$SQL_URL:jdbc:postgresql://localhost:5432/cards"
+      user: "$POSTGRES_USER:postgres"

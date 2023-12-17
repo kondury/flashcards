@@ -17,11 +17,13 @@ internal class ToCardTransportTest {
         private const val CARD_ID = "CardId"
         private const val FRONT_TEXT = "Front text"
         private const val BACK_TEXT = "Back text"
+        private const val LOCK = "123-234-abc-ABC"
 
         private const val REQUEST_ID = "RequestId"
 
         private val cardResponse = Card(
             id = CardId(CARD_ID),
+            lock = FcCardLock(LOCK),
             front = FRONT_TEXT,
             back = BACK_TEXT,
         )
@@ -33,14 +35,14 @@ internal class ToCardTransportTest {
                     command = CardCommand.CREATE_CARD,
                     responseCard = cardResponse,
                 ),
-                CARD_ID, FRONT_TEXT, BACK_TEXT
+                CARD_ID, FRONT_TEXT, BACK_TEXT, LOCK
             ),
             Arguments.of(
                 CardContext(
                     command = CardCommand.READ_CARD,
                     responseCard = cardResponse,
                 ),
-                CARD_ID, FRONT_TEXT, BACK_TEXT
+                CARD_ID, FRONT_TEXT, BACK_TEXT, LOCK
             ),
         )
 
@@ -96,6 +98,7 @@ internal class ToCardTransportTest {
         expectedCardId: String,
         expectedFront: String,
         expectedBack: String,
+        expectedLock: String,
     ) {
         val actualCardResource =
             when (val response = context.toTransportCard()) {
@@ -109,6 +112,7 @@ internal class ToCardTransportTest {
                 assertEquals(expectedCardId, id)
                 assertEquals(expectedFront, front)
                 assertEquals(expectedBack, back)
+                assertEquals(expectedLock, lock)
             }
         else fail("Actual card resource mustn't be null")
     }

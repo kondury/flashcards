@@ -6,6 +6,7 @@ import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.CardId
 import com.github.kondury.flashcards.cards.common.models.FcRequestId
+import com.github.kondury.flashcards.cards.common.models.FcCardLock
 import com.github.kondury.flashcards.cards.mappers.v1.exceptions.UnknownRequestClass
 
 fun CardContext.fromTransport(request: IRequest) = when (request) {
@@ -30,6 +31,7 @@ fun CardContext.fromCardDeleteRequest(request: CardDeleteRequest) {
     requestCard = request.card.mapOrDefault(Card.EMPTY) {
         Card(
             id = it.id.mapOrDefault(CardId.NONE, ::CardId),
+            lock = it.lock.mapOrDefault(FcCardLock.NONE, ::FcCardLock)
         )
     }
 }

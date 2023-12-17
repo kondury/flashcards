@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  psql-placedcards:
+    image: postgres:13.2
+    container_name: psql-placedcards
+    volumes:
+      - psql_placedcards_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: placedcards-pass
+      POSTGRES_USER: postgres
+      POSTGRES_DB: placedcards
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: placedcards-app-ktor:0.0.1
+    container_name: app-placedcards
+    ports:
+      - "8081:8080"
+    environment:
+      LOGS_FB_HOSTS: "fluent-bit"
+      LOGS_FB_PORT: 24224
+      PORT: 8080
+#      DB_TYPE_TEST: "in-memory"
+      DB_TYPE_PROD: "psql"
+      POSTGRES_PASSWORD: "placedcards-pass"
+      POSTGRES_DB: "placedcards"
+      POSTGRES_USER: "postgres"
+      SQL_URL: "jdbc:postgresql://psql-placedcards:5432/placedcards"
+    depends_on:
+      psql-placedcards:
+        condition: service_healthy
+
+volumes:
+  psql_placedcards_data:
+

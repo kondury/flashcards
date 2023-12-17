@@ -10,9 +10,10 @@ object PlacedCardStubSample {
     val PLACED_CARD_KOTLIN: PlacedCard
         get() = PlacedCard(
             id = PlacedCardId("1000"),
+            lock = FcPlacedCardLock("stub-lock"),
             ownerId = UserId("user-1"),
             box = FcBox.NEW,
-            cardId = CardId("222"),
+            cardId = CardId("card-id-1"),
             createdAt = Instant.parse(CREATED_AT),
             updatedAt = Instant.parse(UPDATED_AT),
         )

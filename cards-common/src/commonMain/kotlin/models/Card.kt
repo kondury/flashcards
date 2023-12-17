@@ -4,6 +4,7 @@ data class Card(
     val id: CardId = CardId.NONE,
     val front: String = "",
     val back: String = "",
+    val lock: FcCardLock = FcCardLock.NONE,
 ) {
 
     companion object {

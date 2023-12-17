@@ -3,12 +3,15 @@ package com.github.kondury.flashcards.placedcards.common
 import kotlinx.datetime.Instant
 import com.github.kondury.flashcards.placedcards.common.models.*
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
+import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardRepository
 
 
 data class PlacedCardContext(
     var command: PlacedCardCommand = PlacedCardCommand.NONE,
     var state: FcState = FcState.NONE,
     var errors: MutableList<FcError> = mutableListOf(),
+
+    var repositoryConfig: PlacedCardRepositoryConfig = PlacedCardRepositoryConfig.NONE,
 
     var workMode: FcWorkMode = FcWorkMode.PROD,
     var stubCase: FcStub = FcStub.NONE,
@@ -40,5 +43,10 @@ data class PlacedCardContext(
 
     // after request handling placed card data for create, move and select commands
     var responsePlacedCard: PlacedCard = PlacedCard.EMPTY,
+
+    var repository: PlacedCardRepository = PlacedCardRepository.NoOpPlacedCardRepository,
+    var repoReadPlacedCard: PlacedCard = PlacedCard.EMPTY,
+    var repoPreparedPlacedCard: PlacedCard = PlacedCard.EMPTY,
+    var repoResponsePlacedCard: PlacedCard = PlacedCard.EMPTY
 )
 

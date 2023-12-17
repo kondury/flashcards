@@ -46,6 +46,9 @@ include("cards-app-ktor")
 include("cards-app-kafka")
 include("cards-app-rabbit")
 include("cards-app-common")
+include("cards-repo-in-memory")
+include("cards-repo-postgresql")
+include("cards-repo-tests")
 
 include("placedcards-api-log")
 include("placedcards-api-v1-jackson")
@@ -58,5 +61,6 @@ include("placedcards-app-ktor")
 include("placedcards-app-kafka")
 include("placedcards-app-rabbit")
 include("placedcards-app-common")
-
-
+include("placedcards-repo-tests")
+include("placedcards-repo-in-memory")
+include("placedcards-repo-postgresql")

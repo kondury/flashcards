@@ -9,6 +9,7 @@ object PlacedCardStub {
 
     fun getWith(
         id: PlacedCardId = STUB.id,
+        lock: FcPlacedCardLock = STUB.lock,
         ownerId: UserId = STUB.ownerId,
         box: FcBox = STUB.box,
         cardId: CardId = STUB.cardId,
@@ -16,10 +17,11 @@ object PlacedCardStub {
         updatedAt: Instant = STUB.updatedAt,
     ): PlacedCard = STUB.copy(
         id = id,
+        lock = lock,
         ownerId = ownerId,
         box = box,
         cardId = cardId,
         createdAt = createdAt,
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
     )
 }

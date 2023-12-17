@@ -6,6 +6,9 @@ import com.github.kondury.flashcards.app.kafka.createKafkaProducer
 import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.CardContext
+import com.github.kondury.flashcards.cards.common.CardRepositoryConfig
+import com.github.kondury.flashcards.cards.common.CardsCorConfig
+import com.github.kondury.flashcards.cards.repository.inmemory.InMemoryCardRepository
 import com.github.kondury.flashcards.logging.common.AppLoggerProvider
 import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
 import org.apache.kafka.clients.consumer.Consumer
@@ -13,8 +16,13 @@ import org.apache.kafka.clients.producer.Producer
 
 data class CardsKafkaConfig(
     val applicationConfig: CardsApplicationConfig = object : CardsApplicationConfig {
-        override val processor: FcCardProcessor = FcCardProcessor()
-        override val loggerProvider: AppLoggerProvider = AppLoggerProvider { getLogbackLogger(it) }
+        override val loggerProvider = AppLoggerProvider { getLogbackLogger(it) }
+        override val repositoryConfig = CardRepositoryConfig(
+            prodRepository = InMemoryCardRepository(),
+            testRepository = InMemoryCardRepository()
+        )
+        override val corConfig = CardsCorConfig(repositoryConfig)
+        override val processor = FcCardProcessor(corConfig)
     },
     val settings: CardsKafkaSettings = CardsKafkaSettings(),
     val strategies: List<TransformationStrategy<CardContext>> = listOf(

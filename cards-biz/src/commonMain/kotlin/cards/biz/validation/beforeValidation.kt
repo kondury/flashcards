@@ -1,10 +1,7 @@
 package com.github.kondury.flashcards.cards.biz.validation
 
 import com.github.kondury.flashcards.cards.common.CardContext
-import com.github.kondury.flashcards.cards.common.models.Card
-import com.github.kondury.flashcards.cards.common.models.CardCommand
-import com.github.kondury.flashcards.cards.common.models.CardId
-import com.github.kondury.flashcards.cards.common.models.FcState
+import com.github.kondury.flashcards.cards.common.models.*
 import com.github.kondury.flashcards.cor.dsl.CorChainDsl
 import com.github.kondury.flashcards.cor.dsl.worker
 
@@ -18,11 +15,15 @@ private val Card.normalized: Card
     get() = Card(
         id = id.normalized,
         front = front.normalized,
-        back = back.normalized
+        back = back.normalized,
+        lock = lock.normalized,
     )
 
 private val CardId.normalized: CardId
     get() = CardId(asString().normalized)
+
+private val FcCardLock.normalized: FcCardLock
+    get() = FcCardLock(asString().normalized)
 
 private val String.normalized: String
     get() = trim()

@@ -8,5 +8,6 @@ object CardStubSample {
             id = CardId("100"),
             front = "В каком году вышла версия kotlin 1.0?",
             back = "Официальная версия kotlin 1.0 вышла в 2016 году",
+            lock = FcCardLock("stub-lock")
         )
 }

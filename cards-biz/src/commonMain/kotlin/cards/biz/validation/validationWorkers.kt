@@ -41,6 +41,37 @@ internal fun CorChainDsl<CardContext>.validateBackIsNotEmpty() = worker {
     }
 }
 
+internal fun CorChainDsl<CardContext>.validateLockNotEmpty() = worker {
+    this.title = "Validating: lock is not empty"
+    activeIf { validatingCard.lock.isEmpty() }
+    handle {
+        fail(
+            validationError(
+                field = "lock",
+                violationCode = "empty",
+                description = "field must not be empty",
+                level = Level.INFO
+            )
+        )
+    }
+}
+
+internal fun CorChainDsl<CardContext>.validateLockMatchesFormat() = worker {
+    this.title = "Validating: lock has proper format"
+    activeIf { validatingCard.lock.isNotEmpty() && !validatingCard.lock.asString().matches(Regex(ID_FORMAT_PATTERN)) }
+    handle {
+        val encodedLock = validatingCard.lock.asString()
+        fail(
+            validationError(
+                field = "lock",
+                violationCode = "badFormat",
+                description = "value $encodedLock must contain only letters, numbers and hyphens",
+                level = Level.INFO
+            )
+        )
+    }
+}
+
 internal fun CorChainDsl<CardContext>.validateCardIdIsNotEmpty() = worker {
     this.title = "Validating: card id is not empty"
     activeIf { validatingCard.id.isEmpty() }

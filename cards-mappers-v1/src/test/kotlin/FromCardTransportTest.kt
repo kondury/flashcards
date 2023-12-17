@@ -46,7 +46,10 @@ internal class FromCardTransportTest {
             debug = DebugResource(
                 mode = RunMode.TEST,
             ),
-            card = CardDeleteResource(id = "CardId")
+            card = CardDeleteResource(
+                id = "CardId",
+                lock = "123-234-abc-ABC"
+            )
         )
 
         val context = CardContext()
@@ -60,6 +63,7 @@ internal class FromCardTransportTest {
             actual = context
         )
         Assertions.assertEquals("CardId", context.requestCard.id.asString())
+        Assertions.assertEquals("123-234-abc-ABC", context.requestCard.lock.asString())
     }
 
     @Test
