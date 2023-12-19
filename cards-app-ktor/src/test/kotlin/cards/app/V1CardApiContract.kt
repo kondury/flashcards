@@ -2,15 +2,11 @@ package com.github.kondury.flashcards.cards.app
 
 import com.github.kondury.flashcards.cards.api.v1.apiV1Mapper
 import com.github.kondury.flashcards.cards.api.v1.models.*
-import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
-import com.github.kondury.flashcards.cards.biz.FcCardProcessor
-import com.github.kondury.flashcards.cards.common.CardRepositoryConfig
-import com.github.kondury.flashcards.cards.common.CardsCorConfig
+import com.github.kondury.flashcards.cards.app.helpers.testConfig
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardId
 import com.github.kondury.flashcards.cards.common.models.FcCardLock
 import com.github.kondury.flashcards.cards.common.repository.CardRepository
-import com.github.kondury.flashcards.logging.common.AppLoggerProvider
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -31,9 +27,9 @@ interface V1CardApiContract {
         private const val BACK_TEXT = "Back text"
         private const val OLD_UUID = "10000000-0000-0000-0000-000000000001"
 
-        internal const val NEW_UUID = "10000000-0000-0000-0000-000000000002"
+        private const val NEW_UUID = "10000000-0000-0000-0000-000000000002"
 
-        internal val stubCard = Card(
+        private val stub = Card(
             id = CardId(OLD_UUID),
             front = FRONT_TEXT,
             back = BACK_TEXT,
@@ -41,18 +37,18 @@ interface V1CardApiContract {
         )
     }
 
+    val uuid: String
+        get() = NEW_UUID
+
+    val cardStub: Card
+        get() = stub
+
+    val initObjects: List<Card>
+        get() = listOf(stub)
+
     fun getRepository(test: String): CardRepository
     val assertSpecificOn: Boolean
     val debugResource: DebugResource
-
-    private fun appConfig(repository: CardRepository) = object : CardsApplicationConfig {
-        override val loggerProvider = AppLoggerProvider()
-        override val repositoryConfig = CardRepositoryConfig(
-            prodRepository = CardRepository.NoOpCardRepository, testRepository = repository
-        )
-        override val corConfig: CardsCorConfig = CardsCorConfig(repositoryConfig)
-        override val processor: FcCardProcessor = FcCardProcessor(corConfig)
-    }
 
     @Test
     fun create() = testCardCommand<CardCreateRequest, CardCreateResponse>(
@@ -99,7 +95,7 @@ interface V1CardApiContract {
             requestId = REQUEST_ID,
             card = CardDeleteResource(
                 id = OLD_UUID,
-                lock = stubCard.lock.asString(),
+                lock = stub.lock.asString(),
             ),
             debug = debugResource
         )
@@ -109,7 +105,7 @@ interface V1CardApiContract {
         repository: CardRepository, url: String, requestObj: T, crossinline doAssert: (U) -> Unit = {}
     ) = testApplication {
         application {
-            moduleJvm(appConfig(repository))
+            moduleJvm(testConfig(repository))
         }
         val response = myClient().postWithBody(url, requestObj)
         val responseObj = response.body<U>()
