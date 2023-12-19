@@ -21,7 +21,7 @@ fun assertJson(
 fun generateJsonAssertions(jsonSubstrings: List<String>, json: String): List<() -> Unit> =
     jsonSubstrings.map { expected ->
         {
-            Assertions.assertTrue(json.contains(expected)) {
+            Assertions.assertTrue(expected in json) {
                 "Serialized json does not contain expected value: $expected"
             }
         }
