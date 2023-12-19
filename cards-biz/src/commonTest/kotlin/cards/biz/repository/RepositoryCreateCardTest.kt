@@ -2,6 +2,7 @@ package com.github.kondury.flashcards.cards.biz.repository
 
 import com.github.kondury.flashcards.cards.biz.common.initProcessor
 import com.github.kondury.flashcards.cards.biz.common.initSingleMockRepository
+import com.github.kondury.flashcards.cards.biz.common.setAdminPrincipal
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
 import kotlinx.coroutines.test.runTest
@@ -30,6 +31,7 @@ class RepositoryCreateCardTest {
                 back = "back",
             ),
         )
+        context.setAdminPrincipal()
         processor.exec(context)
         assertEquals(FcState.FINISHING, context.state)
         assertTrue { context.errors.isEmpty() }

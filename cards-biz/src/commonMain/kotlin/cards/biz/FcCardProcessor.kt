@@ -8,6 +8,8 @@ import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.CardsCorConfig
 import com.github.kondury.flashcards.cards.common.models.CardCommand.*
 import com.github.kondury.flashcards.cor.dsl.rootChain
+import com.github.kondury.flashcards.cards.biz.permissions.accessValidation
+import com.github.kondury.flashcards.cards.biz.permissions.resolvePermissions
 
 class FcCardProcessor(
     private val cardsCorConfig: CardsCorConfig
@@ -36,8 +38,10 @@ class FcCardProcessor(
                     validateBackIsNotEmpty()
                     afterValidation(CREATE_CARD)
                 }
+                resolvePermissions()
                 repository(CREATE_CARD) {
                     repositoryPrepareCreate()
+                    accessValidation()
                     repositoryCreate()
                     repositoryResponse(CREATE_CARD)
                 }
@@ -57,8 +61,10 @@ class FcCardProcessor(
                     validateCardIdMatchesFormat()
                     afterValidation(READ_CARD)
                 }
+                resolvePermissions()
                 repository(READ_CARD) {
                     repositoryRead()
+                    accessValidation()
                     repositoryAfterRead()
                     repositoryResponse(READ_CARD)
                 }
@@ -79,8 +85,10 @@ class FcCardProcessor(
                     validateLockMatchesFormat()
                     afterValidation(DELETE_CARD)
                 }
+                resolvePermissions()
                 repository(DELETE_CARD) {
                     repositoryRead()
+                    accessValidation()
                     repositoryPrepareDelete()
                     repositoryDelete()
                     repositoryResponse(DELETE_CARD)

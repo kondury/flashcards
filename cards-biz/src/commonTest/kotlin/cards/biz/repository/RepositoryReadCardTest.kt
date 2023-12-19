@@ -2,8 +2,10 @@ package com.github.kondury.flashcards.cards.biz.repository
 
 import com.github.kondury.flashcards.cards.biz.common.initProcessor
 import com.github.kondury.flashcards.cards.biz.common.initSingleMockRepository
+import com.github.kondury.flashcards.cards.biz.common.setPrincipal
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
+import com.github.kondury.flashcards.cards.common.permissions.FcUserGroups
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -34,6 +36,7 @@ class RepositoryReadCardTest {
                 id = initCard.id,
             ),
         )
+        context.setPrincipal(groups = setOf(FcUserGroups.USER))
         processor.exec(context)
         assertEquals(FcState.FINISHING, context.state)
         assertTrue { context.errors.isEmpty() }

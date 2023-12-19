@@ -1,6 +1,7 @@
 package com.github.kondury.flashcards.cards.biz.validation
 
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
+import com.github.kondury.flashcards.cards.biz.common.setAdminPrincipal
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
 import kotlinx.coroutines.test.runTest
@@ -44,7 +45,10 @@ internal fun runValidationTest(
     val context = CardContext(
         command = command,
         workMode = FcWorkMode.TEST,
-    ).apply(configureContext)
+    ).apply {
+        setAdminPrincipal()
+        configureContext()
+    }
     processor.exec(context)
     assertions(context)
 }

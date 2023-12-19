@@ -2,10 +2,12 @@ package com.github.kondury.flashcards.cards.biz.repository
 
 import com.github.kondury.flashcards.cards.biz.common.initProcessor
 import com.github.kondury.flashcards.cards.biz.common.initSingleMockRepository
+import com.github.kondury.flashcards.cards.biz.common.setAdminPrincipal
 import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.*
 import kotlinx.coroutines.test.runTest
 import kotlin.test.assertEquals
+
 
 private val initCard = Card(
     id = CardId("123"),
@@ -30,6 +32,7 @@ fun repoNotFoundTest(command: CardCommand) = runTest {
             lock = FcCardLock("123-234-abc-ABC"),
         ),
     )
+    context.setAdminPrincipal()
     processor.exec(context)
     assertEquals(FcState.FAILING, context.state)
     assertEquals(1, context.errors.size)

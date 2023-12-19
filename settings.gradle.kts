@@ -49,6 +49,7 @@ include("cards-app-common")
 include("cards-repo-in-memory")
 include("cards-repo-postgresql")
 include("cards-repo-tests")
+include("cards-auth")
 
 include("placedcards-api-log")
 include("placedcards-api-v1-jackson")
