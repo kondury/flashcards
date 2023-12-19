@@ -23,3 +23,10 @@ cards:
       schema: "$POSTGRES_DB:cards"
       url: "$SQL_URL:jdbc:postgresql://localhost:5432/cards"
       user: "$POSTGRES_USER:postgres"
+
+  jwt:
+    secret: "secret"
+    issuer: "com.github.kondury"
+    audience: "flashcards-users"
+    realm: "flashcards-users"
+    clientId: "flashcards-users-service"

@@ -3,6 +3,7 @@ package com.github.kondury.flashcards.cards.app.kafka
 import com.github.kondury.flashcards.app.kafka.TransformationStrategy
 import com.github.kondury.flashcards.app.kafka.createKafkaConsumer
 import com.github.kondury.flashcards.app.kafka.createKafkaProducer
+import com.github.kondury.flashcards.cards.app.common.AuthConfig
 import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.CardContext
@@ -23,6 +24,7 @@ data class CardsKafkaConfig(
         )
         override val corConfig = CardsCorConfig(repositoryConfig)
         override val processor = FcCardProcessor(corConfig)
+        override val auth: AuthConfig = AuthConfig.NONE
     },
     val settings: CardsKafkaSettings = CardsKafkaSettings(),
     val strategies: List<TransformationStrategy<CardContext>> = listOf(
