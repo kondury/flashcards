@@ -2,6 +2,7 @@ package com.github.kondury.flashcards.placedcards.biz.repository
 
 import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
 import com.github.kondury.flashcards.placedcards.biz.common.initSingleMockRepository
+import com.github.kondury.flashcards.placedcards.biz.common.setAdminPrincipal
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
 import com.github.kondury.flashcards.placedcards.common.models.*
 import kotlinx.coroutines.test.runTest
@@ -37,6 +38,7 @@ class RepositoryDeleteCardTest {
             workMode = FcWorkMode.TEST,
             requestPlacedCard = cardToDelete,
         )
+        context.setAdminPrincipal()
         processor.exec(context)
         assertEquals(FcState.FINISHING, context.state)
         assertTrue { context.errors.isEmpty() }

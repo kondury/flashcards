@@ -2,6 +2,7 @@ package com.github.kondury.flashcards.placedcards.biz.repository
 
 import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
 import com.github.kondury.flashcards.placedcards.biz.common.initSingleMockRepository
+import com.github.kondury.flashcards.placedcards.biz.common.setAdminPrincipal
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
 import com.github.kondury.flashcards.placedcards.common.models.*
 import kotlinx.coroutines.test.runTest
@@ -50,6 +51,7 @@ class RepositoryMoveCardTest {
             workMode = FcWorkMode.TEST,
             requestPlacedCard = goodMoveRequest,
         )
+        context.setAdminPrincipal()
         processor.exec(context)
         with(context) {
             assertEquals(FcState.FINISHING, state)

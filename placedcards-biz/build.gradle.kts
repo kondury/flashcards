@@ -20,6 +20,7 @@ kotlin {
                 implementation(project(":placedcards-common"))
                 implementation(project(":placedcards-stubs"))
                 implementation(project(":flashcards-lib-cor"))
+                implementation(project(":placedcards-auth"))
             }
         }
 
