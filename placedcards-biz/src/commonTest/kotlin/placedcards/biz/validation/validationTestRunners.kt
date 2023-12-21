@@ -8,6 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
+
 internal fun runSuccessfulValidationTest(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,

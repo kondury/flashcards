@@ -5,6 +5,7 @@ import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
 import com.github.kondury.flashcards.placedcards.common.models.*
 import kotlin.test.assertEquals
 
+
 internal fun testSearchStrategyIsNotEmptyValidation(
     processor: FcPlacedCardProcessor,
     command: PlacedCardCommand,

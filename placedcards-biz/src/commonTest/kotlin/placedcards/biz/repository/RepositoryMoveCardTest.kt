@@ -1,16 +1,14 @@
 package com.github.kondury.flashcards.placedcards.biz.repository
 
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
+import com.github.kondury.flashcards.placedcards.biz.common.initSingleMockRepository
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
-import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
 import com.github.kondury.flashcards.placedcards.common.models.*
-import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardDbResponse
-import com.github.kondury.flashcards.placedcards.repository.tests.MockPlacedCardRepository
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+
 
 class RepositoryMoveCardTest {
 
@@ -33,14 +31,10 @@ class RepositoryMoveCardTest {
         lock = lockAfter
     )
 
-    private val repository = MockPlacedCardRepository(
-        invokeRead = { PlacedCardDbResponse.success(initPlacedCard) },
-        invokeMove = { PlacedCardDbResponse.success(initPlacedCard.copy(box = it.box, lock = lockAfter)) }
-    )
-
-    private val repositoryConfig = PlacedCardRepositoryConfig(testRepository = repository)
-    private val corConfig = PlacedCardsCorConfig(repositoryConfig)
-    private val processor = FcPlacedCardProcessor(corConfig)
+    private val processor by lazy {
+        val repository = initSingleMockRepository(initPlacedCard, lockAfter.asString())
+        initProcessor(repository)
+    }
 
     @Test
     fun repoMoveSuccessTest() = runTest {
@@ -56,7 +50,6 @@ class RepositoryMoveCardTest {
             workMode = FcWorkMode.TEST,
             requestPlacedCard = goodMoveRequest,
         )
-
         processor.exec(context)
         with(context) {
             assertEquals(FcState.FINISHING, state)

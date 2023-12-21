@@ -1,8 +1,6 @@
 package com.github.kondury.flashcards.placedcards.biz.validation
 
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
-import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
+import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
 import com.github.kondury.flashcards.placedcards.common.models.CardId
 import com.github.kondury.flashcards.placedcards.common.models.FcBox
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
@@ -12,9 +10,11 @@ import com.github.kondury.flashcards.placedcards.repository.tests.StubPlacedCard
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+
 class ValidationCreatePlacedCardTest {
 
     companion object {
+        private val processor by lazy { initProcessor(StubPlacedCardRepository()) }
 
         private const val GOOD_ID = "id-1"
         private const val GOOD_ID_WITH_SPACES = " \t$GOOD_ID \t "
@@ -25,11 +25,6 @@ class ValidationCreatePlacedCardTest {
             box = FcBox.NEW,
             cardId = CardId(GOOD_ID),
         )
-
-        private val repositoryConfig by lazy { PlacedCardRepositoryConfig(testRepository = StubPlacedCardRepository()) }
-        private val corConfig by lazy { PlacedCardsCorConfig(repositoryConfig) }
-        private val processor by lazy { FcPlacedCardProcessor(corConfig) }
-
     }
 
     @Test
