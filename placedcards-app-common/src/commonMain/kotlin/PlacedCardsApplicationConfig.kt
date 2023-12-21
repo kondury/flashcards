@@ -10,4 +10,5 @@ interface PlacedCardsApplicationConfig {
     val repositoryConfig: PlacedCardRepositoryConfig
     val corConfig: PlacedCardsCorConfig
     val processor: FcPlacedCardProcessor
+    val auth: AuthConfig
 }
