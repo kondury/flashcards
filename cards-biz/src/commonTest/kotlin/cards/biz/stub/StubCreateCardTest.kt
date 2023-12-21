@@ -1,11 +1,10 @@
 package com.github.kondury.flashcards.cards.biz.stub
 
-import com.github.kondury.flashcards.cards.biz.FcCardProcessor
-import com.github.kondury.flashcards.cards.common.CardRepositoryConfig
-import com.github.kondury.flashcards.cards.common.CardsCorConfig
+import com.github.kondury.flashcards.cards.biz.common.initProcessor
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.CardId
+import com.github.kondury.flashcards.cards.common.repository.CardRepository
 import com.github.kondury.flashcards.cards.stubs.CardStub
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,9 +13,7 @@ import kotlin.test.assertEquals
 class StubCreateCardTest {
 
     companion object {
-        private val cardRepositoryConfig = CardRepositoryConfig.NONE
-        private val cardsCorConfig = CardsCorConfig(cardRepositoryConfig)
-        private val processor = FcCardProcessor(cardsCorConfig)
+        private val processor = initProcessor(CardRepository.NoOpCardRepository)
 
         private val cardId = CardId("100")
         private const val FRONT = "front text"
