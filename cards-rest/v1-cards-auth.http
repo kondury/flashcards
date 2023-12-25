@@ -1,0 +1,73 @@
+### Token by password
+POST http://localhost:9991/auth/realms/flashcards/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=cards-service&grant_type=password&username=fcadmin&password=fcadmin
+
+> {% client.global.set("auth_token", response.body.access_token);
+client.global.set("refresh_token", response.body.refresh_token); %}
+
+### Token by refresh token
+POST http://localhost:9991/auth/realms/flashcards/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=cards-service&grant_type=refresh_token&refresh_token={{refresh_token}}
+
+### Create card
+POST http://localhost:8081/v1/card/create
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "createCard",
+  "requestId": "create-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "card": {
+    "front": "Front text3",
+    "back": "Back text3"
+  }
+}
+
+### Read card
+POST http://localhost:8081/v1/card/read
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "readCard",
+  "requestId": "read-req2",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "card": {
+    "id": "39684178-d6f2-4f69-a8ff-1f6f194011ca"
+  }
+}
+
+### Delete card
+POST http://localhost:8081/v1/card/delete
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "deleteCard",
+  "requestId": "delete-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "card": {
+    "id": "39684178-d6f2-4f69-a8ff-1f6f194011ca",
+    "lock": "494d418e-16c6-4c5b-b2ea-ce4d492041f2"
+  }
+}

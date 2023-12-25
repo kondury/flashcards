@@ -1,7 +1,7 @@
 ktor:
   development: true
   deployment:
-    port: "$PORT:8080"
+    port: "$PORT:8081"
   watch:
     - classes
     - resources
@@ -9,9 +9,9 @@ ktor:
     modules:
       - "com.github.kondury.flashcards.cards.app.ApplicationJvmKt.moduleJvm"
   urls:
-    - "http://127.0.0.1:8080/"
-    - "http://0.0.0.0:8080/"
-  #    - "http://192.168.0.182:8080/"
+    - "http://127.0.0.1:8081/"
+    - "http://0.0.0.0:8081/"
+  #    - "http://192.168.0.182:8081/"
   logger: "logback"
 
 cards:
@@ -24,9 +24,16 @@ cards:
       url: "$SQL_URL:jdbc:postgresql://localhost:5432/cards"
       user: "$POSTGRES_USER:postgres"
 
+  #  jwt:
+  #    secret: "secret"
+  #    issuer: "com.github.kondury"
+  #    audience: "flashcards-users"
+  #    realm: "flashcards"
+  #    clientId: "flashcards-service"
+
   jwt:
-    secret: "secret"
-    issuer: "com.github.kondury"
-    audience: "flashcards-users"
-    realm: "flashcards-users"
-    clientId: "flashcards-users-service"
+    issuer: "$JWT_ISSUER:http://localhost:9991/auth/realms/flashcards"
+    audience: "$JWT_AUDIENCE:flashcards-users"
+    realm: "$JWT_REALM:flashcards"
+    clientId: "$JWT_CLIENT_ID:cards-service"
+    certUrl: "$JWT_CERT_URL:http://localhost:9991/auth/realms/flashcards/protocol/openid-connect/certs"

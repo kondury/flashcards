@@ -1,0 +1,62 @@
+###
+GET http://localhost:8081/
+
+###
+POST http://localhost:8081/v1/card/create
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJKeTVjOF9TSGp5SkFqMm1uNlBGVW5RYWVyTWZMeXFSU0Jnc3VEOUFWaUJJIn0.eyJleHAiOjE3MDM0MzU5OTEsImlhdCI6MTcwMzQzNTY5MSwianRpIjoiZTZmMzBlZjUtNGFjZS00MzNmLWI5YTctNjhmOTNlYWE4MmJhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5OTkxL2F1dGgvcmVhbG1zL2ZsYXNoY2FyZHMiLCJhdWQiOlsiZmxhc2hjYXJkcy11c2VycyIsImFjY291bnQiXSwic3ViIjoiZTAwYWJiMTgtNDg0Yy00NjJlLWFlNjAtM2Q3MmQ5ZTAyMDMzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2FyZHMtc2VydmljZSIsInNlc3Npb25fc3RhdGUiOiIxYzRkNTJhYi1hNjJlLTQ4YjYtYWJmZi02ZDViNWQ2MGNmNjEiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtZmxhc2hjYXJkcyIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6IiIsInNpZCI6IjFjNGQ1MmFiLWE2MmUtNDhiNi1hYmZmLTZkNWI1ZDYwY2Y2MSIsImdyb3VwcyI6WyJBRE1JTiJdfQ.kuWyOb4EC02_iIJ0Wi1PgDNSUKGVbAKawTM7dPD0-tjQbQhKG9yTSKzGOpZaDpFfty9xL4cX8-ZkrsB-UfVz9nCYERD1p_ifgpiMd_ut9gqeC7Q8_qAlh7CjtNQtUB12zDBgPDALAnvc5YmENLEH7oGd39pnsAcEgggIgVA1P4bAp2asdBvHNHz3IBtNLHyMmOShrFLztK_seg2JAMha-OeMagt3GH5a55pnsibBMqgXj0BA09lqG67fV-wfGUzOOsQ3wakOuRBIlMLchDGLXzVGKFe4Zfpw-5SSCOmiUoquNJeHyP2jgcebe9EixmACKZQ_EgmOt51lWmRL6Iy9kA
+Cache-Control: no-cache
+
+{
+  "requestType": "createCard",
+  "requestId": "create-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "card": {
+    "front": "Front text3",
+    "back": "Back text3"
+  }
+}
+
+###
+POST http://localhost:8081/v1/card/read
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJKeTVjOF9TSGp5SkFqMm1uNlBGVW5RYWVyTWZMeXFSU0Jnc3VEOUFWaUJJIn0.eyJleHAiOjE3MDM0MTc1NTgsImlhdCI6MTcwMzQxNzI1OCwianRpIjoiMWZlZmFkYzEtNGYxZi00OTM0LTg0MmQtODQxYTFiMmI0NmYyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5OTkxL2F1dGgvcmVhbG1zL2ZsYXNoY2FyZHMiLCJhdWQiOlsiZmxhc2hjYXJkcy11c2VycyIsImFjY291bnQiXSwic3ViIjoiZTAwYWJiMTgtNDg0Yy00NjJlLWFlNjAtM2Q3MmQ5ZTAyMDMzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2FyZHMtc2VydmljZSIsInNlc3Npb25fc3RhdGUiOiI4MzM1ZjBhNS1kYjNlLTRlMjYtOGE3MS1lYWY4ZGJmOGM2OWMiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtZmxhc2hjYXJkcyIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6IiIsInNpZCI6IjgzMzVmMGE1LWRiM2UtNGUyNi04YTcxLWVhZjhkYmY4YzY5YyIsImdyb3VwcyI6WyJBRE1JTiJdfQ.oHuy_-SFvqPN-pNpzURsqOQcmR5WkXc8WzDO-_gEQDB98Ral0q-yNrzaktZJcAre1_KjhZoe17S44KMX8j66J76msvBTnkNKQQ6_7p7lXIGJoN0PICtVSZScYk05gsrDz25F2z3_FIyiYa0hr5DNqLz4xcxd3Hn__86bwcj-Oq7Y3Tk9nHRAap3k0eUAqCIlosPhq_CK14iu_dlbkQ3MyG4YyBY1wv4PNqEOJsBAFGeTvvA2ii8r0mKwGCKL4Ixv5-e0q277Fqts4vPKkBxV6LkceVYwghuhu8UCuGv1rji7LoBSmpYWqh3tNQpi_UdxaFpOk16E-BF6zGpg1EYalA
+Cache-Control: no-cache
+
+{
+  "requestType": "readCard",
+  "requestId": "read-req2",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "card": {
+    "id": "39684178-d6f2-4f69-a8ff-1f6f194011ca"
+  }
+}
+
+###
+POST http://localhost:8081/v1/card/delete
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJKeTVjOF9TSGp5SkFqMm1uNlBGVW5RYWVyTWZMeXFSU0Jnc3VEOUFWaUJJIn0.eyJleHAiOjE3MDM0MTc1NTgsImlhdCI6MTcwMzQxNzI1OCwianRpIjoiMWZlZmFkYzEtNGYxZi00OTM0LTg0MmQtODQxYTFiMmI0NmYyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5OTkxL2F1dGgvcmVhbG1zL2ZsYXNoY2FyZHMiLCJhdWQiOlsiZmxhc2hjYXJkcy11c2VycyIsImFjY291bnQiXSwic3ViIjoiZTAwYWJiMTgtNDg0Yy00NjJlLWFlNjAtM2Q3MmQ5ZTAyMDMzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2FyZHMtc2VydmljZSIsInNlc3Npb25fc3RhdGUiOiI4MzM1ZjBhNS1kYjNlLTRlMjYtOGE3MS1lYWY4ZGJmOGM2OWMiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtZmxhc2hjYXJkcyIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6IiIsInNpZCI6IjgzMzVmMGE1LWRiM2UtNGUyNi04YTcxLWVhZjhkYmY4YzY5YyIsImdyb3VwcyI6WyJBRE1JTiJdfQ.oHuy_-SFvqPN-pNpzURsqOQcmR5WkXc8WzDO-_gEQDB98Ral0q-yNrzaktZJcAre1_KjhZoe17S44KMX8j66J76msvBTnkNKQQ6_7p7lXIGJoN0PICtVSZScYk05gsrDz25F2z3_FIyiYa0hr5DNqLz4xcxd3Hn__86bwcj-Oq7Y3Tk9nHRAap3k0eUAqCIlosPhq_CK14iu_dlbkQ3MyG4YyBY1wv4PNqEOJsBAFGeTvvA2ii8r0mKwGCKL4Ixv5-e0q277Fqts4vPKkBxV6LkceVYwghuhu8UCuGv1rji7LoBSmpYWqh3tNQpi_UdxaFpOk16E-BF6zGpg1EYalA
+Cache-Control: no-cache
+
+{
+  "requestType": "deleteCard",
+  "requestId": "delete-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "card": {
+    "id": "39684178-d6f2-4f69-a8ff-1f6f194011ca",
+    "lock": "494d418e-16c6-4c5b-b2ea-ce4d492041f2"
+  }
+}
+

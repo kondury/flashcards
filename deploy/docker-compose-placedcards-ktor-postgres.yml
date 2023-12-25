@@ -22,7 +22,7 @@ services:
     image: placedcards-app-ktor:0.0.1
     container_name: app-placedcards
     ports:
-      - "8081:8080"
+      - "8082:8080"
     environment:
       LOGS_FB_HOSTS: "fluent-bit"
       LOGS_FB_PORT: 24224
@@ -33,6 +33,11 @@ services:
       POSTGRES_DB: "placedcards"
       POSTGRES_USER: "postgres"
       SQL_URL: "jdbc:postgresql://psql-placedcards:5432/placedcards"
+      JWT_ISSUER: "http://localhost:9991/auth/realms/flashcards"
+      JWT_AUDIENCE: "flashcards-users"
+      JWT_REALM: "flashcards"
+      JWT_CLIENT_ID: "placedcards-service"
+      JWT_CERT_URL: "http://keycloak:8080/auth/realms/flashcards/protocol/openid-connect/certs"
     depends_on:
       psql-placedcards:
         condition: service_healthy

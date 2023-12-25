@@ -15,13 +15,12 @@ data class AuthConfig(
         const val M_NAME_CLAIM = "mname"
         const val L_NAME_CLAIM = "lname"
 
-        // todo
         val TEST = AuthConfig(
             secret = "secret",
             issuer = "com.github.kondury",
             audience = "flashcards-users",
-            realm = "flashcards-users",
-            clientId = "flashcards-users-service",
+            realm = "flashcards",
+            clientId = "cards-service",
         )
 
         val NONE = AuthConfig(
