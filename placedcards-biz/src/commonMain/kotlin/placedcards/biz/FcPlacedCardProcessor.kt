@@ -1,6 +1,8 @@
 package com.github.kondury.flashcards.placedcards.biz
 
 import com.github.kondury.flashcards.cor.dsl.rootChain
+import com.github.kondury.flashcards.placedcards.biz.permission.accessValidation
+import com.github.kondury.flashcards.placedcards.biz.permission.resolvePermissions
 import com.github.kondury.flashcards.placedcards.biz.stub.*
 import com.github.kondury.flashcards.placedcards.biz.validation.*
 import com.github.kondury.flashcards.placedcards.biz.repository.*
@@ -41,8 +43,10 @@ class FcPlacedCardProcessor(
                     afterCreatePlacedCardValidation()
                 }
 
+                resolvePermissions()
                 repository(CREATE_PLACED_CARD) {
                     repositoryPrepareCreate()
+                    accessValidation()
                     repositoryCreate()
                     repositoryResponse(CREATE_PLACED_CARD)
                 }
@@ -68,8 +72,10 @@ class FcPlacedCardProcessor(
                     afterMovePlacedCardValidation()
                 }
 
+                resolvePermissions()
                 repository(MOVE_PLACED_CARD) {
                     repositoryRead()
+                    accessValidation()
                     repositoryPrepareMove()
                     repositoryMove()
                     repositoryResponse(MOVE_PLACED_CARD)
@@ -96,7 +102,9 @@ class FcPlacedCardProcessor(
                     afterSelectPlacedCardValidation()
                 }
 
+                resolvePermissions()
                 repository(SELECT_PLACED_CARD) {
+                    accessValidation()
                     repositorySelect()
                     repositoryResponse(SELECT_PLACED_CARD)
                 }
@@ -119,8 +127,10 @@ class FcPlacedCardProcessor(
                     afterDeletePlacedCardValidation()
                 }
 
+                resolvePermissions()
                 repository(DELETE_PLACED_CARD) {
                     repositoryRead()
+                    accessValidation()
                     repositoryPrepareDelete()
                     repositoryDelete()
                     repositoryResponse(DELETE_PLACED_CARD)
@@ -145,8 +155,10 @@ class FcPlacedCardProcessor(
                     afterInitPlacedCardValidation()
                 }
 
+//                resolvePermissions()
 //                repository(INIT_PLACED_CARD) {
 //                    repositoryPrepareInit()
+//                    accessValidation()
 //                    repositoryInit()
 //                    repositoryResponse(INIT_PLACED_CARD)
 //                }

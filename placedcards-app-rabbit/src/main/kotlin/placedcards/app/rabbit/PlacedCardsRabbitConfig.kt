@@ -5,6 +5,7 @@ import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
 import com.github.kondury.flashcards.app.rabbit.RabbitController
 import com.github.kondury.flashcards.logging.common.AppLoggerProvider
 import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
+import com.github.kondury.flashcards.placedcards.app.common.AuthConfig
 import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
 import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
 import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
@@ -20,6 +21,7 @@ data class PlacedCardsRabbitConfig(
         )
         override val corConfig = PlacedCardsCorConfig(repositoryConfig)
         override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
+        override val auth: AuthConfig = AuthConfig.NONE
     },
     val connectionConfig: ConnectionConfig = ConnectionConfig(
         host = "localhost",

@@ -47,8 +47,8 @@ dependencies {
 //    implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
 //    implementation(ktor("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
 //    implementation(ktor("auto-head-response"))
-//    implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
-//    implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
+    implementation(ktor("auth"))
+    implementation(ktor("auth-jwt"))
     implementation(ktor("config-yaml")) // "io.ktor:ktor-server-config-yaml:$ktorVersion"
 
     implementation(ktor("call-logging-jvm"))

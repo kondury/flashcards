@@ -1,5 +1,6 @@
 package com.github.kondury.flashcards.cards.app.config
 
+import com.github.kondury.flashcards.cards.app.common.AuthConfig
 import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import com.github.kondury.flashcards.cards.app.config.RepositoryType.IN_MEMORY
 import com.github.kondury.flashcards.cards.app.config.RepositoryType.POSTGRES
@@ -22,6 +23,7 @@ data class CardsKtorConfig(
     override val repositoryConfig = initRepositoryConfig(settings.repositorySettings)
     override val corConfig: CardsCorConfig = CardsCorConfig(repositoryConfig)
     override val processor: FcCardProcessor = FcCardProcessor(corConfig)
+    override val auth: AuthConfig = initAuthConfig(settings.authSettings)
 } {
     constructor(config: ApplicationConfig) : this(settings = CardsKtorSettings(config))
 }
@@ -38,6 +40,15 @@ private fun initRepositoryConfig(settings: RepositorySettings) = with(settings) 
         testRepository = initRepository(testRepositoryType)
     )
 }
+
+private fun initAuthConfig(settings: AuthSettings) = AuthConfig(
+    secret = settings.secret,
+    issuer = settings.issuer,
+    audience = settings.audience,
+    realm = settings.realm,
+    clientId = settings.clientId,
+    certUrl = settings.certUrl,
+)
 
 private fun RepositorySettings.initRepository(type: RepositoryType): CardRepository =
     when (type) {

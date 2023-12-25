@@ -4,6 +4,7 @@ import com.github.kondury.flashcards.cards.common.CardContext
 import com.github.kondury.flashcards.cards.common.models.CardCommand
 import com.github.kondury.flashcards.cards.common.models.FcState
 import com.github.kondury.flashcards.cards.common.models.FcWorkMode
+import com.github.kondury.flashcards.cards.common.permissions.FcUserGroups
 import com.github.kondury.flashcards.cards.common.repository.CardRepository
 import com.github.kondury.flashcards.cor.dsl.CorChainDsl
 import com.github.kondury.flashcards.cor.dsl.chain
@@ -19,9 +20,10 @@ internal fun CorChainDsl<CardContext>.initRepository() = worker {
     this.title = "CardContext repository initialization"
     activeIf { state == FcState.RUNNING }
     handle {
-        repository = when (workMode) {
-            FcWorkMode.TEST -> repositoryConfig.testRepository
-            FcWorkMode.PROD -> repositoryConfig.prodRepository
+        repository = when {
+            workMode == FcWorkMode.TEST -> repositoryConfig.testRepository
+            workMode == FcWorkMode.PROD -> repositoryConfig.prodRepository
+            FcUserGroups.TEST in principal.groups -> repositoryConfig.testRepository
             else -> CardRepository.NoOpCardRepository
         }
         if (workMode != FcWorkMode.STUB && repository == CardRepository.NoOpCardRepository)

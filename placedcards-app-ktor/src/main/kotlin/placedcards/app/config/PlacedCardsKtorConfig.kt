@@ -12,6 +12,7 @@ import com.github.kondury.flashcards.placedcards.repository.sql.PostgresPlacedCa
 import com.github.kondury.flashcards.placedcards.repository.sql.SqlProperties
 import com.github.kondury.flashcards.logging.common.AppLoggerProvider
 import com.github.kondury.flashcards.logging.jvm.getLogbackLogger
+import com.github.kondury.flashcards.placedcards.app.common.AuthConfig
 import io.ktor.server.config.*
 
 
@@ -22,6 +23,7 @@ data class PlacedCardsKtorConfig(
     override val repositoryConfig = initRepositoryConfig(settings.repositorySettings)
     override val corConfig = PlacedCardsCorConfig(repositoryConfig)
     override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
+    override val auth: AuthConfig = initAuthConfig(settings.authSettings)
 } {
     constructor(config: ApplicationConfig) : this(settings = PlacedCardsKtorSettings(config))
 }
@@ -38,6 +40,15 @@ private fun initRepositoryConfig(settings: RepositorySettings) = with(settings) 
         testRepository = initRepository(testRepositoryType)
     )
 }
+
+private fun initAuthConfig(settings: AuthSettings) = AuthConfig(
+    secret = settings.secret,
+    issuer = settings.issuer,
+    audience = settings.audience,
+    realm = settings.realm,
+    clientId = settings.clientId,
+    certUrl = settings.certUrl,
+)
 
 private fun RepositorySettings.initRepository(type: RepositoryType): PlacedCardRepository =
     when (type) {

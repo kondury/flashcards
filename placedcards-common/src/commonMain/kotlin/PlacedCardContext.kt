@@ -2,6 +2,9 @@ package com.github.kondury.flashcards.placedcards.common
 
 import kotlinx.datetime.Instant
 import com.github.kondury.flashcards.placedcards.common.models.*
+import com.github.kondury.flashcards.placedcards.common.permissions.FcPrincipalModel
+import com.github.kondury.flashcards.placedcards.common.permissions.FcPrincipalRelations
+import com.github.kondury.flashcards.placedcards.common.permissions.FcUserPermissions
 import com.github.kondury.flashcards.placedcards.common.stubs.FcStub
 import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardRepository
 
@@ -47,6 +50,11 @@ data class PlacedCardContext(
     var repository: PlacedCardRepository = PlacedCardRepository.NoOpPlacedCardRepository,
     var repoReadPlacedCard: PlacedCard = PlacedCard.EMPTY,
     var repoPreparedPlacedCard: PlacedCard = PlacedCard.EMPTY,
-    var repoResponsePlacedCard: PlacedCard = PlacedCard.EMPTY
+    var repoResponsePlacedCard: PlacedCard = PlacedCard.EMPTY,
+
+    var principal: FcPrincipalModel = FcPrincipalModel.NONE,
+    val userPermissions: MutableSet<FcUserPermissions> = mutableSetOf(),
+    var principalRelations: Set<FcPrincipalRelations> = setOf(FcPrincipalRelations.ANY),
+    var isPermitted: Boolean = false,
 )
 

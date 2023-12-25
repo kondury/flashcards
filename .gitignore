@@ -47,3 +47,5 @@ bin/
 #deploy/volumes/postgres/*
 deploy/data/rabbitmq/**/*
 /kotlin-js-store/
+
+/deploy/volumes/keycloak/hsperfdata_jboss

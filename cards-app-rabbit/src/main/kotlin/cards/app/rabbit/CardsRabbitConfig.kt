@@ -3,6 +3,7 @@ package com.github.kondury.flashcards.cards.app.rabbit
 import com.github.kondury.flashcards.app.rabbit.ConnectionConfig
 import com.github.kondury.flashcards.app.rabbit.ProcessorConfig
 import com.github.kondury.flashcards.app.rabbit.RabbitController
+import com.github.kondury.flashcards.cards.app.common.AuthConfig
 import com.github.kondury.flashcards.cards.app.common.CardsApplicationConfig
 import com.github.kondury.flashcards.cards.biz.FcCardProcessor
 import com.github.kondury.flashcards.cards.common.CardRepositoryConfig
@@ -20,6 +21,7 @@ data class CardsRabbitConfig(
         )
         override val corConfig: CardsCorConfig = CardsCorConfig(repositoryConfig)
         override val processor: FcCardProcessor = FcCardProcessor(corConfig)
+        override val auth: AuthConfig = AuthConfig.NONE
     },
     val connectionConfig: ConnectionConfig = ConnectionConfig(
         host = "localhost",

@@ -2,6 +2,8 @@ package com.github.kondury.flashcards.cards.app
 
 import com.github.kondury.flashcards.cards.api.v1.apiV1Mapper
 import com.github.kondury.flashcards.cards.api.v1.models.*
+import com.github.kondury.flashcards.cards.app.auth.addAuth
+import com.github.kondury.flashcards.cards.app.common.AuthConfig
 import com.github.kondury.flashcards.cards.app.helpers.testConfig
 import com.github.kondury.flashcards.cards.common.models.Card
 import com.github.kondury.flashcards.cards.common.models.CardId
@@ -18,6 +20,7 @@ import io.ktor.server.testing.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
+
 
 interface V1CardApiContract {
 
@@ -120,6 +123,7 @@ interface V1CardApiContract {
 
     private suspend inline fun <reified T> HttpClient.postWithBody(url: String, body: T): HttpResponse = post(url) {
         contentType(ContentType.Application.Json)
+        addAuth(config = AuthConfig.TEST)
         setBody(body)
     }
 

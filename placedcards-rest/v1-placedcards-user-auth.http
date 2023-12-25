@@ -1,0 +1,107 @@
+### fcuser token by password
+POST http://localhost:9991/auth/realms/flashcards/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id = placedcards-service &
+grant_type = password &
+username = fcadmin &
+password = fcadmin
+
+> {%
+    client.global.set("user_auth_token", response.body.access_token);
+    client.global.set("user_refresh_token", response.body.refresh_token);
+    client.global.set("admin_id", "e00abb18-484c-462e-ae60-3d72d9e02033");
+    client.global.set("user_id", "313df85a-46b8-4cf6-90f9-7c2caf9d2976");
+%}
+
+### fcuser token by refresh token
+POST http://localhost:9991/auth/realms/flashcards/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id = cards-service &
+grant_type = refresh_token &
+refresh_token = {{user_refresh_token}}
+
+
+### Create placed card - fcuser
+POST http://localhost:8082/v1/placed-card/create
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{user_auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "createPlacedCard",
+  "requestId": "create-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "placedCard": {
+    "box": "new",
+    "cardId": "CardId",
+    "ownerId": "{{user_id}}"
+  }
+}
+
+### Delete placed card - fcuser
+POST http://localhost:8082/v1/placed-card/delete
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{user_auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "deletePlacedCard",
+  "requestId": "delete-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "placedCard": {
+    "id": "8c2a89bd-66ef-464a-8e20-89caab6f5a3c",
+    "lock": "a872a991-e882-49d0-98fb-180151293a49"
+  }
+}
+
+### Move placed card - fcuser
+POST http://localhost:8082/v1/placed-card/move
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{user_auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "movePlacedCard",
+  "requestId": "move-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "move": {
+    "id": "8c2a89bd-66ef-464a-8e20-89caab6f5a3c",
+    "lock": "57132ba7-b6f3-4aed-971c-0d5d6a298508",
+    "box": "repeat"
+  }
+}
+
+### Select placed card - fcuser
+POST http://localhost:8082/v1/placed-card/select
+Accept: */*
+Content-Type: application/json
+Authorization: Bearer {{user_auth_token}}
+Cache-Control: no-cache
+
+{
+  "requestType": "selectPlacedCard",
+  "requestId": "select-req",
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "select": {
+    "ownerId": "{{user_id}}",
+    "box": "repeat",
+    "searchStrategy": "EarliestCreated"
+  }
+}

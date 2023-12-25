@@ -1,0 +1,15 @@
+version: "3.3"
+
+services:
+
+  keycloak:
+    image: jboss/keycloak:16.1.1
+    ports:
+      - "9991:8080"
+      - "9990:9990"
+    volumes:
+      - ./volumes/keycloak:/tmp
+    environment:
+      KEYCLOAK_USER: flashcards
+      KEYCLOAK_PASSWORD: flashcards
+      KEYCLOAK_IMPORT: "/tmp/realm-export.json"

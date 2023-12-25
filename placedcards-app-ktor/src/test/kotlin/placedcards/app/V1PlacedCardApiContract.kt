@@ -2,6 +2,8 @@ package com.github.kondury.flashcards.placedcards.app
 
 import com.github.kondury.flashcards.placedcards.api.v1.apiV1Mapper
 import com.github.kondury.flashcards.placedcards.api.v1.models.*
+import com.github.kondury.flashcards.placedcards.app.auth.addAuth
+import com.github.kondury.flashcards.placedcards.app.helpers.authConfig
 import com.github.kondury.flashcards.placedcards.app.helpers.testConfig
 import com.github.kondury.flashcards.placedcards.common.models.FcBox
 import com.github.kondury.flashcards.placedcards.common.models.FcPlacedCardLock
@@ -175,6 +177,7 @@ interface V1PlacedCardApiContract {
     private suspend inline fun <reified T> HttpClient.postWithBody(url: String, body: T): HttpResponse =
         post(url) {
             contentType(ContentType.Application.Json)
+            addAuth(config = authConfig)
             setBody(body)
         }
 

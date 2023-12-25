@@ -1,6 +1,7 @@
 package com.github.kondury.flashcards.cards.app.config
 
 import com.github.kondury.flashcards.cards.app.config.SettingPaths.IN_MEMORY_PATH
+import com.github.kondury.flashcards.cards.app.config.SettingPaths.JWT_PATH
 import com.github.kondury.flashcards.cards.app.config.SettingPaths.POSTGRES_PATH
 import com.github.kondury.flashcards.cards.app.config.SettingPaths.REPOSITORY_PATH
 import io.ktor.server.config.*
@@ -11,6 +12,7 @@ data class CardsKtorSettings(
     val appUrls: List<String>,
     val loggerSettings: LoggerSettings,
     val repositorySettings: RepositorySettings,
+    val authSettings: AuthSettings
 ) {
     constructor(config: ApplicationConfig) : this(
         appUrls = config.propertyOrNull("ktor.urls")?.getList().orEmpty(),
@@ -18,6 +20,7 @@ data class CardsKtorSettings(
             override val mode = config.propertyOrNull("ktor.logger")?.getString().orEmpty()
         },
         repositorySettings = getRepositorySettings(config),
+        authSettings = getAuthSettings(config)
     )
 }
 
@@ -49,7 +52,16 @@ private fun getInMemorySettings(config: ApplicationConfig) = object : InMemorySe
         .let { Duration.parse(it) }
 }
 
-private fun ApplicationConfig.propertyOrDefault(path: String, defaultValue: String) =
-    propertyOrNull(path)
-        ?.getString()
-        ?: defaultValue
+private fun getAuthSettings(config: ApplicationConfig): AuthSettings = object : AuthSettings {
+    override val secret = config.propertyOrDefault("$JWT_PATH.secret", "")
+    override val issuer = config.property("$JWT_PATH.issuer").getString()
+    override val audience = config.property("$JWT_PATH.audience").getString()
+    override val realm = config.property("$JWT_PATH.realm").getString()
+    override val clientId = config.property("$JWT_PATH.clientId").getString()
+    override val certUrl = config.propertyOrNull("$JWT_PATH.certUrl")?.getString()
+}
+
+    private fun ApplicationConfig.propertyOrDefault(path: String, defaultValue: String) =
+        propertyOrNull(path)
+            ?.getString()
+            ?: defaultValue

@@ -1,15 +1,18 @@
 package com.github.kondury.flashcards.placedcards.app.config
 
 import com.github.kondury.flashcards.placedcards.app.config.SettingPaths.IN_MEMORY_PATH
+import com.github.kondury.flashcards.placedcards.app.config.SettingPaths.JWT_PATH
 import com.github.kondury.flashcards.placedcards.app.config.SettingPaths.POSTGRES_PATH
 import com.github.kondury.flashcards.placedcards.app.config.SettingPaths.REPOSITORY_PATH
 import io.ktor.server.config.*
 import kotlin.time.Duration
 
+
 data class PlacedCardsKtorSettings(
     val appUrls: List<String>,
     val loggerSettings: LoggerSettings,
     val repositorySettings: RepositorySettings,
+    val authSettings: AuthSettings
 ) {
 
     constructor(config: ApplicationConfig) : this(
@@ -18,6 +21,7 @@ data class PlacedCardsKtorSettings(
             override val mode: String = config.propertyOrNull("ktor.logger")?.getString().orEmpty()
         },
         repositorySettings = getRepositorySettings(config),
+        authSettings = getAuthSettings(config),
     )
 }
 
@@ -26,6 +30,15 @@ private fun getRepositorySettings(config: ApplicationConfig) = object : Reposito
     override val testRepositoryType = getRepositoryType(config, WorkModeRepository.TEST)
     override val postgresSettings = getPostgresSettings(config)
     override val inMemorySettings = getInMemorySettings(config)
+}
+
+private fun getAuthSettings(config: ApplicationConfig): AuthSettings = object : AuthSettings {
+    override val secret = config.propertyOrDefault("$JWT_PATH.secret", "")
+    override val issuer = config.property("$JWT_PATH.issuer").getString()
+    override val audience = config.property("$JWT_PATH.audience").getString()
+    override val realm = config.property("$JWT_PATH.realm").getString()
+    override val clientId = config.property("$JWT_PATH.clientId").getString()
+    override val certUrl = config.propertyOrNull("$JWT_PATH.certUrl")?.getString()
 }
 
 private fun getRepositoryType(config: ApplicationConfig, mode: WorkModeRepository): RepositoryType {

@@ -10,4 +10,5 @@ interface CardsApplicationConfig {
     val repositoryConfig: CardRepositoryConfig
     val corConfig: CardsCorConfig
     val processor: FcCardProcessor
+    val auth: AuthConfig
 }
