@@ -1,14 +1,15 @@
 package com.github.kondury.flashcards.placedcards.biz.repository
 
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
+import com.github.kondury.flashcards.placedcards.biz.common.initSingleMockRepository
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
-import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
 import com.github.kondury.flashcards.placedcards.common.models.*
-import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardDbResponse
-import com.github.kondury.flashcards.placedcards.repository.tests.MockPlacedCardRepository
 import kotlinx.coroutines.test.runTest
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
+
 
 class RepositorySelectCardTest {
 
@@ -25,13 +26,10 @@ class RepositorySelectCardTest {
         box = workBox,
     )
 
-    private val repository = MockPlacedCardRepository(
-        invokeSelect = { PlacedCardDbResponse.success(expectedPlacedCard) }
-    )
-
-    private val repositoryConfig = PlacedCardRepositoryConfig(testRepository = repository)
-    private val corConfig = PlacedCardsCorConfig(repositoryConfig)
-    private val processor = FcPlacedCardProcessor(corConfig)
+    private val processor by lazy {
+        val repository = initSingleMockRepository(expectedPlacedCard)
+        initProcessor(repository)
+    }
 
     @Test
     fun repoSelectSuccessTest() = runTest {

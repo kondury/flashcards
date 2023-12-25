@@ -1,36 +1,28 @@
 package com.github.kondury.flashcards.placedcards.biz.repository
 
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
+import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
+import com.github.kondury.flashcards.placedcards.biz.common.initSingleMockRepository
+import com.github.kondury.flashcards.placedcards.common.NONE
 import com.github.kondury.flashcards.placedcards.common.PlacedCardContext
-import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
 import com.github.kondury.flashcards.placedcards.common.models.*
-import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardDbResponse
-import com.github.kondury.flashcards.placedcards.repository.tests.MockPlacedCardRepository
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import kotlin.test.*
+
 
 class RepositoryCreateCardTest {
 
     private val command = PlacedCardCommand.CREATE_PLACED_CARD
 
+    private val newUuid = "999-888-xyz-XYZ"
     private val expectedUserId = UserId("user-id-1")
     private val expectedBox = FcBox.NEW
     private val expectedCardId = CardId("card-id-1")
-    private val expectedPlacedCard = PlacedCard(
-        id = PlacedCardId("placed-card-id-1"),
-        ownerId = expectedUserId,
-        cardId = expectedCardId,
-        box = expectedBox,
-    )
 
-    private val repository = MockPlacedCardRepository(
-        invokeCreate = { PlacedCardDbResponse.success(expectedPlacedCard) }
-    )
-
-    private val repositoryConfig = PlacedCardRepositoryConfig(testRepository = repository)
-    private val corConfig = PlacedCardsCorConfig(repositoryConfig)
-    private val processor = FcPlacedCardProcessor(corConfig)
+    private val processor by lazy {
+        val repository = initSingleMockRepository(newUuid = newUuid)
+        initProcessor(repository)
+    }
 
     @Test
     fun repoCreateSuccessTest() = runTest {
@@ -48,7 +40,13 @@ class RepositoryCreateCardTest {
         with (context) {
             assertEquals(FcState.FINISHING, state)
             assertTrue { errors.isEmpty() }
-            assertSame(expectedPlacedCard, responsePlacedCard)
+            assertNotEquals(PlacedCardId.NONE, responsePlacedCard.id)
+            assertNotEquals(FcPlacedCardLock.NONE, responsePlacedCard.lock)
+            assertEquals(expectedUserId, responsePlacedCard.ownerId)
+            assertEquals(expectedBox, responsePlacedCard.box)
+            assertEquals(expectedCardId, requestPlacedCard.cardId)
+            assertNotEquals(Instant.NONE, responsePlacedCard.createdAt)
+            assertNotEquals(Instant.NONE, responsePlacedCard.updatedAt)
         }
 
     }

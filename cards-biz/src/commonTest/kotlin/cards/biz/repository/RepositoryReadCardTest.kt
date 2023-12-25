@@ -1,12 +1,9 @@
 package com.github.kondury.flashcards.cards.biz.repository
 
-import com.github.kondury.flashcards.cards.biz.FcCardProcessor
+import com.github.kondury.flashcards.cards.biz.common.initProcessor
+import com.github.kondury.flashcards.cards.biz.common.initSingleMockRepository
 import com.github.kondury.flashcards.cards.common.CardContext
-import com.github.kondury.flashcards.cards.common.CardRepositoryConfig
-import com.github.kondury.flashcards.cards.common.CardsCorConfig
 import com.github.kondury.flashcards.cards.common.models.*
-import com.github.kondury.flashcards.cards.common.repository.CardDbResponse
-import com.github.kondury.flashcards.cards.repository.tests.MockCardRepository
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -21,12 +18,11 @@ class RepositoryReadCardTest {
         back = "Back",
         lock = FcCardLock("123-234-abc-ABC"),
     )
-    private val repository by lazy {
-        MockCardRepository(invokeRead = { CardDbResponse.success(initCard) })
+
+    private val processor by lazy {
+        val repository = initSingleMockRepository(initCard)
+        initProcessor(repository)
     }
-    private val repositoryConfig by lazy { CardRepositoryConfig(testRepository = repository) }
-    private val corConfig by lazy { CardsCorConfig(repositoryConfig) }
-    private val processor by lazy { FcCardProcessor(corConfig) }
 
     @Test
     fun repoReadSuccessTest() = runTest {
@@ -35,7 +31,7 @@ class RepositoryReadCardTest {
             state = FcState.NONE,
             workMode = FcWorkMode.TEST,
             requestCard = Card(
-                id = CardId("123"),
+                id = initCard.id,
             ),
         )
         processor.exec(context)

@@ -1,13 +1,12 @@
 package com.github.kondury.flashcards.placedcards.app
 
-import com.github.kondury.flashcards.logging.common.AppLoggerProvider
 import com.github.kondury.flashcards.placedcards.api.v1.apiV1Mapper
 import com.github.kondury.flashcards.placedcards.api.v1.models.*
-import com.github.kondury.flashcards.placedcards.app.common.PlacedCardsApplicationConfig
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
-import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
-import com.github.kondury.flashcards.placedcards.common.models.*
+import com.github.kondury.flashcards.placedcards.app.helpers.testConfig
+import com.github.kondury.flashcards.placedcards.common.models.FcBox
+import com.github.kondury.flashcards.placedcards.common.models.FcPlacedCardLock
+import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
+import com.github.kondury.flashcards.placedcards.common.models.PlacedCardId
 import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardRepository
 import com.github.kondury.flashcards.placedcards.stubs.PlacedCardStub
 import io.ktor.client.*
@@ -54,16 +53,6 @@ interface V1PlacedCardApiContract {
     fun getRepository(test: String): PlacedCardRepository
     val assertSpecificOn: Boolean
     val debugResource: DebugResource
-
-    private fun appConfig(repository: PlacedCardRepository) = object : PlacedCardsApplicationConfig {
-        override val loggerProvider = AppLoggerProvider()
-        override val repositoryConfig = PlacedCardRepositoryConfig(
-            prodRepository = PlacedCardRepository.NoOpPlacedCardRepository,
-            testRepository = repository
-        )
-        override val corConfig: PlacedCardsCorConfig = PlacedCardsCorConfig(repositoryConfig)
-        override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
-    }
 
     @Test
     fun create() = testPlacedCardCommand<PlacedCardCreateRequest, PlacedCardCreateResponse>(
@@ -170,7 +159,7 @@ interface V1PlacedCardApiContract {
         crossinline doAssert: (U) -> Unit = {}
     ) = testApplication {
         application {
-            moduleJvm(appConfig(repository))
+            moduleJvm(testConfig(repository))
         }
         val response = myClient().postWithBody(url, requestObj)
         val responseObj = response.body<U>()

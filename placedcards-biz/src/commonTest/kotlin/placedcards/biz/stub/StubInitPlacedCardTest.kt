@@ -1,20 +1,19 @@
 package com.github.kondury.flashcards.placedcards.biz.stub
 
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
+import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
 import com.github.kondury.flashcards.placedcards.common.models.FcBox
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand
 import com.github.kondury.flashcards.placedcards.common.models.UserId
 import com.github.kondury.flashcards.placedcards.common.models.isEmpty
+import com.github.kondury.flashcards.placedcards.common.repository.PlacedCardRepository
 import kotlin.test.Test
 import kotlin.test.assertTrue
+
 
 class StubInitPlacedCardTest {
 
     companion object {
-        private val placedCardsRepositoryConfig = PlacedCardsCorConfig.NONE
-        private val placedCardsCorConfig = PlacedCardsCorConfig(placedCardsRepositoryConfig)
-        private val processor = FcPlacedCardProcessor(placedCardsCorConfig)
+        private val processor = initProcessor(PlacedCardRepository.NoOpPlacedCardRepository)
         private val expectedOwnerId = UserId("user-id")
         private val expectedBox = FcBox.NEW
     }

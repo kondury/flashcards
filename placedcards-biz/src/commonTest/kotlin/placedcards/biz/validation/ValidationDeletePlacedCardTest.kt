@@ -1,8 +1,6 @@
 package com.github.kondury.flashcards.placedcards.biz.validation
 
-import com.github.kondury.flashcards.placedcards.biz.FcPlacedCardProcessor
-import com.github.kondury.flashcards.placedcards.common.PlacedCardRepositoryConfig
-import com.github.kondury.flashcards.placedcards.common.PlacedCardsCorConfig
+import com.github.kondury.flashcards.placedcards.biz.common.initProcessor
 import com.github.kondury.flashcards.placedcards.common.models.FcPlacedCardLock
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCard
 import com.github.kondury.flashcards.placedcards.common.models.PlacedCardCommand.DELETE_PLACED_CARD
@@ -11,12 +9,11 @@ import com.github.kondury.flashcards.placedcards.repository.tests.StubPlacedCard
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+
 class ValidationDeletePlacedCardTest {
 
     companion object {
-        private val repositoryConfig by lazy { PlacedCardRepositoryConfig(testRepository = StubPlacedCardRepository()) }
-        private val corConfig by lazy { PlacedCardsCorConfig(repositoryConfig) }
-        private val processor by lazy { FcPlacedCardProcessor(corConfig) }
+        private val processor by lazy { initProcessor(StubPlacedCardRepository()) }
 
         private const val GOOD_ID = "id-1"
         private const val BAD_NOT_EMPTY_ID = "($GOOD_ID)"

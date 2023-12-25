@@ -18,30 +18,34 @@ import io.ktor.server.config.*
 data class PlacedCardsKtorConfig(
     private val settings: PlacedCardsKtorSettings,
 ) : PlacedCardsApplicationConfig by object : PlacedCardsApplicationConfig {
-        override val loggerProvider = getLoggerProvider(settings)
-        override val repositoryConfig = PlacedCardRepositoryConfig(
-            prodRepository = getRepositoryConfig(settings.prodRepositoryType, settings),
-            testRepository = getRepositoryConfig(settings.testRepositoryType, settings),
-        )
-        override val corConfig = PlacedCardsCorConfig(repositoryConfig)
-        override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
+    override val loggerProvider = initLoggerProvider(settings.loggerSettings)
+    override val repositoryConfig = initRepositoryConfig(settings.repositorySettings)
+    override val corConfig = PlacedCardsCorConfig(repositoryConfig)
+    override val processor: FcPlacedCardProcessor = FcPlacedCardProcessor(corConfig)
 } {
     constructor(config: ApplicationConfig) : this(settings = PlacedCardsKtorSettings(config))
 }
 
-private fun getLoggerProvider(loggerSettings: LoggerSettings): AppLoggerProvider =
+private fun initLoggerProvider(loggerSettings: LoggerSettings): AppLoggerProvider =
     when (loggerSettings.mode) {
         "logback", "" -> AppLoggerProvider { getLogbackLogger(it) }
         else -> throw Exception("Logger '${loggerSettings.mode}' is not allowed. Admitted value is 'logback'")
     }
 
-private fun getRepositoryConfig(type: RepositoryType, settings: RepositorySettings): PlacedCardRepository =
+private fun initRepositoryConfig(settings: RepositorySettings) = with(settings) {
+    PlacedCardRepositoryConfig(
+        prodRepository = initRepository(prodRepositoryType),
+        testRepository = initRepository(testRepositoryType)
+    )
+}
+
+private fun RepositorySettings.initRepository(type: RepositoryType): PlacedCardRepository =
     when (type) {
-        IN_MEMORY -> initInMemory(settings.inMemorySettings)
-        POSTGRES -> initPostgres(settings.postgresSettings)
+        IN_MEMORY -> initInMemory(inMemorySettings)
+        POSTGRES -> initPostgres(postgresSettings)
     }
 
-private fun initPostgres(settings: PostgresSettings): PlacedCardRepository = PostgresPlacedCardRepository(
+private fun initPostgres(settings: PostgresSettings) = PostgresPlacedCardRepository(
     properties = SqlProperties(
         url = settings.url,
         user = settings.user,
@@ -50,4 +54,4 @@ private fun initPostgres(settings: PostgresSettings): PlacedCardRepository = Pos
     )
 )
 
-private fun initInMemory(settings: InMemorySettings): PlacedCardRepository = InMemoryPlacedCardRepository(ttl = settings.ttl)
+private fun initInMemory(settings: InMemorySettings) = InMemoryPlacedCardRepository(ttl = settings.ttl)
